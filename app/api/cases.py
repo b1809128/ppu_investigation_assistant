@@ -1,10 +1,12 @@
-from fastapi import APIRouter, Depends, status, Request
+from fastapi import APIRouter, Depends, status, Request, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from typing import List
+import os
+import shutil
 
 from app.db.session import get_db
 from app.core.security import get_current_user, allow_leadership
-from app.schemas.case import CaseFileCreate, CaseFileUpdate, CaseFileOut
+from app.schemas.case import CaseFileCreate, CaseFileUpdate, CaseFileOut, CaseDocumentCreate, CaseDocumentOut, InvestigationLogCreate, InvestigationLogOut
 from app.schemas.suspect import SuspectCreate, SuspectUpdate, SuspectOut
 from app.services.case import CaseService
 from app.models.user import User
@@ -157,3 +159,131 @@ def remove_suspect_from_case(
     """
     client_ip = request.client.host if request.client else None
     return CaseService.remove_suspect(db, case_id=case_id, suspect_id=suspect_id, user=current_user, ip_address=client_ip)
+
+@router.get("/{case_id}/documents", response_model=List[CaseDocumentOut])
+@audit_log(action="LIST_DOCUMENTS", resource_type="CASE_DOCUMENT")
+def list_case_documents(
+    case_id: int,
+    request: Request,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    List all procedural documents in a case.
+    """
+    client_ip = request.client.host if request.client else None
+    return CaseService.list_documents(db, case_id=case_id, user=current_user, ip_address=client_ip)
+
+@router.post("/{case_id}/documents", response_model=CaseDocumentOut)
+@audit_log(action="ADD_DOCUMENT", resource_type="CASE_DOCUMENT")
+def add_document_to_case(
+    case_id: int,
+    doc_in: CaseDocumentCreate,
+    request: Request,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Add a new procedural document to a case.
+    """
+    client_ip = request.client.host if request.client else None
+    return CaseService.add_document(db, case_id=case_id, doc_in=doc_in, user=current_user, ip_address=client_ip)
+
+@router.delete("/{case_id}/documents/{document_id}", response_model=CaseDocumentOut)
+@audit_log(action="REMOVE_DOCUMENT", resource_type="CASE_DOCUMENT")
+def remove_document_from_case(
+    case_id: int,
+    document_id: int,
+    request: Request,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Remove a procedural document from a case.
+    """
+    client_ip = request.client.host if request.client else None
+    return CaseService.remove_document(db, case_id=case_id, document_id=document_id, user=current_user, ip_address=client_ip)
+
+@router.post("/{case_id}/documents/upload", response_model=CaseDocumentOut)
+@audit_log(action="UPLOAD_DOCUMENT", resource_type="CASE_DOCUMENT")
+def upload_document_to_case(
+    case_id: int,
+    request: Request,
+    name: str = Form(...),
+    document_type: str = Form(...),
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Upload a scan file/PDF and link it as a procedural document.
+    """
+    from datetime import datetime
+    client_ip = request.client.host if request.client else None
+    
+    # Define upload path
+    uploads_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "uploads")
+    os.makedirs(uploads_dir, exist_ok=True)
+    
+    # Save file with a safe, unique filename
+    safe_filename = f"case_{case_id}_{int(datetime.now().timestamp())}_{file.filename}"
+    safe_filename = safe_filename.replace(" ", "_")
+    file_path = os.path.join(uploads_dir, safe_filename)
+    
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+        
+    doc_in = CaseDocumentCreate(
+        name=name,
+        document_type=document_type,
+        file_path=f"/uploads/{safe_filename}"
+    )
+    
+    return CaseService.add_document(db, case_id=case_id, doc_in=doc_in, user=current_user, ip_address=client_ip)
+
+
+# Investigation Process Timeline Logs Endpoints
+
+@router.get("/{case_id}/logs", response_model=List[InvestigationLogOut])
+@audit_log(action="LIST_INVESTIGATION_LOGS", resource_type="CASE_FILE")
+def list_investigation_logs(
+    case_id: int,
+    request: Request,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    List all logs in the investigation timeline.
+    """
+    client_ip = request.client.host if request.client else None
+    return CaseService.list_logs(db, case_id=case_id, user=current_user, ip_address=client_ip)
+
+@router.post("/{case_id}/logs", response_model=InvestigationLogOut, status_code=status.HTTP_201_CREATED)
+@audit_log(action="ADD_INVESTIGATION_LOG", resource_type="CASE_FILE")
+def add_investigation_log(
+    case_id: int,
+    log_in: InvestigationLogCreate,
+    request: Request,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Add a new milestone/event to the case investigation process.
+    """
+    client_ip = request.client.host if request.client else None
+    return CaseService.add_log(db, case_id=case_id, log_in=log_in, user=current_user, ip_address=client_ip)
+
+@router.delete("/{case_id}/logs/{log_id}", response_model=InvestigationLogOut)
+@audit_log(action="REMOVE_INVESTIGATION_LOG", resource_type="CASE_FILE")
+def remove_investigation_log(
+    case_id: int,
+    log_id: int,
+    request: Request,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Remove an event from the case timeline.
+    """
+    client_ip = request.client.host if request.client else None
+    return CaseService.remove_log(db, case_id=case_id, log_id=log_id, user=current_user, ip_address=client_ip)

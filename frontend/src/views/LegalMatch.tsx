@@ -118,7 +118,7 @@ export const LegalMatch: React.FC<LegalMatchProps> = ({ preselectedCaseId = null
                   </div>
  
                   <div className="flex justify-between items-center border-t border-[#E2E8F0] pt-3 w-full text-[10px]">
-                    <span className="text-slate-500 font-bold font-mono">
+                    <span className="text-slate-700 font-bold font-mono">
                       Thiệt hại: {c.damage_value ? `${c.damage_value.toLocaleString('vi-VN')} VNĐ` : '0 VNĐ'}
                     </span>
                     <span className="text-[#126DA6] font-bold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">

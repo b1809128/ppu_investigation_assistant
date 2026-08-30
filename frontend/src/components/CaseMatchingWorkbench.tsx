@@ -92,10 +92,10 @@ export const CaseMatchingWorkbench: React.FC<CaseMatchingWorkbenchProps> = ({
   if (error) {
     return (
       <div className="flex-1 p-6 flex items-center justify-center">
-        <div className="max-w-md p-6 bg-red-950/40 border border-red-900/60 rounded-lg text-center space-y-4">
+        <div className="max-w-md p-6 bg-red-950/40 border border-red-900/60 rounded-lg text-center space-y-4 shadow-lg">
           <AlertCircle className="mx-auto text-red-500" size={32} />
-          <h3 className="text-sm font-bold text-slate-200 uppercase">Lỗi chạy đối chiếu định tội</h3>
-          <p className="text-xs text-slate-400 leading-relaxed">{error}</p>
+          <h3 className="text-sm font-bold text-white uppercase tracking-wider">Lỗi chạy đối chiếu định tội</h3>
+          <p className="text-xs text-red-100/90 leading-relaxed">{error}</p>
           {onBack && (
             <button
               type="button"

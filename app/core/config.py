@@ -38,6 +38,11 @@ class Settings(BaseSettings):
         "data", 
         "bo_luat_hinh_su_2015.json"
     )
+    LEGAL_PROCEDURE_DB_PATH: str = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 
+        "data", 
+        "bo_luat_to_tung_hinh_su_2015.json"
+    )
 
     class Config:
         case_sensitive = True

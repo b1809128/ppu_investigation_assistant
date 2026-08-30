@@ -8,6 +8,9 @@ class LegalArticle(BaseModel):
     ten_dieu: str
     noi_dung: str
     keywords: List[str]
+    chu_the_thuc_hien: Optional[List[str]] = None
+    hoat_dong_nghiep_vu: Optional[List[str]] = None
+    bieu_mau_van_ban: Optional[List[str]] = None
 
 class LegalMatchRequest(BaseModel):
     behavior_description: str

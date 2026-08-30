@@ -17,11 +17,12 @@ def search_laws_v1(
     behavior_keyword: Optional[str] = Query(None, description="Từ khóa hành vi để tra cứu"),
     article_id: Optional[int] = Query(None, description="Mã số điều luật cần tìm (dieu)"),
     chapter_id: Optional[str] = Query(None, description="Mã chương/mục cần tìm (chuong)"),
+    law_type: str = Query("penal", description="Loại luật (penal: Hình sự, procedure: Tố tụng)"),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     """
-    Tìm kiếm điều luật từ Bộ luật Hình sự 2015 sử dụng chỉ mục RAM O(1).
+    Tìm kiếm điều luật từ Bộ luật Hình sự hoặc Bộ luật Tố tụng Hình sự sử dụng chỉ mục RAM O(1).
     Yêu cầu quyền truy cập (JWT token).
     Mọi hoạt động truy vấn đều được tự động ghi nhận vào Nhật ký kiểm toán (Audit Log).
     """
@@ -31,7 +32,8 @@ def search_laws_v1(
     results = LegalDataService.search(
         behavior_keyword=behavior_keyword,
         article_id=article_id,
-        chapter_id=chapter_id
+        chapter_id=chapter_id,
+        law_type=law_type
     )
     
     # Audit log entry for tracking
@@ -45,6 +47,7 @@ def search_laws_v1(
             "behavior_keyword": behavior_keyword,
             "article_id": article_id,
             "chapter_id": chapter_id,
+            "law_type": law_type,
             "results_count": len(results)
         },
         ip_address=client_ip

@@ -307,7 +307,43 @@ class MatchingEngine:
                 "article_suggestions": article_suggestions
             })
 
-        # 3. Compile report
+        # 3. Rule Engine: Procedural checklist and warnings
+        warnings = []
+        checklist = {
+            "Quyết định khởi tố vụ án hình sự": False,
+            "Quyết định khởi tố bị can": False,
+            "Biên bản khám nghiệm hiện trường": False,
+            "Biên bản hỏi cung bị can": False
+        }
+        
+        for doc in case.documents:
+            doc_type = doc.document_type
+            if doc_type in checklist:
+                checklist[doc_type] = True
+                
+        if suspects and not checklist["Quyết định khởi tố vụ án hình sự"]:
+            warnings.append({
+                "severity": "CRITICAL",
+                "message": "Cảnh báo nghiêm trọng: Hồ sơ vụ việc đã ghi nhận đối tượng bị can thụ lý nhưng chưa bổ sung Quyết định khởi tố vụ án hình sự."
+            })
+            
+        interrogations_present = any(doc.document_type == "Biên bản hỏi cung bị can" for doc in case.documents)
+        if interrogations_present and not checklist["Quyết định khởi tố bị can"]:
+            warnings.append({
+                "severity": "WARNING",
+                "message": "Cảnh báo nghiệp vụ: Đã lập Biên bản hỏi cung bị can nhưng hồ sơ chưa có Quyết định khởi tố bị can."
+            })
+
+        custody_doc = next((doc for doc in case.documents if doc.document_type == "Quyết định tạm giữ"), None)
+        if custody_doc:
+            days_in_custody = (datetime.now() - case.created_at).days
+            if days_in_custody >= 3 and not checklist["Quyết định khởi tố bị can"]:
+                warnings.append({
+                    "severity": "CRITICAL",
+                    "message": f"Cảnh báo khẩn cấp: Đã áp dụng biện pháp Tạm giữ (quá thời hạn 3 ngày quy định tại Điều 110 BLTTHS) nhưng chưa có Quyết định khởi tố bị can."
+                })
+
+        # Compile report
         return {
             "id": case.id,
             "case_id": case.id,
@@ -320,5 +356,7 @@ class MatchingEngine:
             "matched_articles_count": len(matched_articles),
             "matched_articles": matched_articles,
             "suspects_count": len(suspects),
-            "evaluations": suspect_evaluations
+            "evaluations": suspect_evaluations,
+            "procedural_checklist": checklist,
+            "procedural_warnings": warnings
         }

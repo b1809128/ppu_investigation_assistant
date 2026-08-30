@@ -18,6 +18,7 @@ class CaseFile(Base):
     summary_acts = Column(Text, nullable=True)
     damage_value = Column(Double, nullable=True)
     status = Column(String(20), default="INVESTIGATING", nullable=False)  # INVESTIGATING, SUSPENDED, CLOSED
+    investigation_stage = Column(String(50), default="XAC_MINH", nullable=False)  # TIN_BAO, XAC_MINH, KHOI_TO_VU_AN, KHOI_TO_BI_CAN, KET_LUAN
     lead_investigator_id = Column(Integer, ForeignKey("investigators.id"), nullable=False)
     created_at = Column(DateTime, server_default=func.now(), nullable=False)
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now(), nullable=False)
@@ -32,3 +33,39 @@ class CaseFile(Base):
     lead_investigator = relationship("User", foreign_keys=[lead_investigator_id])
     created_by = relationship("User", foreign_keys=[lead_investigator_id], overlaps="lead_investigator")
     suspects = relationship("Suspect", back_populates="case_file", cascade="all, delete-orphan")
+    documents = relationship("CaseDocument", back_populates="case_file", cascade="all, delete-orphan")
+    investigation_logs = relationship("InvestigationLog", back_populates="case_file", cascade="all, delete-orphan")
+
+class CaseDocument(Base):
+    """
+    Model representing procedural investigation documents added to a case file.
+    Mapped to 'case_documents' table.
+    """
+    __tablename__ = "case_documents"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    case_id = Column(Integer, ForeignKey("case_files.id", ondelete="CASCADE"), nullable=False)
+    name = Column(String(255), nullable=False)
+    document_type = Column(String(100), nullable=False) # e.g. "Quyết định khởi tố vụ án hình sự"
+    file_path = Column(String(505), nullable=True)
+    created_at = Column(DateTime, server_default=func.now(), nullable=False)
+
+    case_file = relationship("CaseFile", back_populates="documents")
+
+class InvestigationLog(Base):
+    """
+    Model representing logs of the investigation process (timeline events).
+    Mapped to 'investigation_logs' table.
+    """
+    __tablename__ = "investigation_logs"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    case_id = Column(Integer, ForeignKey("case_files.id", ondelete="CASCADE"), nullable=False)
+    log_date = Column(DateTime, server_default=func.now(), nullable=False)
+    title = Column(String(255), nullable=False)  # e.g., "Lấy lời khai bị can Nguyễn Văn A", "Khám nghiệm hiện trường"
+    details = Column(Text, nullable=True)        # Chi tiết sự kiện xảy ra
+    investigator_id = Column(Integer, ForeignKey("investigators.id"), nullable=False)
+    created_at = Column(DateTime, server_default=func.now(), nullable=False)
+
+    case_file = relationship("CaseFile", back_populates="investigation_logs")
+    investigator = relationship("User", foreign_keys=[investigator_id])

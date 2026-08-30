@@ -12,8 +12,12 @@ import {
   Edit3, 
   Trash2, 
   X, 
-  AlertCircle
+  AlertCircle,
+  FileText,
+  CheckCircle2,
+  Plus
 } from 'lucide-react';
+import api from '../services/api';
 import { showToast } from '../services/api';
 
 interface CaseFileDetailViewProps {
@@ -44,6 +48,12 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
   const [isEditingCase, setIsEditingCase] = useState(false);
   const [showSuspectModal, setShowSuspectModal] = useState(false);
   const [editingSuspect, setEditingSuspect] = useState<Suspect | null>(null);
+  const [activeTab, setActiveTab] = useState<'info' | 'documents' | 'timeline'>('info');
+  const [investigationStage, setInvestigationStage] = useState('XAC_MINH');
+  const [investigationLogs, setInvestigationLogs] = useState<any[]>([]);
+  const [showLogModal, setShowLogModal] = useState(false);
+  const [logTitle, setLogTitle] = useState('');
+  const [logDetails, setLogDetails] = useState('');
 
   // Form states - Case Edit
   const [caseName, setCaseName] = useState('');
@@ -64,6 +74,15 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
   // Specific role involvement for suspect (Chủ mưu, Thực hành, Giúp sức, Xúi giục)
   const [suspectInvolvement, setSuspectInvolvement] = useState('Thực hành');
 
+  // Documents state
+  const [documents, setDocuments] = useState<any[]>([]);
+  const [evaluation, setEvaluation] = useState<any | null>(null);
+  const [showDocModal, setShowDocModal] = useState(false);
+  const [docName, setDocName] = useState('');
+  const [docType, setDocType] = useState('Quyết định khởi tố vụ án hình sự');
+  const [docFile, setDocFile] = useState<File | null>(null);
+  const [previewDoc, setPreviewDoc] = useState<any | null>(null);
+
   // Load case details on mount
   useEffect(() => {
     loadCaseData();
@@ -73,6 +92,9 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
     try {
       const c = await fetchCaseById(caseId);
       await fetchSuspects(caseId);
+      await loadDocuments();
+      await loadEvaluation();
+      await loadInvestigationLogs();
       
       // Populate case form states
       setCaseName(c.case_name);
@@ -83,8 +105,116 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
       setDamageValueRaw(dmg);
       setDamageValueFormatted(formatCurrency(dmg));
       setCaseStatus(c.status);
+      setInvestigationStage(c.investigation_stage || 'XAC_MINH');
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const loadInvestigationLogs = async () => {
+    try {
+      const res = await api.get(`/api/cases/${caseId}/logs`);
+      setInvestigationLogs(res.data);
+    } catch (err) {
+      console.error('Lỗi tải timeline logs:', err);
+    }
+  };
+
+  const handleAddLogSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!logTitle.trim()) return;
+
+    try {
+      await api.post(`/api/cases/${caseId}/logs`, {
+        title: logTitle,
+        details: logDetails || null
+      });
+      setLogTitle('');
+      setLogDetails('');
+      setShowLogModal(false);
+      showToast('Đã thêm sự kiện vào tiến trình điều tra.', 'success');
+      loadInvestigationLogs();
+    } catch (err) {
+      console.error(err);
+      showToast('Không thể thêm sự kiện tiến trình.', 'error');
+    }
+  };
+
+  const handleRemoveLogClick = async (logId: number) => {
+    if (window.confirm('Bạn có chắc chắn muốn xóa sự kiện này khỏi tiến trình điều tra?')) {
+      try {
+        await api.delete(`/api/cases/${caseId}/logs/${logId}`);
+        showToast('Đã xóa sự kiện khỏi tiến trình.', 'success');
+        loadInvestigationLogs();
+      } catch (err) {
+        console.error(err);
+        showToast('Không thể xóa sự kiện.', 'error');
+      }
+    }
+  };
+
+  const loadDocuments = async () => {
+    try {
+      const res = await api.get(`/api/cases/${caseId}/documents`);
+      setDocuments(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const loadEvaluation = async () => {
+    try {
+      const res = await api.get(`/api/v1/cases/${caseId}/evaluate`);
+      setEvaluation(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleAddDocSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!docName.trim()) return;
+
+    try {
+      if (docFile) {
+        const formData = new FormData();
+        formData.append('name', docName);
+        formData.append('document_type', docType);
+        formData.append('file', docFile);
+        
+        await api.post(`/api/cases/${caseId}/documents/upload`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+      } else {
+        await api.post(`/api/cases/${caseId}/documents`, {
+          name: docName,
+          document_type: docType
+        });
+      }
+      setDocName('');
+      setDocFile(null);
+      setShowDocModal(false);
+      showToast('Đã thêm tài liệu tố tụng vào hồ sơ.', 'success');
+      loadDocuments();
+      loadEvaluation();
+    } catch (err) {
+      console.error(err);
+      showToast('Không thể thêm tài liệu tố tụng.', 'error');
+    }
+  };
+
+  const handleRemoveDocClick = async (docId: number) => {
+    if (window.confirm('Bạn có chắc chắn muốn xóa tài liệu này khỏi hồ sơ vụ án?')) {
+      try {
+        await api.delete(`/api/cases/${caseId}/documents/${docId}`);
+        showToast('Đã xóa tài liệu khỏi hồ sơ.', 'success');
+        loadDocuments();
+        loadEvaluation();
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
@@ -136,6 +266,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
       summary_acts: summaryActs || null,
       damage_value: damageValueRaw ? parseFloat(damageValueRaw) : 0,
       status: caseStatus,
+      investigation_stage: investigationStage,
     };
 
     try {
@@ -389,6 +520,24 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
             </div>
 
             <div>
+              <label htmlFor="edit_investigation_stage" className="block text-[10px] font-bold text-slate-600 uppercase mb-1.5">
+                Giai đoạn điều tra thực tế
+              </label>
+              <select
+                id="edit_investigation_stage"
+                value={investigationStage}
+                onChange={(e) => setInvestigationStage(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-250 focus:border-[#A82424] focus:ring-1 focus:ring-[#A82424] focus:outline-none rounded-lg p-2.5 text-slate-800"
+              >
+                <option value="TIN_BAO">Tiếp nhận & giải quyết tin báo, tố giác tội phạm</option>
+                <option value="XAC_MINH">Xác minh điều kiện khởi tố vụ án</option>
+                <option value="KHOI_TO_VU_AN">Đã ra quyết định khởi tố vụ án hình sự</option>
+                <option value="KHOI_TO_BI_CAN">Đã khởi tố bị can & Tiến hành điều tra</option>
+                <option value="KET_LUAN">Đã ban hành bản Kết luận điều tra</option>
+              </select>
+            </div>
+
+            <div>
               <label htmlFor="edit_summary_acts" className="block text-[10px] font-bold text-slate-600 uppercase mb-1.5">
                 Tóm tắt diễn biến hành vi vi phạm *
               </label>
@@ -431,15 +580,27 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
               </h3>
             </div>
             
-            <span className={`text-[10px] font-bold px-2 py-0.5 rounded border uppercase tracking-wider ${
-              currentCase.status === 'CLOSED' 
-                ? 'bg-green-50 border-green-200 text-[#196F3D]' 
-                : currentCase.status === 'SUSPENDED'
-                ? 'bg-orange-50 border-orange-200 text-[#D35400]'
-                : 'bg-blue-50 border-blue-200 text-[#1E3E62]'
-            }`}>
-              {currentCase.status === 'CLOSED' ? 'Đã đóng' : currentCase.status === 'SUSPENDED' ? 'Tạm đình chỉ' : 'Đang điều tra'}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className={`text-[10px] font-bold px-2 py-0.5 rounded border uppercase tracking-wider ${
+                currentCase.status === 'CLOSED' 
+                  ? 'bg-green-50 border-green-200 text-[#196F3D]' 
+                  : currentCase.status === 'SUSPENDED'
+                  ? 'bg-orange-50 border-orange-200 text-[#D35400]'
+                  : 'bg-blue-50 border-blue-200 text-[#1E3E62]'
+              }`}>
+                {currentCase.status === 'CLOSED' ? 'Đã đóng' : currentCase.status === 'SUSPENDED' ? 'Tạm đình chỉ' : 'Đang điều tra'}
+              </span>
+
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded border bg-purple-50 border-purple-200 text-purple-700 uppercase tracking-wider">
+                Giai đoạn: {
+                  currentCase.investigation_stage === 'TIN_BAO' ? 'Tin báo tố giác' :
+                  currentCase.investigation_stage === 'XAC_MINH' ? 'Xác minh khởi tố' :
+                  currentCase.investigation_stage === 'KHOI_TO_VU_AN' ? 'Khởi tố vụ án' :
+                  currentCase.investigation_stage === 'KHOI_TO_BI_CAN' ? 'Khởi tố bị can' :
+                  currentCase.investigation_stage === 'KET_LUAN' ? 'Kết luận điều tra' : 'Không rõ'
+                }
+              </span>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-b border-slate-200 py-4 text-xs text-slate-700 bg-slate-50/50 px-4 rounded-lg">
@@ -483,150 +644,430 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
         </div>
       )}
 
-      {/* Suspects list section */}
-      <div className="space-y-4">
-        <div className="flex justify-between items-center no-print">
-          <div>
-            <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
-              DANH SÁCH BỊ CAN / ĐỐI TƯỢNG LIÊN QUAN ({currentSuspects.length})
-            </h3>
-            <p className="text-[10px] text-slate-450">
-              Nhân thân đối tượng thụ lý; tự động tính toán tuổi để đánh giá năng lực chịu TNHS tại thời điểm xảy ra vụ việc
-            </p>
+      {/* Navigation tabs */}
+      <div className="flex border-b border-slate-200 gap-6 no-print">
+        <button
+          type="button"
+          onClick={() => setActiveTab('info')}
+          className={`pb-3 text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer border-b-2 ${
+            activeTab === 'info'
+              ? 'border-[#126DA6] text-[#126DA6]'
+              : 'border-transparent text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          Thông tin chung & Đối tượng ({currentSuspects.length})
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('documents')}
+          className={`pb-3 text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer border-b-2 flex items-center gap-2 ${
+            activeTab === 'documents'
+              ? 'border-[#126DA6] text-[#126DA6]'
+              : 'border-transparent text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <span>Tài liệu & Giám sát Tố tụng ({documents.length})</span>
+          {evaluation?.procedural_warnings?.length > 0 && (
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+          )}
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('timeline')}
+          className={`pb-3 text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer border-b-2 ${
+            activeTab === 'timeline'
+              ? 'border-[#126DA6] text-[#126DA6]'
+              : 'border-transparent text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          Tiến trình điều tra ({investigationLogs.length})
+        </button>
+      </div>
+
+      {activeTab === 'info' ? (
+        /* Suspects list section */
+        <div className="space-y-4">
+          <div className="flex justify-between items-center no-print">
+            <div>
+              <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+                DANH SÁCH BỊ CAN / ĐỐI TƯỢNG LIÊN QUAN ({currentSuspects.length})
+              </h3>
+              <p className="text-[10px] text-slate-450">
+                Nhân thân đối tượng thụ lý; tự động tính toán tuổi để đánh giá năng lực chịu TNHS tại thời điểm xảy ra vụ việc
+              </p>
+            </div>
+
+            {!isLeadershipOrAdmin && (
+              <button
+                type="button"
+                onClick={() => handleOpenSuspectModal()}
+                className="flex items-center gap-1.5 bg-white border border-slate-250 text-slate-750 text-xs font-bold px-3 py-2 rounded-lg cursor-pointer shadow-sm hover:bg-slate-50"
+              >
+                <UserPlus size={14} className="text-[#126DA6]" />
+                <span>Thêm đối tượng</span>
+              </button>
+            )}
           </div>
 
-          {!isLeadershipOrAdmin && (
-            <button
-              type="button"
-              onClick={() => handleOpenSuspectModal()}
-              className="flex items-center gap-1.5 bg-white border border-slate-250 text-slate-750 text-xs font-bold px-3 py-2 rounded-lg cursor-pointer shadow-sm hover:bg-slate-50"
-            >
-              <UserPlus size={14} className="text-[#A82424]" />
-              <span>Thêm đối tượng</span>
-            </button>
+          {currentSuspects.length === 0 ? (
+            <div className="bg-white border border-slate-200 rounded-lg p-8 text-center text-slate-450 shadow-sm font-semibold">
+              <p className="text-xs">Chưa có đối tượng liên quan nào được lưu trong hồ sơ vụ việc</p>
+            </div>
+          ) : (
+            <div className="bg-white border border-slate-200 rounded-lg overflow-hidden shadow-md">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr className="bg-slate-50 border-b border-slate-200 text-slate-700 uppercase tracking-wider font-bold">
+                      <th className="p-4">Họ và tên</th>
+                      <th className="p-4">Ngày sinh</th>
+                      <th className="p-4">Tuổi khi xảy ra án</th>
+                      <th className="p-4">Số CCCD / CMND</th>
+                      <th className="p-4">Vai trò tham gia</th>
+                      <th className="p-4">Tiền án tiền sự / Nơi cư trú</th>
+                      {!isLeadershipOrAdmin && <th className="p-4 text-right no-print">Thao tác</th>}
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-200 text-slate-700">
+                    {currentSuspects.map((s) => {
+                      const ageAtIncident = calculateAgeAtIncident(s.dob, currentCase.incident_date);
+                      
+                      let roleDisplay: string = s.role_in_case;
+                      let involvementDisplay = '';
+                      let cleanConvictions = s.prior_convictions || s.address || '';
+                      
+                      if (s.role_in_case === 'SUSPECT') {
+                        roleDisplay = 'Bị can';
+                        const match = cleanConvictions.match(/^\[(Chủ mưu|Thực hành|Giúp sức|Xúi giục)\]\s*(.*)/);
+                        if (match) {
+                          involvementDisplay = match[1];
+                          cleanConvictions = match[2] || 'Không ghi nhận';
+                        } else {
+                          involvementDisplay = 'Thực hành';
+                        }
+                      } else if (s.role_in_case === 'VICTIM') {
+                        roleDisplay = 'Bị hại';
+                      } else if (s.role_in_case === 'WITNESS') {
+                        roleDisplay = 'Nhân chứng';
+                      } else {
+                        roleDisplay = 'Khác';
+                      }
+
+                      return (
+                        <tr key={s.id} className="hover:bg-slate-50 transition-colors duration-100">
+                          <td className="p-4 font-bold text-slate-900">
+                            <MaskedText text={s.full_name} type="name" />
+                          </td>
+                          <td className="p-4 font-mono text-slate-500 font-semibold">{s.dob || 'Chưa rõ'}</td>
+                          <td className="p-4">
+                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
+                              ageAtIncident.includes('14') || ageAtIncident.includes('15')
+                                ? 'bg-amber-50 border-amber-200 text-[#D35400]'
+                                : ageAtIncident.includes('Chưa sinh') || ageAtIncident.includes('tuổi') && parseInt(ageAtIncident) < 14
+                                ? 'bg-red-50 border-red-200 text-red-650'
+                                : 'bg-slate-50 border-slate-200 text-slate-700'
+                            }`}>
+                              {ageAtIncident}
+                            </span>
+                          </td>
+                          <td className="p-4">
+                            <MaskedText text={s.identity_card || ''} type="cccd" />
+                          </td>
+                          <td className="p-4">
+                            <div className="flex flex-col gap-1">
+                              <span className={`w-max text-[9px] font-bold px-1.5 py-0.2 rounded border uppercase tracking-wider ${
+                                s.role_in_case === 'SUSPECT' 
+                                  ? 'bg-red-50 border-red-200 text-red-650' 
+                                  : s.role_in_case === 'VICTIM'
+                                  ? 'bg-green-50 border-green-200 text-[#196F3D]'
+                                  : 'bg-slate-50 border-slate-250 text-slate-600'
+                              }`}>
+                                {roleDisplay}
+                              </span>
+                              {involvementDisplay && (
+                                <span className="text-[10px] text-slate-655 font-bold flex items-center gap-1">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-[#C09A36] animate-pulse"></span>
+                                  {involvementDisplay}
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                          <td className="p-4 max-w-xs truncate text-slate-550 font-semibold" title={cleanConvictions}>
+                            {cleanConvictions || 'Không ghi nhận'}
+                          </td>
+                          
+                          {!isLeadershipOrAdmin && (
+                            <td className="p-4 text-right no-print">
+                              <div className="flex gap-2 justify-end">
+                                <button
+                                  type="button"
+                                  onClick={() => handleOpenSuspectModal(s)}
+                                  className="p-1 rounded hover:bg-slate-100 hover:text-[#126DA6] text-slate-450 transition-colors duration-100 cursor-pointer border border-transparent hover:border-slate-200"
+                                  title="Sửa đối tượng"
+                                >
+                                  <Edit3 size={12} />
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleRemoveSuspectClick(s.id)}
+                                  className="p-1 rounded hover:bg-red-50 hover:text-red-600 text-slate-450 transition-colors duration-100 cursor-pointer border border-transparent hover:border-red-200"
+                                  title="Xóa đối tượng"
+                                >
+                                  <Trash2 size={12} />
+                                </button>
+                              </div>
+                            </td>
+                          )}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           )}
         </div>
+      ) : activeTab === 'documents' ? (
+        /* Documents and evaluation timeline tab */
+        <div className="space-y-6">
+          
+          {/* Rule Engine Warnings */}
+          {evaluation?.procedural_warnings?.length > 0 && (
+            <div className="space-y-3">
+              <span className="text-[10px] text-red-600 font-bold uppercase tracking-wider block">
+                Cảnh báo giám sát tố tụng khẩn cấp (Rule Engine)
+              </span>
+              <div className="space-y-2">
+                {evaluation.procedural_warnings.map((warn: any, i: number) => (
+                  <div 
+                    key={i} 
+                    className={`p-4 rounded-lg border text-xs leading-relaxed flex items-start gap-3 font-semibold shadow-sm ${
+                      warn.severity === 'CRITICAL'
+                        ? 'bg-red-50 border-red-200 text-red-700'
+                        : 'bg-amber-50 border-amber-250 text-amber-800'
+                    }`}
+                  >
+                    <AlertCircle size={16} className="shrink-0 mt-0.5" />
+                    <span>{warn.message}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
-        {currentSuspects.length === 0 ? (
-          <div className="bg-white border border-slate-200 rounded-lg p-8 text-center text-slate-450 shadow-sm font-semibold">
-            <p className="text-xs">Chưa có đối tượng liên quan nào được lưu trong hồ sơ vụ việc</p>
+          {/* Checklist Grid */}
+          <div className="bg-white border border-slate-200 rounded-lg p-5 shadow-sm space-y-4">
+            <div>
+              <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+                CHECKLIST HỒ SƠ TỐ TỤNG HÌNH SỰ BẮT BUỘC
+              </h3>
+              <p className="text-[10px] text-slate-450">
+                Tự động rà soát sự hiện diện của các văn bản tố tụng theo luật định để đảm bảo tính hợp pháp của hồ sơ đề nghị truy tố
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+              {evaluation?.procedural_checklist && Object.entries(evaluation.procedural_checklist).map(([name, isPresent]: any) => (
+                <div 
+                  key={name} 
+                  className={`p-3 rounded-lg border flex items-center gap-2.5 shadow-inner ${
+                    isPresent 
+                      ? 'bg-emerald-50 border-emerald-200 text-emerald-800' 
+                      : 'bg-red-50 border-red-150 text-red-700'
+                  }`}
+                >
+                  {isPresent ? (
+                    <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                  ) : (
+                    <AlertCircle size={16} className="text-red-500 shrink-0" />
+                  )}
+                  <div className="min-w-0">
+                    <span className="text-[10px] font-bold block truncate" title={name}>{name}</span>
+                    <span className="text-[9px] font-medium opacity-80">
+                      {isPresent ? 'Đã bổ sung' : 'Còn thiếu'}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        ) : (
-          <div className="bg-white border border-slate-200 rounded-lg overflow-hidden shadow-md">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs border-collapse">
-                <thead>
-                  <tr className="bg-slate-50 border-b border-slate-200 text-slate-700 uppercase tracking-wider font-bold">
-                    <th className="p-4">Họ và tên</th>
-                    <th className="p-4">Ngày sinh</th>
-                    <th className="p-4">Tuổi khi xảy ra án</th>
-                    <th className="p-4">Số CCCD / CMND</th>
-                    <th className="p-4">Vai trò tham gia</th>
-                    <th className="p-4">Tiền án tiền sự / Nơi cư trú</th>
-                    {!isLeadershipOrAdmin && <th className="p-4 text-right no-print">Thao tác</th>}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-200 text-slate-700">
-                  {currentSuspects.map((s) => {
-                    // Calculate age using JS function
-                    const ageAtIncident = calculateAgeAtIncident(s.dob, currentCase.incident_date);
-                    
-                    // Parse visual representation of involvement and details
-                    let roleDisplay: string = s.role_in_case;
-                    let involvementDisplay = '';
-                    let cleanConvictions = s.prior_convictions || s.address || '';
-                    
-                    if (s.role_in_case === 'SUSPECT') {
-                      roleDisplay = 'Bị can';
-                      const match = cleanConvictions.match(/^\[(Chủ mưu|Thực hành|Giúp sức|Xúi giục)\]\s*(.*)/);
-                      if (match) {
-                        involvementDisplay = match[1];
-                        cleanConvictions = match[2] || 'Không ghi nhận';
-                      } else {
-                        involvementDisplay = 'Thực hành';
-                      }
-                    } else if (s.role_in_case === 'VICTIM') {
-                      roleDisplay = 'Bị hại';
-                    } else if (s.role_in_case === 'WITNESS') {
-                      roleDisplay = 'Nhân chứng';
-                    } else {
-                      roleDisplay = 'Khác';
-                    }
 
-                    return (
-                      <tr key={s.id} className="hover:bg-slate-50 transition-colors duration-100">
-                        <td className="p-4 font-bold text-slate-900">
-                          <MaskedText text={s.full_name} type="name" />
-                        </td>
-                        <td className="p-4 font-mono text-slate-500 font-semibold">{s.dob || 'Chưa rõ'}</td>
-                        <td className="p-4">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
-                            ageAtIncident.includes('14') || ageAtIncident.includes('15')
-                              ? 'bg-amber-50 border-amber-200 text-[#D35400]'
-                              : ageAtIncident.includes('Chưa sinh') || ageAtIncident.includes('tuổi') && parseInt(ageAtIncident) < 14
-                              ? 'bg-red-50 border-red-200 text-red-650'
-                              : 'bg-slate-50 border-slate-200 text-slate-700'
-                          }`}>
-                            {ageAtIncident}
-                          </span>
-                        </td>
-                        <td className="p-4">
-                          <MaskedText text={s.identity_card || ''} type="cccd" />
-                        </td>
-                        <td className="p-4">
-                          <div className="flex flex-col gap-1">
-                            <span className={`w-max text-[9px] font-bold px-1.5 py-0.2 rounded border uppercase tracking-wider ${
-                              s.role_in_case === 'SUSPECT' 
-                                ? 'bg-red-50 border-red-200 text-red-650' 
-                                : s.role_in_case === 'VICTIM'
-                                ? 'bg-green-50 border-green-200 text-[#196F3D]'
-                                : 'bg-slate-50 border-slate-250 text-slate-600'
-                            }`}>
-                              {roleDisplay}
-                            </span>
-                            {involvementDisplay && (
-                              <span className="text-[10px] text-slate-650 font-bold flex items-center gap-1">
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#C09A36] animate-pulse"></span>
-                                {involvementDisplay}
-                              </span>
-                            )}
-                          </div>
-                        </td>
-                        <td className="p-4 max-w-xs truncate text-slate-550 font-semibold" title={cleanConvictions}>
-                          {cleanConvictions || 'Không ghi nhận'}
-                        </td>
-                        
-                        {!isLeadershipOrAdmin && (
-                          <td className="p-4 text-right no-print">
-                            <div className="flex gap-2 justify-end">
+          {/* Documents Table */}
+          <div className="space-y-4">
+            <div className="flex justify-between items-center no-print">
+              <div>
+                <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+                  DANH MỤC VĂN BẢN TỐ TỤNG ĐÃ BAN HÀNH ({documents.length})
+                </h3>
+                <p className="text-[10px] text-slate-450">
+                  Các quyết định, biên bản điều tra đã ban hành và lưu trữ trong hồ sơ vụ án
+                </p>
+              </div>
+
+              {!isLeadershipOrAdmin && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setDocName('');
+                    setDocType('Quyết định khởi tố vụ án hình sự');
+                    setShowDocModal(true);
+                  }}
+                  className="flex items-center gap-1.5 bg-[#126DA6] hover:bg-[#1D4ED8] text-white text-xs font-bold px-3 py-2 rounded-lg cursor-pointer shadow-sm transition-colors"
+                >
+                  <Plus size={14} />
+                  <span>Ban hành văn bản</span>
+                </button>
+              )}
+            </div>
+
+            {documents.length === 0 ? (
+              <div className="bg-white border border-slate-200 rounded-lg p-8 text-center text-slate-450 shadow-sm font-semibold">
+                <p className="text-xs">Chưa ghi nhận văn bản, quyết định tố tụng nào trong vụ án</p>
+              </div>
+            ) : (
+              <div className="bg-white border border-slate-200 rounded-lg overflow-hidden shadow-md animate-in fade-in duration-200">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs border-collapse">
+                    <thead>
+                      <tr className="bg-slate-50 border-b border-slate-200 text-slate-700 uppercase tracking-wider font-bold">
+                        <th className="p-4">Ký hiệu / Số hiệu văn bản</th>
+                        <th className="p-4">Loại văn bản tố tụng</th>
+                        <th className="p-4">Ngày ban hành</th>
+                        {!isLeadershipOrAdmin && <th className="p-4 text-right no-print">Thao tác</th>}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-200 text-slate-700">
+                      {documents.map((doc) => (
+                        <tr key={doc.id} className="hover:bg-slate-50 transition-colors duration-100">
+                          <td className="p-4 font-bold text-slate-900">
+                            {doc.file_path ? (
                               <button
                                 type="button"
-                                onClick={() => handleOpenSuspectModal(s)}
-                                className="p-1 rounded hover:bg-slate-100 hover:text-[#A82424] text-slate-450 transition-colors duration-100 cursor-pointer border border-transparent hover:border-slate-200"
-                                title="Sửa đối tượng"
+                                onClick={() => setPreviewDoc(doc)}
+                                className="font-bold text-[#2563EB] hover:text-[#1D4ED8] hover:underline flex items-center gap-2 cursor-pointer bg-transparent border-none p-0 text-left"
+                                title="Xem trước bản scan / PDF"
                               >
-                                <Edit3 size={12} />
+                                <FileText size={14} className="text-[#2563EB]" />
+                                <span>{doc.name}</span>
                               </button>
+                            ) : (
+                              <div className="font-bold text-slate-700 flex items-center gap-2">
+                                <FileText size={14} className="text-slate-400" />
+                                <span>{doc.name}</span>
+                              </div>
+                            )}
+                          </td>
+                          <td className="p-4">
+                            <span className="px-2 py-0.5 bg-[#EFF6FF] border border-[#BFDBFE] text-[#1D4ED8] rounded-md font-semibold text-[10px]">
+                              {doc.document_type}
+                            </span>
+                          </td>
+                          <td className="p-4 font-mono text-slate-500 font-semibold">
+                            {new Date(doc.created_at).toLocaleString('vi-VN')}
+                          </td>
+                          {!isLeadershipOrAdmin && (
+                            <td className="p-4 text-right no-print">
                               <button
                                 type="button"
-                                onClick={() => handleRemoveSuspectClick(s.id)}
+                                onClick={() => handleRemoveDocClick(doc.id)}
                                 className="p-1 rounded hover:bg-red-50 hover:text-red-600 text-slate-450 transition-colors duration-100 cursor-pointer border border-transparent hover:border-red-200"
-                                title="Xóa đối tượng"
+                                title="Thu hồi / Xóa văn bản"
                               >
                                 <Trash2 size={12} />
                               </button>
-                            </div>
-                          </td>
-                        )}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+                            </td>
+                          )}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        /* Investigation logs timeline section */
+        <div className="space-y-6">
+          <div className="flex justify-between items-center no-print">
+            <div>
+              <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+                NHẬT KÝ TIẾN TRÌNH ĐIỀU TRA ({investigationLogs.length})
+              </h3>
+              <p className="text-[10px] text-slate-450 mt-1">
+                Ghi nhận các mốc sự kiện quan trọng trong quá trình tố tụng và điều tra hiện trường, hỏi cung
+              </p>
+            </div>
+
+            {!isLeadershipOrAdmin && (
+              <button
+                type="button"
+                onClick={() => {
+                  setLogTitle('');
+                  setLogDetails('');
+                  setShowLogModal(true);
+                }}
+                className="flex items-center gap-1.5 bg-[#126DA6] hover:bg-[#1D4ED8] text-white text-xs font-bold px-3 py-2 rounded-lg cursor-pointer shadow-sm transition-colors"
+              >
+                <Plus size={14} />
+                <span>Ghi nhận tiến trình</span>
+              </button>
+            )}
+          </div>
+
+          {investigationLogs.length === 0 ? (
+            <div className="bg-white border border-slate-200 rounded-lg p-12 text-center text-slate-450 shadow-sm font-semibold font-sans">
+              <p className="text-xs">Chưa ghi nhận hoạt động điều tra nào cho vụ việc này.</p>
+              {!isLeadershipOrAdmin && (
+                <button
+                  type="button"
+                  onClick={() => setShowLogModal(true)}
+                  className="mt-3 text-xs text-[#126DA6] hover:underline cursor-pointer font-bold"
+                >
+                  Bắt đầu ghi nhận tiến trình ngay
+                </button>
+              )}
+            </div>
+          ) : (
+            <div className="relative border-l-2 border-[#126DA6]/35 ml-4 pl-6 space-y-6 font-sans">
+              {investigationLogs.map((log) => (
+                <div key={log.id} className="relative">
+                  {/* Timeline point */}
+                  <span className="absolute -left-[31px] top-1 flex items-center justify-center w-4 h-4 rounded-full bg-white border-2 border-[#126DA6] shadow-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#126DA6]"></span>
+                  </span>
+                  
+                  <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm space-y-2 hover:shadow-md transition-shadow duration-150 relative group">
+                    <div className="flex justify-between items-start">
+                      <h4 className="text-xs font-bold text-slate-800">{log.title}</h4>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[9px] font-mono text-slate-500 font-bold">
+                          {new Date(log.log_date).toLocaleString('vi-VN')}
+                        </span>
+                        {!isLeadershipOrAdmin && (
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveLogClick(log.id)}
+                            className="p-1 text-slate-450 hover:text-red-600 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-150 cursor-pointer border border-transparent hover:bg-slate-50"
+                            title="Xóa sự kiện"
+                          >
+                            <Trash2 size={12} />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    {log.details && (
+                      <p className="text-[11px] leading-relaxed text-slate-700 font-serif whitespace-pre-wrap mt-2 bg-slate-50 p-2.5 rounded border border-slate-100">
+                        {log.details}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* SUSPECT ADD / EDIT MODAL POPUP */}
       {showSuspectModal && (
@@ -757,12 +1198,197 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="bg-gradient-to-r from-navy-850 to-navy-700 hover:from-navy-700 hover:to-navy-600 border border-slate-700 text-slate-100 px-5 py-2 rounded-lg cursor-pointer font-bold text-xs"
+                  className="bg-[#126DA6] hover:bg-[#1D4ED8] border border-[#126DA6] text-white px-5 py-2.5 rounded-lg cursor-pointer font-bold text-xs uppercase tracking-wider shadow-sm transition-all duration-150"
                 >
                   {editingSuspect ? 'Cập nhật đối tượng' : 'Thêm đối tượng'}
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      {/* DOCUMENT ADD MODAL POPUP */}
+      {showDocModal && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 no-print">
+          <div className="bg-white border border-slate-200 rounded-2xl shadow-2xl p-6 max-w-lg w-full relative animate-in fade-in duration-200">
+            <button
+              type="button"
+              onClick={() => setShowDocModal(false)}
+              className="absolute top-4 right-4 text-slate-450 hover:text-slate-700 cursor-pointer"
+            >
+              <X size={18} />
+            </button>
+ 
+            <h3 className="text-sm font-bold text-slate-800 mb-6 uppercase tracking-wider flex items-center gap-2 border-b border-slate-200 pb-3">
+              <FileText size={18} className="text-[#126DA6]" />
+              Ban hành văn bản tố tụng mới
+            </h3>
+ 
+            <form onSubmit={handleAddDocSubmit} className="space-y-4 text-xs text-slate-650 font-semibold">
+              <div>
+                <label htmlFor="modal_doc_name" className="block text-[10px] font-bold text-slate-600 uppercase mb-1.5">
+                  Số hiệu / Ký hiệu văn bản *
+                </label>
+                <input
+                  id="modal_doc_name"
+                  type="text"
+                  required
+                  placeholder="Ví dụ: Quyết định số 102/QĐ-CQĐT"
+                  value={docName}
+                  onChange={(e) => setDocName(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-250 focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg p-2.5 text-slate-800"
+                />
+              </div>
+ 
+              <div>
+                <label htmlFor="modal_doc_type" className="block text-[10px] font-bold text-slate-600 uppercase mb-1.5">
+                  Loại văn bản tố tụng *
+                </label>
+                <select
+                  id="modal_doc_type"
+                  value={docType}
+                  onChange={(e) => setDocType(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-250 focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg p-2.5 text-slate-800"
+                >
+                  <option value="Quyết định khởi tố vụ án hình sự">Quyết định khởi tố vụ án hình sự</option>
+                  <option value="Quyết định khởi tố bị can">Quyết định khởi tố bị can</option>
+                  <option value="Biên bản khám nghiệm hiện trường">Biên bản khám nghiệm hiện trường</option>
+                  <option value="Biên bản hỏi cung bị can">Biên bản hỏi cung bị can</option>
+                  <option value="Quyết định tạm giữ">Quyết định tạm giữ</option>
+                  <option value="Quyết định trưng cầu giám định">Quyết định trưng cầu giám định</option>
+                </select>
+              </div>
+ 
+              <div>
+                <label htmlFor="modal_doc_file" className="block text-[10px] font-bold text-slate-600 uppercase mb-1.5">
+                  Đính kèm bản scan / PDF văn bản (Tùy chọn)
+                </label>
+                <input
+                  id="modal_doc_file"
+                  type="file"
+                  accept=".pdf,image/*"
+                  onChange={(e) => setDocFile(e.target.files?.[0] || null)}
+                  className="w-full bg-slate-50 border border-slate-250 focus:outline-none rounded-lg p-2 text-slate-800 text-xs cursor-pointer"
+                />
+              </div>
+ 
+              <div className="flex gap-3 justify-end pt-4 border-t border-slate-200">
+                <button
+                  type="button"
+                  onClick={() => setShowDocModal(false)}
+                  className="bg-slate-50 border border-slate-250 hover:bg-slate-100 px-4 py-2.5 rounded-lg cursor-pointer text-xs font-bold text-slate-650"
+                >
+                  Hủy bỏ
+                </button>
+                <button
+                  type="submit"
+                  className="bg-[#126DA6] hover:bg-[#1D4ED8] border border-[#126DA6] text-white px-5 py-2.5 rounded-lg cursor-pointer font-bold text-xs uppercase tracking-wider shadow-sm transition-all duration-150"
+                >
+                  Ban hành văn bản
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* INVESTIGATION LOG ADD MODAL */}
+      {showLogModal && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 no-print">
+          <div className="bg-white border border-slate-200 rounded-2xl shadow-2xl p-6 max-w-lg w-full relative animate-in fade-in duration-200">
+            <button
+              type="button"
+              onClick={() => setShowLogModal(false)}
+              className="absolute top-4 right-4 text-slate-450 hover:text-slate-750 cursor-pointer"
+            >
+              <X size={18} />
+            </button>
+
+            <h3 className="text-sm font-bold text-slate-800 mb-6 uppercase tracking-wider flex items-center gap-2 border-b border-slate-200 pb-3 font-sans">
+              <Calendar size={18} className="text-[#126DA6]" />
+              Ghi nhận tiến trình điều tra mới
+            </h3>
+
+            <form onSubmit={handleAddLogSubmit} className="space-y-4 text-xs text-slate-650 font-semibold font-sans">
+              <div>
+                <label htmlFor="modal_log_title" className="block text-[10px] font-bold text-slate-600 uppercase mb-1.5">
+                  Tiêu đề sự kiện *
+                </label>
+                <input
+                  id="modal_log_title"
+                  type="text"
+                  required
+                  placeholder="Ví dụ: Lấy lời khai đối tượng Nguyễn Văn A lần thứ nhất"
+                  value={logTitle}
+                  onChange={(e) => setLogTitle(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-250 focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg p-2.5 text-slate-800"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="modal_log_details" className="block text-[10px] font-bold text-slate-600 uppercase mb-1.5">
+                  Chi tiết nội dung sự việc
+                </label>
+                <textarea
+                  id="modal_log_details"
+                  rows={4}
+                  placeholder="Mô tả cụ thể hoạt động xác minh, các chứng cứ thu thập được hoặc tóm tắt lời khai..."
+                  value={logDetails}
+                  onChange={(e) => setLogDetails(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-250 focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg p-2.5 text-slate-800 resize-none leading-relaxed"
+                />
+              </div>
+
+              <div className="flex gap-3 justify-end pt-4 border-t border-slate-200">
+                <button
+                  type="button"
+                  onClick={() => setShowLogModal(false)}
+                  className="bg-slate-50 border border-slate-250 hover:bg-slate-100 px-4 py-2.5 rounded-lg cursor-pointer text-xs font-bold text-slate-650"
+                >
+                  Hủy bỏ
+                </button>
+                <button
+                  type="submit"
+                  className="bg-[#126DA6] hover:bg-[#1D4ED8] border border-[#126DA6] text-white px-5 py-2.5 rounded-lg cursor-pointer font-bold text-xs uppercase tracking-wider shadow-sm transition-all duration-150"
+                >
+                  Ghi nhận sự kiện
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* DOCUMENT PREVIEW MODAL */}
+      {previewDoc && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 no-print">
+          <div className="bg-white border border-slate-200 rounded-2xl shadow-2xl p-6 max-w-4xl w-full h-[85vh] relative flex flex-col animate-in fade-in duration-200">
+            <button
+              type="button"
+              onClick={() => setPreviewDoc(null)}
+              className="absolute top-4 right-4 text-slate-450 hover:text-slate-750 cursor-pointer"
+            >
+              <X size={18} />
+            </button>
+ 
+            <h3 className="text-sm font-bold text-slate-800 mb-4 uppercase tracking-wider flex items-center gap-2 border-b border-slate-200 pb-3">
+              <FileText size={18} className="text-[#2563EB]" />
+              Xem trước bản scan: {previewDoc.name} ({previewDoc.document_type})
+            </h3>
+
+            <div className="flex-1 bg-slate-100 rounded-lg overflow-hidden border border-slate-200 relative">
+              {previewDoc.file_path ? (
+                <iframe 
+                  src={`${previewDoc.file_path.startsWith('http') ? previewDoc.file_path : `${import.meta.env.DEV ? 'http://127.0.0.1:8000' : ''}${previewDoc.file_path}`}`} 
+                  className="w-full h-full border-none"
+                  title={previewDoc.name}
+                />
+              ) : (
+                <div className="flex items-center justify-center h-full text-slate-400 italic">
+                  Không có bản scan đính kèm.
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

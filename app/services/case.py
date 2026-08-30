@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from app.models.case import CaseFile
+from app.models.case import CaseFile, CaseDocument, InvestigationLog
 from app.models.suspect import Suspect
-from app.schemas.case import CaseFileCreate, CaseFileUpdate
+from app.schemas.case import CaseFileCreate, CaseFileUpdate, CaseDocumentCreate, InvestigationLogCreate
 from app.schemas.suspect import SuspectCreate, SuspectUpdate
 from app.core.exceptions import AppException
 from typing import List, Optional, Any
@@ -46,6 +46,7 @@ class CaseService:
             summary_acts=case_in.summary_acts,
             damage_value=case_in.damage_value,
             status=case_in.status,
+            investigation_stage=case_in.investigation_stage,
             lead_investigator_id=user.id
         )
         db.add(db_case)
@@ -78,6 +79,8 @@ class CaseService:
             db_case.damage_value = case_in.damage_value
         if case_in.status is not None:
             db_case.status = case_in.status
+        if case_in.investigation_stage is not None:
+            db_case.investigation_stage = case_in.investigation_stage
 
         db.commit()
         db.refresh(db_case)
@@ -170,3 +173,89 @@ class CaseService:
         db.delete(db_suspect)
         db.commit()
         return db_suspect
+
+    @staticmethod
+    def list_documents(db: Session, case_id: int, user: Any, ip_address: Optional[str] = None) -> List[CaseDocument]:
+        # Check case existence
+        CaseService.get_case(db, case_id, user, ip_address)
+        return db.query(CaseDocument).filter(CaseDocument.case_id == case_id).all()
+
+    @staticmethod
+    def add_document(db: Session, case_id: int, doc_in: CaseDocumentCreate, user: Any, ip_address: Optional[str] = None) -> CaseDocument:
+        # Check case existence
+        db_case = CaseService.get_case(db, case_id, user, ip_address)
+
+        # RBAC Check: INVESTIGATOR can only add documents to their own case files.
+        if user.role == "INVESTIGATOR" and db_case.lead_investigator_id != user.id:
+            raise AppException(message="Bạn không có quyền sửa đổi hồ sơ vụ án của điều tra viên khác", code="FORBIDDEN", status_code=403)
+
+        db_doc = CaseDocument(
+            case_id=case_id,
+            name=doc_in.name,
+            document_type=doc_in.document_type,
+            file_path=doc_in.file_path
+        )
+        db.add(db_doc)
+        db.commit()
+        db.refresh(db_doc)
+        return db_doc
+
+    @staticmethod
+    def remove_document(db: Session, case_id: int, document_id: int, user: Any, ip_address: Optional[str] = None) -> CaseDocument:
+        # Check case existence
+        db_case = CaseService.get_case(db, case_id, user, ip_address)
+
+        # RBAC Check
+        if user.role == "INVESTIGATOR" and db_case.lead_investigator_id != user.id:
+            raise AppException(message="Bạn không có quyền sửa đổi hồ sơ vụ án của điều tra viên khác", code="FORBIDDEN", status_code=403)
+
+        db_doc = db.query(CaseDocument).filter(CaseDocument.id == document_id, CaseDocument.case_id == case_id).first()
+        if not db_doc:
+            raise AppException(message="Tài liệu không tồn tại trong vụ án này", code="NOT_FOUND", status_code=404)
+
+        db.delete(db_doc)
+        db.commit()
+        return db_doc
+
+    @staticmethod
+    def list_logs(db: Session, case_id: int, user: Any, ip_address: Optional[str] = None) -> List[InvestigationLog]:
+        # Check case existence
+        CaseService.get_case(db, case_id, user, ip_address)
+        return db.query(InvestigationLog).filter(InvestigationLog.case_id == case_id).order_by(InvestigationLog.log_date.desc()).all()
+
+    @staticmethod
+    def add_log(db: Session, case_id: int, log_in: InvestigationLogCreate, user: Any, ip_address: Optional[str] = None) -> InvestigationLog:
+        # Check case existence
+        db_case = CaseService.get_case(db, case_id, user, ip_address)
+
+        # RBAC Check: INVESTIGATOR can only add logs to their own case files.
+        if user.role == "INVESTIGATOR" and db_case.lead_investigator_id != user.id:
+            raise AppException(message="Bạn không có quyền sửa đổi hồ sơ vụ án của điều tra viên khác", code="FORBIDDEN", status_code=403)
+
+        db_log = InvestigationLog(
+            case_id=case_id,
+            title=log_in.title,
+            details=log_in.details,
+            investigator_id=user.id
+        )
+        db.add(db_log)
+        db.commit()
+        db.refresh(db_log)
+        return db_log
+
+    @staticmethod
+    def remove_log(db: Session, case_id: int, log_id: int, user: Any, ip_address: Optional[str] = None) -> InvestigationLog:
+        # Check case existence
+        db_case = CaseService.get_case(db, case_id, user, ip_address)
+
+        # RBAC Check
+        if user.role == "INVESTIGATOR" and db_case.lead_investigator_id != user.id:
+            raise AppException(message="Bạn không có quyền sửa đổi hồ sơ vụ án của điều tra viên khác", code="FORBIDDEN", status_code=403)
+
+        db_log = db.query(InvestigationLog).filter(InvestigationLog.id == log_id, InvestigationLog.case_id == case_id).first()
+        if not db_log:
+            raise AppException(message="Sự kiện nhật ký không tồn tại trong vụ án này", code="NOT_FOUND", status_code=404)
+
+        db.delete(db_log)
+        db.commit()
+        return db_log

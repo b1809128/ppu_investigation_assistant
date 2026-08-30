@@ -217,13 +217,13 @@ export const Cases: React.FC<CasesProps> = ({ onSelectEvaluate }) => {
                   </div>
 
                   <div className="flex items-center justify-between border-t border-slate-100 pt-3 pl-2 text-[11px] text-slate-500">
-                    <div className="flex items-center gap-4 font-semibold">
+                    <div className="flex items-center gap-4 font-semibold text-slate-700">
                       <span className="flex items-center gap-1">
-                        <Calendar size={12} className="text-slate-450" />
+                        <Calendar size={12} className="text-slate-500" />
                         {c.incident_date ? new Date(c.incident_date).toLocaleDateString('vi-VN') : 'Chưa rõ'}
                       </span>
                       <span className="flex items-center gap-1">
-                        <Coins size={12} className="text-slate-450" />
+                        <Coins size={12} className="text-slate-500" />
                         {c.damage_value ? `${c.damage_value.toLocaleString('vi-VN')} VND` : '0 VND'}
                       </span>
                     </div>

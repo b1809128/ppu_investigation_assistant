@@ -22,11 +22,15 @@ interface LawArticle {
   ten_dieu: string;
   noi_dung: string;
   keywords: string[];
+  chu_the_thuc_hien?: string[];
+  hoat_dong_nghiep_vu?: string[];
+  bieu_mau_van_ban?: string[];
 }
 
 export const LawLookupView: React.FC = () => {
   const { currentCase, fetchCases } = useCasesStore();
   const [articles, setArticles] = useState<LawArticle[]>([]);
+  const [lawType, setLawType] = useState<'penal' | 'procedure'>('penal');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedArticle, setSelectedArticle] = useState<LawArticle | null>(null);
   const [expandedChapters, setExpandedChapters] = useState<Record<string, boolean>>({});
@@ -36,18 +40,22 @@ export const LawLookupView: React.FC = () => {
   useEffect(() => {
     fetchCases();
     loadAllArticles();
-  }, []);
+  }, [lawType]);
 
   const loadAllArticles = async () => {
     setIsLoading(true);
     try {
-      const response = await api.get('/api/legal/search');
+      const response = await api.get(`/api/v1/laws/search?law_type=${lawType}`);
       setArticles(response.data);
       if (response.data.length > 0) {
         setSelectedArticle(response.data[0]);
+      } else {
+        setSelectedArticle(null);
       }
     } catch (err) {
       console.error('Không thể tải danh sách bộ luật:', err);
+      setArticles([]);
+      setSelectedArticle(null);
     } finally {
       setIsLoading(false);
     }
@@ -185,6 +193,32 @@ export const LawLookupView: React.FC = () => {
             <BookOpen className="text-[#126DA6]" size={18} />
             <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wide">Danh mục Chương luật</h3>
           </div>
+
+          {/* Tab chọn loại luật */}
+          <div className="flex bg-slate-100 p-1 rounded-lg mb-3">
+            <button
+              type="button"
+              onClick={() => setLawType('penal')}
+              className={`flex-1 text-center py-1.5 text-[11px] font-bold rounded-md transition-all cursor-pointer ${
+                lawType === 'penal'
+                  ? 'bg-white text-[#126DA6] shadow-sm'
+                  : 'text-slate-600 hover:text-slate-800'
+              }`}
+            >
+              Bộ luật Hình sự
+            </button>
+            <button
+              type="button"
+              onClick={() => setLawType('procedure')}
+              className={`flex-1 text-center py-1.5 text-[11px] font-bold rounded-md transition-all cursor-pointer ${
+                lawType === 'procedure'
+                  ? 'bg-white text-[#126DA6] shadow-sm'
+                  : 'text-slate-600 hover:text-slate-800'
+              }`}
+            >
+              Tố tụng Hình sự
+            </button>
+          </div>
           
           <label htmlFor="tree-search-input" className="sr-only">Tìm kiếm điều luật</label>
           <div className="relative">
@@ -311,7 +345,7 @@ export const LawLookupView: React.FC = () => {
               <div className="flex justify-between items-start gap-4">
                 <div>
                   <span className="text-[10px] font-bold text-[#126DA6] uppercase tracking-wider bg-[#EFF6FF] border border-[#BFDBFE] px-2 py-0.5 rounded-lg font-mono shadow-sm">
-                    Bộ luật Hình sự Việt Nam 2015
+                    {lawType === 'procedure' ? 'Bộ luật Tố tụng Hình sự 2015' : 'Bộ luật Hình sự Việt Nam 2015'}
                   </span>
                   <h2 className="text-[18px] font-bold text-[#0F172A] mt-2 flex items-center gap-2 font-sans">
                     Điều {selectedArticle.dieu}: {selectedArticle.ten_dieu}
@@ -345,10 +379,48 @@ export const LawLookupView: React.FC = () => {
                 </div>
               </div>
  
+              {/* Procedural Metadata for Code of Criminal Procedure */}
+              {lawType === 'procedure' && selectedArticle && (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-[#F4F7FB]/50 border border-[#E2E8F0] p-4 rounded-lg text-xs shadow-sm">
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Chủ thể thực hiện</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {selectedArticle.chu_the_thuc_hien?.map((actor, i) => (
+                        <span key={i} className="px-2 py-0.5 bg-[#EFF6FF] border border-[#BFDBFE] text-[#1D4ED8] rounded-md font-semibold">
+                          {actor}
+                        </span>
+                      )) || <span className="text-slate-400 italic">Không có thông tin</span>}
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Hoạt động nghiệp vụ</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {selectedArticle.hoat_dong_nghiep_vu?.map((act, i) => (
+                        <span key={i} className="px-2 py-0.5 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-md font-semibold">
+                          {act}
+                        </span>
+                      )) || <span className="text-slate-400 italic">Không có thông tin</span>}
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Biểu mẫu tố tụng</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {selectedArticle.bieu_mau_van_ban?.map((doc, i) => (
+                        <span key={i} className="px-2 py-0.5 bg-amber-50 border border-amber-200 text-amber-700 rounded-md font-semibold">
+                          {doc}
+                        </span>
+                      )) || <span className="text-slate-400 italic">Không có thông tin</span>}
+                    </div>
+                  </div>
+                </div>
+              )}
+ 
               {/* Parsed Clauses Display */}
               <div className="space-y-4">
                 <span className="text-[10px] text-[#64748B] font-bold uppercase tracking-wider block">
-                  Cấu trúc văn bản và Khung hình phạt chi tiết
+                  {lawType === 'procedure' ? 'Nội dung điều khoản tố tụng chi tiết' : 'Cấu trúc văn bản và Khung hình phạt chi tiết'}
                 </span>
  
                 <div className="space-y-3">

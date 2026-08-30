@@ -12,7 +12,7 @@ from app.db.session import engine, SessionLocal, async_engine
 # Import all models to ensure they are registered for create_all
 from app.db.base import Base
 from app.models.user import User
-from app.models.case import CaseFile
+from app.models.case import CaseFile, CaseDocument, InvestigationLog
 from app.models.suspect import Suspect
 from app.models.audit import AuditLog
 
@@ -32,10 +32,11 @@ logger = logging.getLogger("uvicorn.error")
 async def lifespan(app: FastAPI):
     logger.info("Khởi động ứng dụng (Lifespan event)...")
     
-    # 1. Create tables if they do not exist
+    # 1. Run migrations and create tables if they do not exist
     try:
-        logger.info("Khởi tạo cấu trúc cơ sở dữ liệu MySQL...")
-        Base.metadata.create_all(bind=engine)
+        from app.db.migrate_db import run_migrations
+        logger.info("Khởi chạy tiến trình di cư và đồng bộ cơ sở dữ liệu MySQL...")
+        run_migrations()
         logger.info("Cơ sở dữ liệu đã sẵn sàng.")
     except Exception as e:
         logger.critical(f"Không thể khởi tạo cơ sở dữ liệu: {str(e)}")
@@ -83,6 +84,7 @@ async def lifespan(app: FastAPI):
     logger.info("Đang nạp cơ sở dữ liệu Luật hình sự vào bộ nhớ cache (LegalService & LegalDataService)...")
     LegalService.load_database(settings.LEGAL_DB_PATH)
     LegalDataService.load_database(settings.LEGAL_DB_PATH)
+    LegalDataService.load_procedure_database(settings.LEGAL_PROCEDURE_DB_PATH)
     logger.info("Đã hoàn tất nạp luật.")
 
     yield
@@ -121,6 +123,12 @@ app.include_router(legal_router, prefix=settings.API_V1_STR)
 app.include_router(audit_router, prefix=settings.API_V1_STR)
 app.include_router(laws_router)
 app.include_router(evaluation_router)
+
+# Mount uploads directory to serve scans/PDFs
+from fastapi.staticfiles import StaticFiles
+uploads_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "uploads")
+os.makedirs(uploads_path, exist_ok=True)
+app.mount("/uploads", StaticFiles(directory=uploads_path), name="uploads")
 
 # Mount frontend build files if they exist
 frontend_dist_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend", "dist")

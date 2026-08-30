@@ -13,6 +13,7 @@ export interface CaseFile {
   description?: string | null; // Backwards compatibility alias
   damage_value: number | null;
   status: 'INVESTIGATING' | 'SUSPENDED' | 'CLOSED';
+  investigation_stage?: string;
   lead_investigator_id: number;
   created_at: string;
   updated_at: string;
@@ -146,7 +147,8 @@ export const useCasesStore = create<CasesState>((set) => ({
         location: caseData.location,
         summary_acts: caseData.summary_acts || caseData.description,
         damage_value: caseData.damage_value,
-        status: caseData.status || 'INVESTIGATING'
+        status: caseData.status || 'INVESTIGATING',
+        investigation_stage: caseData.investigation_stage || 'XAC_MINH'
       };
       
       const response = await api.post('/api/cases', payload);
@@ -173,7 +175,8 @@ export const useCasesStore = create<CasesState>((set) => ({
         location: caseData.location,
         summary_acts: caseData.summary_acts || caseData.description,
         damage_value: caseData.damage_value,
-        status: caseData.status
+        status: caseData.status,
+        investigation_stage: caseData.investigation_stage
       };
       
       const response = await api.put(`/api/cases/${id}`, payload);
