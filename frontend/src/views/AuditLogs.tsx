@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import api from '../services/api';
+import { formatDateToDateTimeString } from '../utils/date';
 import { 
   FileSpreadsheet, 
   Search, 
@@ -67,7 +68,7 @@ export const AuditLogs: React.FC = () => {
       <div className="flex items-center justify-between no-print">
         <div>
           <h2 className="text-xl font-bold tracking-wide text-slate-800 flex items-center gap-2">
-            <FileSpreadsheet className="text-[#126DA6]" />
+            <FileSpreadsheet className="text-[#1c75bb]" />
             NHẬT KÝ KIỂM TOÁN HỆ THỐNG (AUDIT LOGS)
           </h2>
           <p className="text-xs text-slate-500 mt-1 font-semibold">
@@ -103,7 +104,7 @@ export const AuditLogs: React.FC = () => {
             placeholder="Tìm theo điều tra viên, hoạt động, IP..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-white border border-[#E2E8F0] focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg py-2 pl-10 pr-4 text-xs text-slate-800 placeholder-slate-400 font-semibold transition-all"
+            className="w-full bg-white border border-[#E2E8F0] focus:border-[#1c75bb] focus:ring-1 focus:ring-[#1c75bb] focus:outline-none rounded-lg py-2 pl-10 pr-4 text-xs text-slate-800 placeholder-slate-400 font-semibold transition-all"
           />
           <Search size={14} className="absolute left-3 top-2.5 text-slate-400" />
         </div>
@@ -117,7 +118,7 @@ export const AuditLogs: React.FC = () => {
       {/* Audit Table */}
       {isLoading ? (
         <div className="flex items-center justify-center py-20">
-          <svg className="animate-spin h-8 w-8 text-[#126DA6]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin h-8 w-8 text-[#1c75bb]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
@@ -145,7 +146,7 @@ export const AuditLogs: React.FC = () => {
                 {filteredLogs.map((log) => (
                   <tr key={log.id} className="hover:bg-[#F8FAFC]/55 transition-colors duration-100">
                     <td className="p-4 text-slate-500">
-                      {new Date(log.created_at).toLocaleString('vi-VN')}
+                      {formatDateToDateTimeString(log.created_at)}
                     </td>
                     <td className="p-4">
                       <span className={`px-2 py-0.5 rounded-lg text-[10px] font-bold border uppercase tracking-wider shadow-sm ${
@@ -155,7 +156,7 @@ export const AuditLogs: React.FC = () => {
                           ? 'bg-[#ECFDF5] border-[#A7F3D0] text-[#065F46]'
                           : log.action.includes('UPDATE')
                           ? 'bg-[#FFFBEB] border-[#FDE68A] text-[#B45309]'
-                          : 'bg-[#EFF6FF] border-[#BFDBFE] text-[#126DA6]'
+                          : 'bg-[#ebf4fa] border-[#BFDBFE] text-[#1c75bb]'
                       }`}>
                         {log.action}
                       </span>
@@ -171,7 +172,7 @@ export const AuditLogs: React.FC = () => {
                         key={log.id}
                         type="button"
                         onClick={() => setSelectedLog(log)}
-                        className="p-1.5 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:bg-[#F1F5F9] hover:text-[#126DA6] text-slate-700 transition-colors duration-150 cursor-pointer inline-flex items-center gap-1 font-bold shadow-sm"
+                        className="p-1.5 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:bg-[#F1F5F9] hover:text-[#1c75bb] text-slate-700 transition-colors duration-150 cursor-pointer inline-flex items-center gap-1 font-bold shadow-sm"
                       >
                         <Eye size={12} />
                         <span>Xem chi tiết</span>
@@ -198,7 +199,7 @@ export const AuditLogs: React.FC = () => {
             </button>
  
             <h3 className="text-base font-bold text-slate-800 mb-4 uppercase tracking-wider flex items-center gap-2 font-sans">
-              <ShieldAlert size={18} className="text-[#126DA6]" />
+              <ShieldAlert size={18} className="text-[#1c75bb]" />
               Chi tiết Audit Log #{selectedLog.id}
             </h3>
  

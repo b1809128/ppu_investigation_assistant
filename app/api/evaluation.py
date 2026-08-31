@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 from app.db.session import get_db
 from app.core.security import get_current_user
@@ -15,6 +15,7 @@ router = APIRouter(prefix="/api/v1/cases", tags=["Case Evaluation Engine"])
 def evaluate_case_by_id(
     case_id: int,
     request: Request,
+    manual_keywords: Optional[str] = None,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -25,4 +26,4 @@ def evaluate_case_by_id(
     - Phát hiện tình tiết tái phạm / tái phạm nguy hiểm (Điều 53 BLHS).
     Tự động ghi nhật ký Audit Log.
     """
-    return MatchingEngine.evaluate_case(db=db, case_id=case_id)
+    return MatchingEngine.evaluate_case(db=db, case_id=case_id, manual_keywords=manual_keywords)

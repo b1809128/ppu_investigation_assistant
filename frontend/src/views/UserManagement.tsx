@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import api from '../services/api';
+import { formatDateToDDMMYYYY } from '../utils/date';
 import { 
+
   Users, 
   UserPlus, 
   Edit3, 
@@ -121,7 +123,7 @@ export const UserManagement: React.FC = () => {
       <div className="flex items-center justify-between no-print">
         <div>
           <h2 className="text-xl font-bold tracking-wide text-slate-800 flex items-center gap-2">
-            <Users className="text-[#126DA6]" />
+            <Users className="text-[#1c75bb]" />
             QUẢN TRỊ TÀI KHOẢN NGƯỜI DÙNG
           </h2>
           <p className="text-xs text-slate-500 mt-1 font-semibold">
@@ -132,7 +134,7 @@ export const UserManagement: React.FC = () => {
         <button
           type="button"
           onClick={() => handleOpenModal()}
-          className="flex items-center gap-2 bg-[#126DA6] hover:bg-[#1D4ED8] text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm cursor-pointer transition-colors"
+          className="flex items-center gap-2 bg-[#1c75bb] hover:bg-[#155d95] text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm cursor-pointer transition-colors"
         >
           <UserPlus size={16} />
           <span>Đăng ký tài khoản mới</span>
@@ -149,7 +151,7 @@ export const UserManagement: React.FC = () => {
       {/* Users List Table */}
       {isLoading ? (
         <div className="flex items-center justify-center py-20">
-          <svg className="animate-spin h-8 w-8 text-[#126DA6]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin h-8 w-8 text-[#1c75bb]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
@@ -171,7 +173,7 @@ export const UserManagement: React.FC = () => {
               <tbody className="divide-y divide-[#E2E8F0] text-slate-800 font-medium">
                 {users.map((u) => (
                   <tr key={u.id} className="hover:bg-[#F8FAFC]/55 transition-colors duration-100">
-                    <td className="p-4 font-mono font-bold text-[#126DA6]">{u.badge_id}</td>
+                    <td className="p-4 font-mono font-bold text-[#1c75bb]">{u.badge_id}</td>
                     <td className="p-4 font-bold text-slate-800">{u.full_name}</td>
                     <td className="p-4">
                       <span className={`px-2 py-0.5 rounded-lg text-[10px] font-bold border shadow-sm ${
@@ -179,7 +181,7 @@ export const UserManagement: React.FC = () => {
                           ? 'bg-[#FEF2F2] border-[#FECACA] text-[#991B1B]' 
                           : u.role === 'LEADERSHIP'
                           ? 'bg-[#FFFBEB] border-[#FDE68A] text-[#B45309]'
-                          : 'bg-[#EFF6FF] border-[#BFDBFE] text-[#126DA6]'
+                          : 'bg-[#ebf4fa] border-[#BFDBFE] text-[#1c75bb]'
                       }`}>
                         {u.role}
                       </span>
@@ -198,14 +200,14 @@ export const UserManagement: React.FC = () => {
                       )}
                     </td>
                     <td className="p-4 font-mono text-slate-500 font-bold">
-                      {new Date(u.created_at).toLocaleDateString('vi-VN')}
+                      {formatDateToDDMMYYYY(u.created_at)}
                     </td>
                     <td className="p-4 text-right no-print">
                       <button
                         key={u.id}
                         type="button"
                         onClick={() => handleOpenModal(u)}
-                        className="p-1.5 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:bg-[#F1F5F9] hover:text-[#126DA6] text-slate-700 transition-colors duration-150 cursor-pointer inline-flex items-center gap-1 font-bold shadow-sm"
+                        className="p-1.5 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:bg-[#F1F5F9] hover:text-[#1c75bb] text-slate-700 transition-colors duration-150 cursor-pointer inline-flex items-center gap-1 font-bold shadow-sm"
                       >
                         <Edit3 size={12} />
                         <span>Sửa</span>
@@ -232,7 +234,7 @@ export const UserManagement: React.FC = () => {
             </button>
  
             <h3 className="text-base font-bold text-slate-800 mb-6 uppercase tracking-wider flex items-center gap-2 font-sans">
-              <ShieldCheck size={18} className="text-[#126DA6]" />
+              <ShieldCheck size={18} className="text-[#1c75bb]" />
               {editingUser ? 'Cập nhật tài khoản' : 'Đăng ký tài khoản mới'}
             </h3>
  
@@ -250,7 +252,7 @@ export const UserManagement: React.FC = () => {
                     placeholder="Ví dụ: dtv_quochuy"
                     value={badgeId}
                     onChange={(e) => setBadgeId(e.target.value)}
-                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg py-2.5 pl-10 pr-4 text-slate-800 disabled:opacity-50 font-mono font-semibold"
+                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#1c75bb] focus:ring-1 focus:ring-[#1c75bb] focus:outline-none rounded-lg py-2.5 pl-10 pr-4 text-slate-800 disabled:opacity-50 font-mono font-semibold"
                   />
                   <User className="absolute left-3 top-3 text-slate-400" size={16} />
                 </div>
@@ -267,7 +269,7 @@ export const UserManagement: React.FC = () => {
                   placeholder="Ví dụ: Nguyễn Quốc Huy"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg p-2.5 text-slate-800 font-semibold"
+                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#1c75bb] focus:ring-1 focus:ring-[#1c75bb] focus:outline-none rounded-lg p-2.5 text-slate-800 font-semibold"
                 />
               </div>
  
@@ -283,7 +285,7 @@ export const UserManagement: React.FC = () => {
                     placeholder="Mật khẩu bảo mật"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg py-2.5 pl-10 pr-4 text-slate-800 font-mono font-semibold"
+                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#1c75bb] focus:ring-1 focus:ring-[#1c75bb] focus:outline-none rounded-lg py-2.5 pl-10 pr-4 text-slate-800 font-mono font-semibold"
                   />
                   <Lock className="absolute left-3 top-3 text-slate-400" size={16} />
                 </div>
@@ -297,7 +299,7 @@ export const UserManagement: React.FC = () => {
                   id="user_role_input"
                   value={role}
                   onChange={(e) => setRole(e.target.value as any)}
-                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg p-2.5 text-slate-800 font-bold text-xs cursor-pointer"
+                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#1c75bb] focus:ring-1 focus:ring-[#1c75bb] focus:outline-none rounded-lg p-2.5 text-slate-800 font-bold text-xs cursor-pointer"
                 >
                   <option value="INVESTIGATOR">INVESTIGATOR (Điều tra viên nghiệp vụ)</option>
                   <option value="LEADERSHIP">LEADERSHIP (Lãnh đạo cơ quan điều tra)</option>
@@ -312,7 +314,7 @@ export const UserManagement: React.FC = () => {
                     type="checkbox"
                     checked={isActive}
                     onChange={(e) => setIsActive(e.target.checked)}
-                    className="w-4 h-4 bg-[#F8FAFC] border-[#E2E8F0] rounded-lg text-[#126DA6] focus:ring-[#126DA6] focus:ring-offset-white cursor-pointer"
+                    className="w-4 h-4 bg-[#F8FAFC] border-[#E2E8F0] rounded-lg text-[#1c75bb] focus:ring-[#1c75bb] focus:ring-offset-white cursor-pointer"
                   />
                   <label htmlFor="user_active_checkbox" className="text-xs font-bold text-slate-700 select-none cursor-pointer">
                     Tài khoản hoạt động bình thường
@@ -330,7 +332,7 @@ export const UserManagement: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="bg-[#126DA6] hover:bg-[#1D4ED8] border border-[#126DA6] text-white px-5 py-2.5 rounded-lg cursor-pointer font-bold text-xs transition-colors shadow-sm"
+                  className="bg-[#1c75bb] hover:bg-[#155d95] border border-[#1c75bb] text-white px-5 py-2.5 rounded-lg cursor-pointer font-bold text-xs transition-colors shadow-sm"
                 >
                   {editingUser ? 'Lưu cập nhật' : 'Đăng ký'}
                 </button>

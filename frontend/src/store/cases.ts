@@ -97,7 +97,7 @@ interface CasesState {
   updateSuspect: (caseId: number, suspectId: number, suspectData: Partial<Suspect>) => Promise<Suspect>;
   removeSuspect: (caseId: number, suspectId: number) => Promise<void>;
   
-  evaluateCase: (caseId: number) => Promise<void>;
+  evaluateCase: (caseId: number, manualKeywords?: string) => Promise<void>;
 }
 
 export const useCasesStore = create<CasesState>((set) => ({
@@ -295,10 +295,13 @@ export const useCasesStore = create<CasesState>((set) => ({
     }
   },
 
-  evaluateCase: async (caseId: number) => {
+  evaluateCase: async (caseId: number, manualKeywords?: string) => {
     set({ isLoading: true, error: null });
     try {
-      const response = await api.get(`/api/v1/cases/${caseId}/evaluate`);
+      const url = manualKeywords
+        ? `/api/v1/cases/${caseId}/evaluate?manual_keywords=${encodeURIComponent(manualKeywords)}`
+        : `/api/v1/cases/${caseId}/evaluate`;
+      const response = await api.get(url);
       set({ currentEvaluation: response.data, isLoading: false });
     } catch (err: any) {
       set({ 

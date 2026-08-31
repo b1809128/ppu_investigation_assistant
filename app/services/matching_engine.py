@@ -1,4 +1,5 @@
 import json
+import re
 import os
 import logging
 from datetime import datetime
@@ -41,6 +42,26 @@ DAMAGE_THRESHOLDS = {
 }
 
 class MatchingEngine:
+    @staticmethod
+    def safe_match_keyword(keyword: str, text: str) -> bool:
+        """
+        Matches a keyword/phrase in a text using Vietnamese-aware word boundary regex.
+        Filters out keywords shorter than 4 characters to avoid high false positive rates.
+        """
+        if not keyword or not text:
+            return False
+            
+        kw_clean = keyword.strip().lower()
+        if len(kw_clean) < 4:
+            return False
+            
+        # Escape keyword for regex safety
+        escaped_kw = re.escape(kw_clean)
+        # Vietnamese-aware boundary lookup
+        pattern = rf"(?<![a-zA-Z0-9_àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđĐ]){escaped_kw}(?![a-zA-Z0-9_àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđĐ])"
+        
+        return bool(re.search(pattern, text.lower()))
+
     @staticmethod
     def evaluate_criminal_age(suspect_dob: Optional[str], incident_date: Optional[Any]) -> Dict[str, Any]:
         """
@@ -171,19 +192,42 @@ class MatchingEngine:
     def check_recidivism(prior_convictions: Optional[str]) -> Dict[str, Any]:
         """
         Checks for potential recidivism/dangerous recidivism based on keyword analysis of prior convictions.
+        Correctly handles expunged convictions (đã xóa án tích) and administrative records (tiền sự).
         """
         if not prior_convictions or not prior_convictions.strip():
             return {
                 "has_warning": False,
                 "level": "NONE",
-                "message": "Không ghi nhận tiền án.",
+                "message": "Không ghi nhận tiền án, tiền sự. Không áp dụng tình tiết tái phạm.",
                 "guideline": ""
             }
 
         text_lower = prior_convictions.lower()
 
+        # Rule 1: check if no convictions exist (only administrative records / "tiền sự")
+        is_only_tiensu = "tiền sự" in text_lower and not any(kw in text_lower for kw in ["tiền án", "án tích", "kết án", "tái phạm"])
+        
+        # Rule 2: check if convictions are expunged ("đã được xóa án tích", "đã xóa án tích")
+        is_expunged = any(kw in text_lower for kw in ["đã xóa án tích", "đã được xóa án tích", "đã được xóa", "đã xóa"])
+
+        if is_expunged:
+            return {
+                "has_warning": False,
+                "level": "NONE",
+                "message": f"Đã được xóa án tích: '{prior_convictions}' (Coi như chưa bị kết án theo quy định pháp luật).",
+                "guideline": "Không áp dụng tình tiết tăng nặng hoặc định khung tái phạm."
+            }
+
+        if is_only_tiensu or text_lower in ["không", "không có", "không ghi nhận", "chưa có"]:
+            return {
+                "has_warning": False,
+                "level": "NONE",
+                "message": f"Ghi nhận thông tin: '{prior_convictions}'. Chỉ có tiền sự, không có tiền án chưa xóa.",
+                "guideline": "Không áp dụng tình tiết tái phạm hình sự."
+            }
+
         # Check dangerous recidivism first
-        if any(kw in text_lower for kw in ["tái phạm nguy hiểm", "nguy hiểm"]):
+        if any(kw in text_lower for kw in ["tái phạm nguy hiểm", "án tích nguy hiểm"]):
             return {
                 "has_warning": True,
                 "level": "DANGEROUS",
@@ -192,7 +236,7 @@ class MatchingEngine:
             }
 
         # Check normal recidivism
-        if any(kw in text_lower for kw in ["tiền án", "chưa được xóa án tích", "chưa xóa án tích", "đã bị kết án", "tái phạm"]):
+        if any(kw in text_lower for kw in ["tiền án", "chưa được xóa án tích", "chưa xóa án tích", "chưa được xóa", "chưa xóa", "tái phạm"]):
             return {
                 "has_warning": True,
                 "level": "NORMAL",
@@ -203,12 +247,12 @@ class MatchingEngine:
         return {
             "has_warning": False,
             "level": "NONE",
-            "message": f"Ghi nhận tiền sự / thông tin khác: '{prior_convictions}'",
-            "guideline": "Xác minh xem tiền sự này có thuộc hành vi cấu thành tội phạm hoặc đã hết thời hiệu xóa án tích hay chưa."
+            "message": f"Ghi nhận thông tin nhân thân: '{prior_convictions}'",
+            "guideline": "Xác minh xem thông tin này có thuộc trường hợp tiền án chưa được xóa án tích hay không."
         }
 
     @classmethod
-    def evaluate_case(cls, db: Session, case_id: int) -> Dict[str, Any]:
+    def evaluate_case(cls, db: Session, case_id: int, manual_keywords: Optional[str] = None) -> Dict[str, Any]:
         """
         Core logic to compile and match a case file against the Penal Code.
         Generates structured evaluations for each suspect and article matches.
@@ -217,9 +261,10 @@ class MatchingEngine:
         if not case:
             return {"error": "Không tìm thấy hồ sơ vụ án."}
 
-        # 1. Match case summary/acts to Penal Code articles via keyword matching
+        # 1. Match case summary/acts to Penal Code articles via keyword matching & deep learning (Dual-Engine)
         matched_articles = []
-        summary_lower = (case.summary_acts or "").lower()
+        summary_text = manual_keywords if manual_keywords is not None else (case.summary_acts or "")
+        summary_lower = summary_text.lower()
         
         # Load database if not loaded
         if not LegalDataService._raw_articles:
@@ -227,11 +272,12 @@ class MatchingEngine:
             from app.core.config import settings
             LegalDataService.load_database(settings.LEGAL_DB_PATH)
 
+        keyword_matched_ids = set()
         for article in LegalDataService._raw_articles:
-            # Match keywords
+            # Match keywords using safe matching with word boundaries and length filters
             matched_kws = [
                 kw for kw in article.get("keywords", [])
-                if kw.lower() in summary_lower
+                if cls.safe_match_keyword(kw, summary_text)
             ]
             if matched_kws:
                 matched_articles.append({
@@ -239,8 +285,50 @@ class MatchingEngine:
                     "title": article["ten_dieu"],
                     "matched_keywords": matched_kws,
                     "noi_dung": article["noi_dung"],
-                    "chuong": article["chuong"]
+                    "chuong": article["chuong"],
+                    "ai_evaluation": None
                 })
+                keyword_matched_ids.add(article["dieu"])
+
+        # DL Engine integration with safe fallback
+        dl_suggestions = []
+        try:
+            from app.services.dl_engine import DeepLearningEngine
+            dl_engine = DeepLearningEngine()
+            dl_suggestions = dl_engine.predict_charges(summary_text)
+        except Exception as e:
+            logger.error(f"Lỗi tích hợp DeepLearningEngine: {str(e)}")
+
+        # Merge DL suggestions into matched_articles
+        for sug in dl_suggestions:
+            art_id = sug["article_id"]
+            if art_id in keyword_matched_ids:
+                # Enrich the existing keyword match with AI metrics
+                for ma in matched_articles:
+                    if ma["article_id"] == art_id:
+                        ma["ai_evaluation"] = {
+                            "confidence": sug["confidence"],
+                            "engine": sug["engine"],
+                            "xai_explanation": sug["xai_explanation"],
+                            "xai_path": sug["xai_path"]
+                        }
+            else:
+                # Add new match suggested by DL engine that keyword engine missed
+                article_info = next((a for a in LegalDataService._raw_articles if a["dieu"] == art_id), None)
+                if article_info:
+                    matched_articles.append({
+                        "article_id": art_id,
+                        "title": article_info["ten_dieu"],
+                        "matched_keywords": [],
+                        "noi_dung": article_info["noi_dung"],
+                        "chuong": article_info["chuong"],
+                        "ai_evaluation": {
+                            "confidence": sug["confidence"],
+                            "engine": sug["engine"],
+                            "xai_explanation": sug["xai_explanation"],
+                            "xai_path": sug["xai_path"]
+                        }
+                    })
 
         # 2. Evaluate each suspect
         suspects = db.query(Suspect).filter(Suspect.case_id == case_id).all()
@@ -293,7 +381,8 @@ class MatchingEngine:
                     "clause_details": damage_eval["label"],
                     "damage_warning": damage_eval["warning"],
                     "suspect_is_liable": suspect_is_liable,
-                    "liability_note": liability_note
+                    "liability_note": liability_note,
+                    "ai_evaluation": art.get("ai_evaluation")
                 })
 
             suspect_evaluations.append({

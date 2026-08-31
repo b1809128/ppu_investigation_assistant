@@ -43,9 +43,10 @@ graph TD
 
 ### 2.1. Frontend SPA (Single Page Application)
 - **Framework:** React 19 + TypeScript + Vite.
-- **Styling:** TailwindCSS V4 thiết kế theo phong cách tối Navy Blue chuyên nghiệp cho cơ quan hành pháp.
+- **Styling:** TailwindCSS V4 đồng bộ màu sắc chủ đạo tông màu `#1c75bb` (Royal Blue) và màu hover `#155d95` thống nhất cho toàn bộ hệ thống (nút bấm, viền, liên kết).
 - **Iconography:** Lucide Icons được bundled cục bộ.
-- **State Management:** Zustand Store quản lý trạng thái phiên đăng nhập, vụ án và đối chiếu.
+- **State Management:** Zustand Store quản lý trạng thái phiên đăng nhập, vụ án, đối chiếu và lưu trạng thái đóng/mở sidebar (`sidebarCollapsed`) qua `localStorage`.
+- **Date Utilities:** `utils/date.ts` cung cấp các hàm định dạng hiển thị `formatDateToDDMMYYYY` và convert ngược `parseDDMMYYYYToYYYYMMDD` để thống nhất chuẩn ngày tiếng Việt `dd/mm/yyyy`.
 - **Client Security:**
   - `MaskedText.tsx`: Hỗ trợ che dấu dữ liệu nhạy cảm (CCCD, tên bị can), tích hợp log hành động kiểm toán khi nhấp mở.
   - `SecurityWatermark.tsx`: Lớp bảo vệ đóng dấu mờ động cập nhật IP LAN và thời gian thực.

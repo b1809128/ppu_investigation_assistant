@@ -63,7 +63,7 @@ export const Login: React.FC = () => {
           <div className="w-20 h-20 bg-white border-[3px] border-[#C09A36] rounded-lg flex items-center justify-center mx-auto mb-4 shadow-xl">
             <img src="/image/t05.png" alt="Logo PPU" className="w-14 h-14 object-contain filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)] select-none" />
           </div>
-          <h1 className="text-lg font-black tracking-widest text-[#126DA6] uppercase">
+          <h1 className="text-lg font-black tracking-widest text-[#1c75bb] uppercase">
             TRƯỜNG ĐẠI HỌC CẢNH SÁT NHÂN DÂN
           </h1>
           <h2 className="text-xs font-extrabold text-slate-800 uppercase tracking-wider mt-1.5">
@@ -76,7 +76,7 @@ export const Login: React.FC = () => {
  
         {/* Login Form Card */}
         <div className="bg-white border border-slate-200 rounded-lg shadow-2xl p-7 relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-[5px] bg-gradient-to-r from-[#126DA6] via-[#C09A36] to-[#1D4ED8]" />
+          <div className="absolute top-0 left-0 w-full h-[5px] bg-gradient-to-r from-[#1c75bb] via-[#C09A36] to-[#155d95]" />
           
           <h2 className="text-sm font-bold text-slate-800 text-center mb-6 uppercase tracking-wider">
             XÁC THỰC NGHIỆP VỤ SĨ QUAN CAND
@@ -101,7 +101,7 @@ export const Login: React.FC = () => {
                   placeholder="Nhập số hiệu CAND hoặc tài khoản"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg py-3 pl-11 pr-4 text-sm text-slate-900 placeholder-slate-400 transition-all font-semibold"
+                  className="w-full bg-slate-50 border border-slate-200 focus:border-[#1c75bb] focus:ring-1 focus:ring-[#1c75bb] focus:outline-none rounded-lg py-3 pl-11 pr-4 text-sm text-slate-900 placeholder-slate-400 transition-all font-semibold"
                   disabled={isSubmitting}
                   autoComplete="username"
                   required
@@ -121,7 +121,7 @@ export const Login: React.FC = () => {
                   placeholder="Nhập mật khẩu truy cập"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg py-3 pl-11 pr-11 text-sm text-slate-900 placeholder-slate-400 transition-all"
+                  className="w-full bg-slate-50 border border-slate-200 focus:border-[#1c75bb] focus:ring-1 focus:ring-[#1c75bb] focus:outline-none rounded-lg py-3 pl-11 pr-11 text-sm text-slate-900 placeholder-slate-400 transition-all"
                   disabled={isSubmitting}
                   autoComplete="current-password"
                   required
@@ -142,7 +142,7 @@ export const Login: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-[#126DA6] hover:bg-[#1D4ED8] text-white py-3 rounded-lg font-bold shadow-md cursor-pointer transition-all active:scale-95 duration-100 disabled:opacity-50 flex items-center justify-center gap-2 text-xs uppercase tracking-wider"
+                className="w-full bg-[#1c75bb] hover:bg-[#155d95] text-white py-3 rounded-lg font-bold shadow-md cursor-pointer transition-all active:scale-95 duration-100 disabled:opacity-50 flex items-center justify-center gap-2 text-xs uppercase tracking-wider"
               >
                 {isSubmitting ? (
                   <>

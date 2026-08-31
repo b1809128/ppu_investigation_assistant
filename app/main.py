@@ -25,6 +25,7 @@ from app.api.legal import router as legal_router
 from app.api.audit import router as audit_router
 from app.api.laws import router as laws_router
 from app.api.evaluation import router as evaluation_router
+from app.api.analysis import router as analysis_router
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -123,6 +124,7 @@ app.include_router(legal_router, prefix=settings.API_V1_STR)
 app.include_router(audit_router, prefix=settings.API_V1_STR)
 app.include_router(laws_router)
 app.include_router(evaluation_router)
+app.include_router(analysis_router, prefix=settings.API_V1_STR)
 
 # Mount uploads directory to serve scans/PDFs
 from fastapi.staticfiles import StaticFiles

@@ -84,11 +84,11 @@ export const InvestigationHandbook: React.FC = () => {
       {/* Title block */}
       <div className="bg-white rounded-lg shadow-sm border border-[#E2E8F0] p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-lg bg-[#126DA6] flex items-center justify-center text-[#FFD700] shadow-sm shrink-0">
+          <div className="w-12 h-12 rounded-lg bg-[#1c75bb] flex items-center justify-center text-[#FFD700] shadow-sm shrink-0">
             <BookOpen size={24} />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-[#126DA6] uppercase tracking-wide">
+            <h2 className="text-xl font-bold text-[#1c75bb] uppercase tracking-wide">
               Cẩm nang Nghiệp vụ Điều tra
             </h2>
             <p className="text-xs text-slate-500 font-medium">
@@ -111,7 +111,7 @@ export const InvestigationHandbook: React.FC = () => {
           className={`flex items-center gap-2 px-5 py-3 text-xs font-bold uppercase tracking-wider transition-all duration-150 border-b-2 cursor-pointer ${
             activeTab === 'filing'
               ? 'border-[#C09A36] text-[#EF4444] bg-white rounded-t-md shadow-sm font-extrabold'
-              : 'border-transparent text-slate-500 hover:text-[#126DA6] hover:bg-[#F8FAFC]'
+              : 'border-transparent text-slate-500 hover:text-[#1c75bb] hover:bg-[#F8FAFC]'
           }`}
         >
           <Archive size={16} />
@@ -123,7 +123,7 @@ export const InvestigationHandbook: React.FC = () => {
           className={`flex items-center gap-2 px-5 py-3 text-xs font-bold uppercase tracking-wider transition-all duration-150 border-b-2 cursor-pointer ${
             activeTab === 'steps'
               ? 'border-[#C09A36] text-[#EF4444] bg-white rounded-t-md shadow-sm font-extrabold'
-              : 'border-transparent text-slate-500 hover:text-[#126DA6] hover:bg-[#F8FAFC]'
+              : 'border-transparent text-slate-500 hover:text-[#1c75bb] hover:bg-[#F8FAFC]'
           }`}
         >
           <ClipboardList size={16} />
@@ -135,7 +135,7 @@ export const InvestigationHandbook: React.FC = () => {
           className={`flex items-center gap-2 px-5 py-3 text-xs font-bold uppercase tracking-wider transition-all duration-150 border-b-2 cursor-pointer ${
             activeTab === 'responsibilities'
               ? 'border-[#C09A36] text-[#EF4444] bg-white rounded-t-md shadow-sm font-extrabold'
-              : 'border-transparent text-slate-500 hover:text-[#126DA6] hover:bg-[#F8FAFC]'
+              : 'border-transparent text-slate-500 hover:text-[#1c75bb] hover:bg-[#F8FAFC]'
           }`}
         >
           <Scale size={16} />
@@ -149,7 +149,7 @@ export const InvestigationHandbook: React.FC = () => {
           <div className="xl:col-span-2 space-y-6">
             {/* Legal Basis */}
             <div className="bg-white rounded-lg shadow-sm border border-[#E2E8F0] p-6 space-y-4">
-              <h3 className="text-sm font-extrabold text-[#126DA6] uppercase border-l-4 border-[#EF4444] pl-3">
+              <h3 className="text-sm font-extrabold text-[#1c75bb] uppercase border-l-4 border-[#EF4444] pl-3">
                 1. Căn cứ Pháp lý & Khái niệm cơ bản
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
@@ -166,7 +166,7 @@ export const InvestigationHandbook: React.FC = () => {
 
             {/* Document Categories */}
             <div className="bg-white rounded-lg shadow-sm border border-[#E2E8F0] p-6 space-y-4">
-              <h3 className="text-sm font-extrabold text-[#126DA6] uppercase border-l-4 border-[#EF4444] pl-3">
+              <h3 className="text-sm font-extrabold text-[#1c75bb] uppercase border-l-4 border-[#EF4444] pl-3">
                 2. Phân loại tài liệu trong hồ sơ vụ án
               </h3>
               
@@ -204,7 +204,7 @@ export const InvestigationHandbook: React.FC = () => {
 
           {/* Guidelines sidebar */}
           <div className="space-y-6 col-span-1">
-            <div className="bg-[#126DA6] text-white rounded-lg shadow-sm p-6 space-y-4 border-b-[3px] border-[#C09A36]">
+            <div className="bg-[#1c75bb] text-white rounded-lg shadow-sm p-6 space-y-4 border-b-[3px] border-[#C09A36]">
               <h4 className="text-xs font-extrabold uppercase tracking-widest text-[#FFD700]">
                 Quy cách Quản lý Hồ sơ
               </h4>
@@ -229,7 +229,7 @@ export const InvestigationHandbook: React.FC = () => {
             </div>
 
             <div className="bg-white rounded-lg shadow-sm border border-[#E2E8F0] p-6 space-y-3.5 text-xs text-slate-700">
-              <div className="flex items-center gap-2 font-bold text-[#126DA6]">
+              <div className="flex items-center gap-2 font-bold text-[#1c75bb]">
                 <Info size={16} className="text-[#EF4444]" />
                 <span>Kiểm tra hồ sơ vụ án</span>
               </div>
@@ -247,7 +247,7 @@ export const InvestigationHandbook: React.FC = () => {
             <div className="bg-white rounded-lg shadow-sm border border-[#E2E8F0] p-6">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between border-b border-[#E2E8F0] pb-4 mb-6 gap-4">
               <div>
-                <h3 className="text-sm font-extrabold text-[#126DA6] uppercase">
+                <h3 className="text-sm font-extrabold text-[#1c75bb] uppercase">
                   Trình tự Tác nghiệp của Điều tra viên
                 </h3>
                 <p className="text-xs text-slate-500">
@@ -267,7 +267,7 @@ export const InvestigationHandbook: React.FC = () => {
               {stepsData.map((phase, pIdx) => (
                 <div key={pIdx} className="space-y-4">
                   <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <span className="text-xs font-extrabold text-[#126DA6] uppercase tracking-wide">
+                    <span className="text-xs font-extrabold text-[#1c75bb] uppercase tracking-wide">
                       {phase.phase}
                     </span>
                     <span className="text-[10px] text-[#EF4444] font-mono font-bold bg-white border border-[#EF4444]/20 px-2 py-1 rounded-lg">
@@ -349,7 +349,7 @@ export const InvestigationHandbook: React.FC = () => {
 
             {/* Investigator Prohibitions */}
             <div className="bg-white rounded-lg shadow-sm border border-[#E2E8F0] p-6 space-y-4">
-              <h3 className="text-sm font-extrabold text-[#126DA6] uppercase border-l-4 border-[#EF4444] pl-3">
+              <h3 className="text-sm font-extrabold text-[#1c75bb] uppercase border-l-4 border-[#EF4444] pl-3">
                 2. Những hành vi bị nghiêm cấm đối với Điều tra viên
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
@@ -399,7 +399,7 @@ export const InvestigationHandbook: React.FC = () => {
           {/* Legal Liability Sidebar */}
           <div className="space-y-6 col-span-1">
             <div className="bg-white rounded-lg shadow-sm border border-[#E2E8F0] p-6 space-y-4">
-              <h4 className="text-xs font-extrabold uppercase text-[#126DA6] tracking-wide border-b border-[#E2E8F0] pb-2">
+              <h4 className="text-xs font-extrabold uppercase text-[#1c75bb] tracking-wide border-b border-[#E2E8F0] pb-2">
                 Trách nhiệm cá nhân trước pháp luật
               </h4>
               <p className="text-[11px] text-slate-600 leading-relaxed">
@@ -412,7 +412,7 @@ export const InvestigationHandbook: React.FC = () => {
             </div>
 
             <div className="bg-white rounded-lg shadow-sm border border-[#E2E8F0] p-6 space-y-3.5">
-              <h4 className="text-xs font-extrabold uppercase text-[#126DA6] tracking-wide border-b border-[#E2E8F0] pb-2">
+              <h4 className="text-xs font-extrabold uppercase text-[#1c75bb] tracking-wide border-b border-[#E2E8F0] pb-2">
                 Nguyên tắc tự bảo vệ của Điều tra viên
               </h4>
               <ul className="space-y-3 text-[11px] text-slate-600">

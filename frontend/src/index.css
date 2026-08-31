@@ -4,9 +4,9 @@
   --color-navy-950: #F4F7FB; /* Ice Blue Main Background */
   --color-navy-900: #FFFFFF; /* Sidebar / Card Background */
   --color-navy-850: #FFFFFF; /* White Cards */
-  --color-navy-800: #126DA6; /* Soft Blue accent primary */
-  --color-navy-750: #EFF6FF; /* Active Navigation Background */
-  --color-navy-700: #1D4ED8; /* Soft Blue hover */
+  --color-navy-800: #1c75bb; /* Main theme color #1c75bb */
+  --color-navy-750: #ebf4fa; /* Light background selection */
+  --color-navy-700: #155d95; /* Hover color (darker version of #1c75bb) */
   --color-navy-600: #0F172A; /* Primary Text (Slate 900) */
   --color-navy-500: #64748B; /* Secondary Text (Slate 500) */
   
@@ -49,7 +49,7 @@
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #126DA6;
+  background: #1c75bb;
 }
 
 /* Global resets and body styling - Light theme */

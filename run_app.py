@@ -37,7 +37,7 @@ def main():
 
     # 2. Start Frontend Vite Dev Server
     frontend_cmd = ["npm", "run", "dev"]
-    print(f"-> Khởi động Frontend Vite tại http://localhost:5173/")
+    print(f"-> Khởi động Frontend Vite tại http://localhost:5014/")
     print(f"   Lệnh: {' '.join(frontend_cmd)}")
     
     frontend_proc = subprocess.Popen(

@@ -54,7 +54,7 @@ export const LegalMatch: React.FC<LegalMatchProps> = ({ preselectedCaseId = null
           <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-4">
             <div>
               <h2 className="text-base font-bold text-slate-800 uppercase tracking-wide flex items-center gap-2 font-sans">
-                <Scale size={20} className="text-[#126DA6]" />
+                <Scale size={20} className="text-[#1c75bb]" />
                 Động cơ Đối chiếu & Đề xuất định tội
               </h2>
               <p className="text-xs text-slate-500 mt-1 font-semibold">
@@ -70,7 +70,7 @@ export const LegalMatch: React.FC<LegalMatchProps> = ({ preselectedCaseId = null
               placeholder="Tìm kiếm vụ án (Số thụ lý, tên vụ việc, địa bàn)..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-white border border-[#E2E8F0] focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg py-2.5 pl-10 pr-4 text-xs text-slate-800 font-semibold shadow-sm transition-all"
+              className="w-full bg-white border border-[#E2E8F0] focus:border-[#1c75bb] focus:ring-1 focus:ring-[#1c75bb] focus:outline-none rounded-lg py-2.5 pl-10 pr-4 text-xs text-slate-800 font-semibold shadow-sm transition-all"
             />
             <Search size={14} className="absolute left-3.5 top-3.5 text-slate-400" />
           </div>
@@ -87,7 +87,7 @@ export const LegalMatch: React.FC<LegalMatchProps> = ({ preselectedCaseId = null
                   key={c.id}
                   type="button"
                   onClick={() => setSelectedCaseId(c.id)}
-                  className="p-5 bg-white border border-[#E2E8F0] hover:border-[#126DA6]/40 rounded-lg text-left transition-all duration-150 group shadow-sm hover:shadow-md flex flex-col justify-between h-44 cursor-pointer"
+                  className="p-5 bg-white border border-[#E2E8F0] hover:border-[#1c75bb]/40 rounded-lg text-left transition-all duration-150 group shadow-sm hover:shadow-md flex flex-col justify-between h-44 cursor-pointer"
                 >
                   <div className="space-y-3 w-full">
                     <div className="flex justify-between items-start">
@@ -99,14 +99,14 @@ export const LegalMatch: React.FC<LegalMatchProps> = ({ preselectedCaseId = null
                           ? 'bg-[#ECFDF5] border-[#A7F3D0] text-[#065F46]'
                           : c.status === 'SUSPENDED'
                           ? 'bg-[#FFFBEB] border-[#FDE68A] text-[#B45309]'
-                          : 'bg-[#EFF6FF] border-[#BFDBFE] text-[#126DA6]'
+                          : 'bg-[#ebf4fa] border-[#BFDBFE] text-[#1c75bb]'
                       }`}>
                         {c.status === 'CLOSED' ? 'Đã đóng' : c.status === 'SUSPENDED' ? 'Tạm đình' : 'Đang xử lý'}
                       </span>
                     </div>
  
                     <div>
-                      <h4 className="text-xs font-bold text-slate-800 group-hover:text-[#126DA6] transition-colors line-clamp-2 leading-relaxed">
+                      <h4 className="text-xs font-bold text-slate-800 group-hover:text-[#1c75bb] transition-colors line-clamp-2 leading-relaxed">
                         {c.case_name}
                       </h4>
                       {c.location && (
@@ -121,7 +121,7 @@ export const LegalMatch: React.FC<LegalMatchProps> = ({ preselectedCaseId = null
                     <span className="text-slate-700 font-bold font-mono">
                       Thiệt hại: {c.damage_value ? `${c.damage_value.toLocaleString('vi-VN')} VNĐ` : '0 VNĐ'}
                     </span>
-                    <span className="text-[#126DA6] font-bold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                    <span className="text-[#1c75bb] font-bold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
                       Phân tích
                       <ChevronRight size={12} />
                     </span>

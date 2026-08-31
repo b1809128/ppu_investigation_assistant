@@ -84,8 +84,8 @@ export const Dashboard: React.FC = () => {
       
       {/* Header */}
       <div>
-        <h2 className="text-base font-bold tracking-wide text-[#126DA6] flex items-center gap-2 font-sans uppercase">
-          <LayoutDashboard size={20} className="text-[#126DA6]" />
+        <h2 className="text-base font-bold tracking-wide text-[#1c75bb] flex items-center gap-2 font-sans uppercase">
+          <LayoutDashboard size={20} className="text-[#1c75bb]" />
           BẢNG ĐIỀU KHIỂN NGHIỆP VỤ (DASHBOARD)
         </h2>
         <p className="text-xs text-slate-500 mt-1">
@@ -95,7 +95,7 @@ export const Dashboard: React.FC = () => {
 
       {isLoading ? (
         <div className="flex items-center justify-center py-20">
-          <svg className="animate-spin h-8 w-8 text-[#126DA6]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin h-8 w-8 text-[#1c75bb]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
@@ -109,40 +109,40 @@ export const Dashboard: React.FC = () => {
             <div className="bg-white border border-[#E2E8F0] p-5 rounded-lg flex items-center justify-between shadow-sm relative overflow-hidden group">
               <div className="space-y-1.5 z-10">
                 <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Tổng án thụ lý</span>
-                <span className="text-2xl font-extrabold text-[#126DA6] block font-mono leading-none">{stats.totalCases}</span>
+                <span className="text-2xl font-extrabold text-[#1c75bb] block font-mono leading-none">{stats.totalCases}</span>
                 <span className="text-[10px] text-slate-400 block font-semibold">Hồ sơ đã nhập hệ thống</span>
               </div>
-              <FolderLock size={32} className="text-[#126DA6]/10 group-hover:text-[#126DA6]/20 transition-colors duration-150 shrink-0" />
+              <FolderLock size={32} className="text-[#1c75bb]/10 group-hover:text-[#1c75bb]/20 transition-colors duration-150 shrink-0" />
             </div>
 
             {/* Investigating Cases */}
             <div className="bg-white border border-[#E2E8F0] p-5 rounded-lg flex items-center justify-between shadow-sm relative overflow-hidden group">
               <div className="space-y-1.5 z-10">
                 <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Đang điều tra</span>
-                <span className="text-2xl font-extrabold text-[#126DA6] block font-mono leading-none">{stats.activeCases}</span>
+                <span className="text-2xl font-extrabold text-[#1c75bb] block font-mono leading-none">{stats.activeCases}</span>
                 <span className="text-[10px] text-slate-400 block font-semibold">Tích cực giải quyết</span>
               </div>
-              <Activity size={32} className="text-[#126DA6]/10 group-hover:text-[#126DA6]/20 transition-colors duration-150 shrink-0" />
+              <Activity size={32} className="text-[#1c75bb]/10 group-hover:text-[#1c75bb]/20 transition-colors duration-150 shrink-0" />
             </div>
 
             {/* Suspended Cases */}
             <div className="bg-white border border-[#E2E8F0] p-5 rounded-lg flex items-center justify-between shadow-sm relative overflow-hidden group">
               <div className="space-y-1.5 z-10">
                 <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Tạm đình chỉ</span>
-                <span className="text-2xl font-extrabold text-[#126DA6] block font-mono leading-none">{stats.suspendedCases}</span>
+                <span className="text-2xl font-extrabold text-[#1c75bb] block font-mono leading-none">{stats.suspendedCases}</span>
                 <span className="text-[10px] text-slate-400 block font-semibold">Đang tạm ngừng xác minh</span>
               </div>
-              <AlertTriangle size={32} className="text-[#126DA6]/10 group-hover:text-[#126DA6]/20 transition-colors duration-150 shrink-0" />
+              <AlertTriangle size={32} className="text-[#1c75bb]/10 group-hover:text-[#1c75bb]/20 transition-colors duration-150 shrink-0" />
             </div>
 
             {/* Closed Cases */}
             <div className="bg-white border border-[#E2E8F0] p-5 rounded-lg flex items-center justify-between shadow-sm relative overflow-hidden group">
               <div className="space-y-1.5 z-10">
                 <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Đã kết luận / Đóng</span>
-                <span className="text-2xl font-extrabold text-[#126DA6] block font-mono leading-none">{stats.closedCases}</span>
+                <span className="text-2xl font-extrabold text-[#1c75bb] block font-mono leading-none">{stats.closedCases}</span>
                 <span className="text-[10px] text-slate-400 block font-semibold">Đã có kết quả giải quyết</span>
               </div>
-              <CheckCircle2 size={32} className="text-[#126DA6]/10 group-hover:text-[#126DA6]/20 transition-colors duration-150 shrink-0" />
+              <CheckCircle2 size={32} className="text-[#1c75bb]/10 group-hover:text-[#1c75bb]/20 transition-colors duration-150 shrink-0" />
             </div>
 
           </div>

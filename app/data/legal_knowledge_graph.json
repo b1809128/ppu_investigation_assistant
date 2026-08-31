@@ -1,0 +1,2361 @@
+{
+  "nodes": [
+    {
+      "id": "chapter_XVI",
+      "label": "Chapter",
+      "properties": {
+        "name": "CÁC TỘI XÂM PHẠM SỞ HỮU",
+        "code": "XVI"
+      }
+    },
+    {
+      "id": "article_168",
+      "label": "Article",
+      "properties": {
+        "name": "Tội cướp tài sản",
+        "article_number": 168,
+        "title": "Tội cướp tài sản"
+      }
+    },
+    {
+      "id": "article_168_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào đùng võ lực, đe doạ dùng vũ lực ngay tức khắc hoặc có hành vi khác làm cho người bị tấn công lâm vào tình trạng không thể chỗng cự được nhằm chiếm đoạt tài sản, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "element_violence",
+      "label": "CrimeElement",
+      "properties": {
+        "name": "Sử dụng vũ lực hoặc đe dọa vũ lực",
+        "type": "Mặt khách quan"
+      }
+    },
+    {
+      "id": "article_168_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_168_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_168_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_168_clause_5",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 5,
+        "content": "Người chuẩn bị phạm tội này, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_168_clause_6",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 6,
+        "content": "Người phạm tội còn có thể bị phạt tiền từ"
+      }
+    },
+    {
+      "id": "article_169",
+      "label": "Article",
+      "properties": {
+        "name": "Tội bắt cóc nhằm chiếm đoạt tài sản",
+        "article_number": 169,
+        "title": "Tội bắt cóc nhằm chiếm đoạt tài sản"
+      }
+    },
+    {
+      "id": "article_169_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào bắt cóc người khác làm con tin nhằm chiếm đoạt tài sản, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_169_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_169_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_169_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_169_clause_5",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 5,
+        "content": "Người chuẩn bị phạm tội này, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_169_clause_6",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 6,
+        "content": "Người phạm tội còn có thể bị phạt tiền từ"
+      }
+    },
+    {
+      "id": "article_170",
+      "label": "Article",
+      "properties": {
+        "name": "Tội cưỡng đoạt tài sản",
+        "article_number": 170,
+        "title": "Tội cưỡng đoạt tài sản"
+      }
+    },
+    {
+      "id": "article_170_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào đe doạ sẽ dùng vũ lực hoặc có thủ đoạn khác uy hiếp tỉnh thần người khác nhằm chiếm đoạt tài sản, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_170_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_170_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_170_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_170_clause_5",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 5,
+        "content": "Người phạm tội còn có thể bị phạt tiền từ"
+      }
+    },
+    {
+      "id": "article_171",
+      "label": "Article",
+      "properties": {
+        "name": "Tội cướp giật tài sản",
+        "article_number": 171,
+        "title": "Tội cướp giật tài sản"
+      }
+    },
+    {
+      "id": "article_171_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào cướp giật tài sản của người khác, thì bị phạt tủ từ"
+      }
+    },
+    {
+      "id": "article_171_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_171_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_171_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_171_clause_5",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 5,
+        "content": "Người phạm tội còn có thể bị phạt tiền từ"
+      }
+    },
+    {
+      "id": "article_172",
+      "label": "Article",
+      "properties": {
+        "name": "Tội công nhiên chiếm đoạt tài sản",
+        "article_number": 172,
+        "title": "Tội công nhiên chiếm đoạt tài sản"
+      }
+    },
+    {
+      "id": "article_172_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào công nhiên chiếm đoạt tài sản của người khác trị giá từ"
+      }
+    },
+    {
+      "id": "article_172_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_172_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_172_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_172_clause_5",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 5,
+        "content": "Người phạm tội còn có thể bị phạt tiền từ"
+      }
+    },
+    {
+      "id": "article_173",
+      "label": "Article",
+      "properties": {
+        "name": "Tội trộm cắp tài sản",
+        "article_number": 173,
+        "title": "Tội trộm cắp tài sản"
+      }
+    },
+    {
+      "id": "article_173_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào trộm cắp tài sản củá người khác trị giá từ"
+      }
+    },
+    {
+      "id": "element_stealth",
+      "label": "CrimeElement",
+      "properties": {
+        "name": "Hành vi lén lút lấy tài sản",
+        "type": "Mặt khách quan"
+      }
+    },
+    {
+      "id": "article_173_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_173_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_173_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_173_clause_5",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 5,
+        "content": "Người phạm tội còn có thể bị phạt tiền từ"
+      }
+    },
+    {
+      "id": "chapter_XVII",
+      "label": "Chapter",
+      "properties": {
+        "name": "CÁC TỘI XÂM PHẠM TRẬT TỰ QUẢN LÝ KINH TÉ",
+        "code": "XVII"
+      }
+    },
+    {
+      "id": "article_174",
+      "label": "Article",
+      "properties": {
+        "name": "353 và 355 của Bộ luật này, thì bị phạt tiền từ 20.000.000 đồng đến",
+        "article_number": 174,
+        "title": "353 và 355 của Bộ luật này, thì bị phạt tiền từ 20.000.000 đồng đến"
+      }
+    },
+    {
+      "id": "article_174_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tiền từ"
+      }
+    },
+    {
+      "id": "article_174_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_174_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Người phạm tội còn có thể bị phạt tiền từ"
+      }
+    },
+    {
+      "id": "article_175",
+      "label": "Article",
+      "properties": {
+        "name": "Tội lạm dụng tín nhiệm chiếm đoạt tài sản",
+        "article_number": 175,
+        "title": "Tội lạm dụng tín nhiệm chiếm đoạt tài sản"
+      }
+    },
+    {
+      "id": "article_175_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào thực hiện một trong những hành vi sau đây chiếm đoạt tài sản của người khác trị giá từ"
+      }
+    },
+    {
+      "id": "article_175_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_175_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_175_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Phạm tội chiếm đoạt tài sản trị giá"
+      }
+    },
+    {
+      "id": "article_175_clause_5",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 5,
+        "content": "Người phạm tội còn có thể bị phạt tiền từ"
+      }
+    },
+    {
+      "id": "article_176",
+      "label": "Article",
+      "properties": {
+        "name": "Tội chiếm giữ trái phép tài sắn",
+        "article_number": 176,
+        "title": "Tội chiếm giữ trái phép tài sắn"
+      }
+    },
+    {
+      "id": "article_176_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào cố tình không trả lại cho chủ sở hữu, người quản lý hợp pháp hoặc không giao nộp cho cơ quan có trách nhiệm tài sản trị giá từ"
+      }
+    },
+    {
+      "id": "article_176_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội chiếm giữ tài sản trị giá"
+      }
+    },
+    {
+      "id": "article_177",
+      "label": "Article",
+      "properties": {
+        "name": "Tội sử dụng trái phép tài sản",
+        "article_number": 177,
+        "title": "Tội sử dụng trái phép tài sản"
+      }
+    },
+    {
+      "id": "article_177_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào vì vụ lợi mà sử dụng trái phép tài sản của người khác trị giá từ"
+      }
+    },
+    {
+      "id": "article_177_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tiền từ"
+      }
+    },
+    {
+      "id": "article_177_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội sử dụng trái phép tài sản trị giá"
+      }
+    },
+    {
+      "id": "article_177_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Người phạm tội còn có thể bị phạt tiền từ"
+      }
+    },
+    {
+      "id": "article_178",
+      "label": "Article",
+      "properties": {
+        "name": "Tội húy hoại hoặc cố ý làm hư hỏng tài sản",
+        "article_number": 178,
+        "title": "Tội húy hoại hoặc cố ý làm hư hỏng tài sản"
+      }
+    },
+    {
+      "id": "article_178_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào hủy hoại hoặc cỗ ý làm hư hỏng tài sản của người khác trị giá từ"
+      }
+    },
+    {
+      "id": "article_178_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_178_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tủ từ"
+      }
+    },
+    {
+      "id": "article_178_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_178_clause_5",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 5,
+        "content": "Người phạm tội còn có thể bị phạt tiền từ"
+      }
+    },
+    {
+      "id": "article_179",
+      "label": "Article",
+      "properties": {
+        "name": "Tội thiếu trách nhiệm gây thiệt hại đến tài sản của Nhà",
+        "article_number": 179,
+        "title": "Tội thiếu trách nhiệm gây thiệt hại đến tài sản của Nhà"
+      }
+    },
+    {
+      "id": "article_179_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào có nhiệm vụ trực tiếp trong công tác quản lý tài sản của Nhà nước, cơ quan, tô chức, doanh nghiệp, vì thiếu trách nhiệm mà để mất mát, hư hỏng, lãng phí gây thiệt hại cho tài sản của Nhà nước, cơ quan, tổ chức, doanh nghiệp từ"
+      }
+    },
+    {
+      "id": "article_179_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội gây thiệt hại cho tài sản của Nhà nước, cơ quan, tổ chức, doanh nghiệp trị giá từ"
+      }
+    },
+    {
+      "id": "article_179_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội gây thiệt hại cho tài sản của Nhà nước, cơ quan, tổ chức, doanh nghiệp trị giá"
+      }
+    },
+    {
+      "id": "article_179_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Người phạm tội còn có thể cắm đảm nhiệm chức vụ, cắm hành nghề hoặc làm công việc nhất định từ"
+      }
+    },
+    {
+      "id": "element_office",
+      "label": "CrimeElement",
+      "properties": {
+        "name": "Lợi dụng chức vụ quyền hạn",
+        "type": "Chủ thể"
+      }
+    },
+    {
+      "id": "article_180",
+      "label": "Article",
+      "properties": {
+        "name": "Tội vô ý gây thiệt hại nghiêm trọng đến tài sản",
+        "article_number": 180,
+        "title": "Tội vô ý gây thiệt hại nghiêm trọng đến tài sản"
+      }
+    },
+    {
+      "id": "article_180_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào vô ý gây thiệt hại cho tài sản của người khác trị giá từ"
+      }
+    },
+    {
+      "id": "article_180_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội gây thiệt hại cho tài sản của người khác trị giá"
+      }
+    },
+    {
+      "id": "chapter_XXII",
+      "label": "Chapter",
+      "properties": {
+        "name": "CÁC TỘI PHẠM VÈẺ CHỨC VỤ",
+        "code": "XXII"
+      }
+    },
+    {
+      "id": "article_353",
+      "label": "Article",
+      "properties": {
+        "name": "Tội tham ô tài sản",
+        "article_number": 353,
+        "title": "Tội tham ô tài sản"
+      }
+    },
+    {
+      "id": "article_353_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào lợi dụng chức vụ, quyền hạn chiếm đoạt tài sản mà mình có trách nhiệm quản lý trị giá từ"
+      }
+    },
+    {
+      "id": "article_353_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_353_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_353_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tà"
+      }
+    },
+    {
+      "id": "article_353_clause_5",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 5,
+        "content": "Người phạm tội còn bị cắm đảm nhiệm chức vụ nhất định từ"
+      }
+    },
+    {
+      "id": "article_353_clause_6",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 6,
+        "content": "Người có chức vụ, quyển hạn trong các doanh nghiệp, tổ chức ngoài Nhà nước mà tham ô tài sản, thì bị xử lý theo quy định tại Điều này."
+      }
+    },
+    {
+      "id": "article_354",
+      "label": "Article",
+      "properties": {
+        "name": "Tội nhận hối lộ",
+        "article_number": 354,
+        "title": "Tội nhận hối lộ"
+      }
+    },
+    {
+      "id": "article_354_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào lợi dụng chức vụ, quyền hạn trực tiếp hoặc qua trung gian nhận hoặc sẽ nhận bất kỳ lợi ích nào sau đây cho chính bản thân người đó hoặc cho người hoặc tổ chức khác để làm hoặc không làm một việc vì lợi ích hoặc theo yêu cầu của người đưa hồi lộ, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_354_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_354_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_354_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù"
+      }
+    },
+    {
+      "id": "article_354_clause_5",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 5,
+        "content": "Người phạm tội còn bị cắm đảm nhiệm chức vụ nhất định từ"
+      }
+    },
+    {
+      "id": "article_354_clause_6",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 6,
+        "content": "Người có chức vụ, quyền hạn trong các doanh nghiệp, tổ chức ngoài Nhà nước mà nhận hối lộ, thì bị xử lý theo quy định tại Điều này."
+      }
+    },
+    {
+      "id": "article_355",
+      "label": "Article",
+      "properties": {
+        "name": "Tội lạm dụng chức vụ, quyền hạn chiếm đoạt tài sản",
+        "article_number": 355,
+        "title": "Tội lạm dụng chức vụ, quyền hạn chiếm đoạt tài sản"
+      }
+    },
+    {
+      "id": "article_355_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào lạm dụng chức vụ, quyền hạn chiếm đoạt tài sản của người khác trị giá từ"
+      }
+    },
+    {
+      "id": "article_355_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_355_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_355_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù"
+      }
+    },
+    {
+      "id": "article_355_clause_5",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 5,
+        "content": "Người phạm tội còn bị cắm đảm nhiệm chức vụ nhất định từ"
+      }
+    },
+    {
+      "id": "article_356",
+      "label": "Article",
+      "properties": {
+        "name": "Tội lợi dụng chức vụ, quyền hạn trong khi thi hành công",
+        "article_number": 356,
+        "title": "Tội lợi dụng chức vụ, quyền hạn trong khi thi hành công"
+      }
+    },
+    {
+      "id": "article_356_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào vì vụ lợi hoặc động cơ cá nhân khác mà lợi dụng chức vụ, quyền hạn làm trái công vụ gây thiệt hại về tài sản từ"
+      }
+    },
+    {
+      "id": "article_356_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tủ từ"
+      }
+    },
+    {
+      "id": "article_356_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội gây thiệt hại về tài sản"
+      }
+    },
+    {
+      "id": "article_356_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Người phạm tội còn bị cấm đảm nhiệm chức vụ nhất định từ"
+      }
+    },
+    {
+      "id": "article_357",
+      "label": "Article",
+      "properties": {
+        "name": "Tội lạm quyền trong khi thi hành công vụ",
+        "article_number": 357,
+        "title": "Tội lạm quyền trong khi thi hành công vụ"
+      }
+    },
+    {
+      "id": "article_357_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nảo vì vụ lợi hoặc động cơ cá nhân khác mà vượt quá quyền hạn của mình làm trái công vụ gây thiệt hại về tài sản từ"
+      }
+    },
+    {
+      "id": "article_357_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_357_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội gây thiệt bại về tài sản từ"
+      }
+    },
+    {
+      "id": "article_357_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Phạm tội gây thiệt hại về tài sản"
+      }
+    },
+    {
+      "id": "article_357_clause_5",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 5,
+        "content": "Người phạm tội còn bị cắm đảm nhiệm chức vụ nhất định từ"
+      }
+    },
+    {
+      "id": "article_358",
+      "label": "Article",
+      "properties": {
+        "name": "Tội lợi dụng chức vụ, quyền hạn gây ảnh hưởng đối với",
+        "article_number": 358,
+        "title": "Tội lợi dụng chức vụ, quyền hạn gây ảnh hưởng đối với"
+      }
+    },
+    {
+      "id": "article_358_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào lợi dụng chức vụ, quyền hạn trực tiếp hoặc qua trung gian đòi, nhận hoặc sẽ nhận bắt kỳ lợi ích nào sau đây dưới mọi hình thức để dùng"
+      }
+    },
+    {
+      "id": "article_358_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_358_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_358_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù"
+      }
+    },
+    {
+      "id": "article_359",
+      "label": "Article",
+      "properties": {
+        "name": "Tội giả mạo trong công tác",
+        "article_number": 359,
+        "title": "Tội giả mạo trong công tác"
+      }
+    },
+    {
+      "id": "article_359_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào vì vụ lợi hoặc động cơ cá nhân khác mà lợi dụng chức vụ, quyền hạn thực hiện một trong các hành vi sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_359_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_359_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_359_clause_5",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 5,
+        "content": "Người phạm tội còn bị cắm đảm nhiệm chức vụ hoặc làm công việc nhất định từ"
+      }
+    },
+    {
+      "id": "article_360",
+      "label": "Article",
+      "properties": {
+        "name": "Tội thiếu trách nhiệm gây hậu quả nghiêm trọng",
+        "article_number": 360,
+        "title": "Tội thiếu trách nhiệm gây hậu quả nghiêm trọng"
+      }
+    },
+    {
+      "id": "article_360_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào có chức vụ, quyền hạn vì thiểu trách nhiệm mà không thực hiện hoặc thực hiện không đúng nhiệm vụ được giao thuộc một trong các trường hợp sau đây, trừ trường hợp quy định tại các điều"
+      }
+    },
+    {
+      "id": "article_360_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_360_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ Ø"
+      }
+    },
+    {
+      "id": "article_360_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Người có chức vụ, quyền hạn vì thiếu trách nhiệm mà không thực hiện hoặc thực hiện không đúng nhiệm vụ được giao gây thương tích hoặc gây tôn hại cho sức khỏe của"
+      }
+    },
+    {
+      "id": "article_360_clause_5",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 5,
+        "content": "Người phạm tội còn bị cắm đảm nhiệm chức vụ, cấm hành nghề hoặc làm công việc nhất định từ"
+      }
+    },
+    {
+      "id": "article_361",
+      "label": "Article",
+      "properties": {
+        "name": "Tội cố ý làm lộ bí mật công tác; tội chiếm đoạt, mua bán",
+        "article_number": 361,
+        "title": "Tội cố ý làm lộ bí mật công tác; tội chiếm đoạt, mua bán"
+      }
+    },
+    {
+      "id": "article_361_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào cố ý làm lộ bí mật công tác hoặc chiếm đoạt, mua bán, tiêu hủy tài liệu bí mật công tác, nêu không thuộc trường hợp quy định tại các điêu"
+      }
+    },
+    {
+      "id": "article_361_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_361_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Người phạm tội còn bị cấm đảm nhiệm chức vụ, cấm hành nghề hoặc làm công việc nhất định từ"
+      }
+    },
+    {
+      "id": "article_362",
+      "label": "Article",
+      "properties": {
+        "name": "Tội vô ý làm lộ bí mật công tác; tội làm mất tài liệu bí mật",
+        "article_number": 362,
+        "title": "Tội vô ý làm lộ bí mật công tác; tội làm mất tài liệu bí mật"
+      }
+    },
+    {
+      "id": "article_362_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào vô ý làm lộ bí mật công tác hoặc làm mất tài liệu bí mật công tác thuộc một trong các trường hợp sau đây, nêu không thuộc trường hợp quy định tại Điều"
+      }
+    },
+    {
+      "id": "article_362_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_362_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Người phạm tội còn có thể bị cấm đảm nhiệm chức vụ, cấm hành nghề hoặc làm công việc nhất định từ"
+      }
+    },
+    {
+      "id": "article_363",
+      "label": "Article",
+      "properties": {
+        "name": "Tội đào nhiệm",
+        "article_number": 363,
+        "title": "Tội đào nhiệm"
+      }
+    },
+    {
+      "id": "article_363_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào là cán bộ, công chức, viên chức mà cố ý từ bỏ nhiệm vụ công tác thuộc một trong các trường hợp sau đây, thì bị phạt cải tạo không giam giữ đến"
+      }
+    },
+    {
+      "id": "article_363_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_363_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Người phạm tội còn có thể bị cắm đảm nhiệm chức vụ nhất định từ"
+      }
+    },
+    {
+      "id": "article_364",
+      "label": "Article",
+      "properties": {
+        "name": "Tội đưa hối lộ",
+        "article_number": 364,
+        "title": "Tội đưa hối lộ"
+      }
+    },
+    {
+      "id": "article_364_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào trực tiếp hay qua trung gian đã đưa hoặc sẽ đưa cho người có chức vụ, quyền bạn hoặc người khác hoặc tổ chức khác bất kỳ lợi ích nào sau đây để người có chức vụ, quyền hạn làm hoặc không làm một việc vì lợi ích hoặc theo yêu cầu của người đưa hối lộ, thì bị phạt tiền từ"
+      }
+    },
+    {
+      "id": "article_364_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_364_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội trong trường hợp của hối lộ là tiền, tài sản, lợi ích vật chất khác trị giá từ"
+      }
+    },
+    {
+      "id": "article_364_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Phạm tội trong trường hợp của hối lộ là tiền, tài sản, lợi ích vật chất khác trị giá"
+      }
+    },
+    {
+      "id": "article_364_clause_5",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 5,
+        "content": "Người phạm tội còn có thể bị phạt tiền từ"
+      }
+    },
+    {
+      "id": "article_364_clause_6",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 6,
+        "content": "Người nào đưa hoặc sẽ đưa hối lộ cho công chức nước ngoài, công chức của tổ chức quốc tế công, người có chức vụ trong các doanh nghiệp, tô chức ngoài Nhà nước cũng bị xử lý theo quy định tại Điều này."
+      }
+    },
+    {
+      "id": "article_364_clause_7",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 7,
+        "content": "Người bị ép buộc đưa hối lộ mà chủ động khai báo trước khi bị phát giác, thì được coi là không có tội và được trả lại toàn bộ của đã dùng để đưa hối lộ. Người đưa hối lộ tuy không bị ép buộc nhưng đã chủ động khai báo trước khi bị phát giác, thì có thể được miễn trách nhiệm hình sự và được trả lại một phần hoặc toàn bộ của đã dùng để đưa hồi lộ."
+      }
+    },
+    {
+      "id": "article_365",
+      "label": "Article",
+      "properties": {
+        "name": "Tội môi giới hối lộ",
+        "article_number": 365,
+        "title": "Tội môi giới hối lộ"
+      }
+    },
+    {
+      "id": "article_365_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào môi giới hối lộ mà của hối lộ thuộc một trong các trường hợp sau đây, thì bị phạt tiền từ"
+      }
+    },
+    {
+      "id": "article_365_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_365_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội thuộc trường hợp của hối lộ trị giá từ"
+      }
+    },
+    {
+      "id": "article_365_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Phạm tội thuộc trường hợp của hối lộ trị giá"
+      }
+    },
+    {
+      "id": "article_365_clause_5",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 5,
+        "content": "Người phạm tội còn có thể bị phạt tiền từ"
+      }
+    },
+    {
+      "id": "article_365_clause_6",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 6,
+        "content": "Người môi giới hối lộ mà chủ động khai báo trước khi bị phát giác, thì có thể được miễn trách nhiệm hình sự."
+      }
+    },
+    {
+      "id": "article_365_clause_7",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 7,
+        "content": "Người nào môi giới hối lộ trong các doanh nghiệp, tổ chức ngoài Nhà nước cũng bị xử lý theo quy định tại Điều này."
+      }
+    },
+    {
+      "id": "article_366",
+      "label": "Article",
+      "properties": {
+        "name": "Tội lợi dụng ảnh hưởng đối với người có chức vụ quyền",
+        "article_number": 366,
+        "title": "Tội lợi dụng ảnh hưởng đối với người có chức vụ quyền"
+      }
+    },
+    {
+      "id": "article_366_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào trực tiếp hoặc qua trung gian nhận bất kỳ lợi ích nào dưới mọi hình thức thuộc một trong các trường hợp sau đây hoặc đã bị xử lý ký luật về hành vi này mà còn vi phạm, để dùng ảnh hưởng của mình thúc đây người có chức vụ, quyền hạn làm hoặc không làm một việc thuộc trách nhiệm của họ hoặc làm một việc không được phép làm, thì bị phạt cải tạo không giam giữ đến"
+      }
+    },
+    {
+      "id": "article_366_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_366_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội trong trường hợp tiền, tài sản hoặc lợi ích vật chất khác trị giá"
+      }
+    },
+    {
+      "id": "article_366_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Người phạm tội còn có thể bị phạt tiền từ"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "article_168",
+      "target": "chapter_XVI",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_168_clause_1",
+      "target": "article_168",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_168_clause_1",
+      "target": "element_violence",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_168_clause_2",
+      "target": "article_168",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_168_clause_3",
+      "target": "article_168",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_168_clause_4",
+      "target": "article_168",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_168_clause_5",
+      "target": "article_168",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_168_clause_6",
+      "target": "article_168",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_169",
+      "target": "chapter_XVI",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_169_clause_1",
+      "target": "article_169",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_169_clause_2",
+      "target": "article_169",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_169_clause_3",
+      "target": "article_169",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_169_clause_4",
+      "target": "article_169",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_169_clause_5",
+      "target": "article_169",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_169_clause_6",
+      "target": "article_169",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_170",
+      "target": "chapter_XVI",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_170_clause_1",
+      "target": "article_170",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_170_clause_1",
+      "target": "element_violence",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_170_clause_2",
+      "target": "article_170",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_170_clause_3",
+      "target": "article_170",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_170_clause_4",
+      "target": "article_170",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_170_clause_5",
+      "target": "article_170",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_171",
+      "target": "chapter_XVI",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_171_clause_1",
+      "target": "article_171",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_171_clause_2",
+      "target": "article_171",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_171_clause_3",
+      "target": "article_171",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_171_clause_4",
+      "target": "article_171",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_171_clause_5",
+      "target": "article_171",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_172",
+      "target": "chapter_XVI",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_172_clause_1",
+      "target": "article_172",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_172_clause_2",
+      "target": "article_172",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_172_clause_3",
+      "target": "article_172",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_172_clause_4",
+      "target": "article_172",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_172_clause_5",
+      "target": "article_172",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_173",
+      "target": "chapter_XVI",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_173_clause_1",
+      "target": "article_173",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_173_clause_1",
+      "target": "element_stealth",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_173_clause_2",
+      "target": "article_173",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_173_clause_3",
+      "target": "article_173",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_173_clause_4",
+      "target": "article_173",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_173_clause_5",
+      "target": "article_173",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_174",
+      "target": "chapter_XVII",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_174_clause_2",
+      "target": "article_174",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_174_clause_3",
+      "target": "article_174",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_174_clause_4",
+      "target": "article_174",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_175",
+      "target": "chapter_XVI",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_175_clause_1",
+      "target": "article_175",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_175_clause_2",
+      "target": "article_175",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_175_clause_3",
+      "target": "article_175",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_175_clause_4",
+      "target": "article_175",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_175_clause_5",
+      "target": "article_175",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_176",
+      "target": "chapter_XVI",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_176_clause_1",
+      "target": "article_176",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_176_clause_2",
+      "target": "article_176",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_177",
+      "target": "chapter_XVI",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_177_clause_1",
+      "target": "article_177",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_177_clause_2",
+      "target": "article_177",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_177_clause_3",
+      "target": "article_177",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_177_clause_4",
+      "target": "article_177",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_178",
+      "target": "chapter_XVI",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_178_clause_1",
+      "target": "article_178",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_178_clause_2",
+      "target": "article_178",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_178_clause_3",
+      "target": "article_178",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_178_clause_4",
+      "target": "article_178",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_178_clause_5",
+      "target": "article_178",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_179",
+      "target": "chapter_XVI",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_179_clause_1",
+      "target": "article_179",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_179_clause_2",
+      "target": "article_179",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_179_clause_3",
+      "target": "article_179",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_179_clause_4",
+      "target": "article_179",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_179_clause_4",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_180",
+      "target": "chapter_XVI",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_180_clause_1",
+      "target": "article_180",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_180_clause_2",
+      "target": "article_180",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_353",
+      "target": "chapter_XXII",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_353_clause_1",
+      "target": "article_353",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_353_clause_1",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_353_clause_2",
+      "target": "article_353",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_353_clause_3",
+      "target": "article_353",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_353_clause_4",
+      "target": "article_353",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_353_clause_5",
+      "target": "article_353",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_353_clause_5",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_353_clause_6",
+      "target": "article_353",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_353_clause_6",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_354",
+      "target": "chapter_XXII",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_354_clause_1",
+      "target": "article_354",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_354_clause_1",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_354_clause_2",
+      "target": "article_354",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_354_clause_3",
+      "target": "article_354",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_354_clause_4",
+      "target": "article_354",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_354_clause_5",
+      "target": "article_354",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_354_clause_5",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_354_clause_6",
+      "target": "article_354",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_354_clause_6",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_355",
+      "target": "chapter_XXII",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_355_clause_1",
+      "target": "article_355",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_355_clause_1",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_355_clause_2",
+      "target": "article_355",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_355_clause_3",
+      "target": "article_355",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_355_clause_4",
+      "target": "article_355",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_355_clause_5",
+      "target": "article_355",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_355_clause_5",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_356",
+      "target": "chapter_XXII",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_356_clause_1",
+      "target": "article_356",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_356_clause_1",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_356_clause_2",
+      "target": "article_356",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_356_clause_3",
+      "target": "article_356",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_356_clause_4",
+      "target": "article_356",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_356_clause_4",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_357",
+      "target": "chapter_XXII",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_357_clause_1",
+      "target": "article_357",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_357_clause_1",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_357_clause_2",
+      "target": "article_357",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_357_clause_3",
+      "target": "article_357",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_357_clause_4",
+      "target": "article_357",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_357_clause_5",
+      "target": "article_357",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_357_clause_5",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_358",
+      "target": "chapter_XXII",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_358_clause_1",
+      "target": "article_358",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_358_clause_1",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_358_clause_2",
+      "target": "article_358",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_358_clause_3",
+      "target": "article_358",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_358_clause_4",
+      "target": "article_358",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_359",
+      "target": "chapter_XXII",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_359_clause_1",
+      "target": "article_359",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_359_clause_1",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_359_clause_2",
+      "target": "article_359",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_359_clause_4",
+      "target": "article_359",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_359_clause_5",
+      "target": "article_359",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_359_clause_5",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_360",
+      "target": "chapter_XXII",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_360_clause_1",
+      "target": "article_360",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_360_clause_1",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_360_clause_2",
+      "target": "article_360",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_360_clause_3",
+      "target": "article_360",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_360_clause_4",
+      "target": "article_360",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_360_clause_4",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_360_clause_5",
+      "target": "article_360",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_360_clause_5",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_361",
+      "target": "chapter_XXII",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_361_clause_1",
+      "target": "article_361",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_361_clause_1",
+      "target": "element_stealth",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_361_clause_2",
+      "target": "article_361",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_361_clause_3",
+      "target": "article_361",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_361_clause_3",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_362",
+      "target": "chapter_XXII",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_362_clause_1",
+      "target": "article_362",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_362_clause_1",
+      "target": "element_stealth",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_362_clause_2",
+      "target": "article_362",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_362_clause_3",
+      "target": "article_362",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_362_clause_3",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_363",
+      "target": "chapter_XXII",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_363_clause_1",
+      "target": "article_363",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_363_clause_2",
+      "target": "article_363",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_363_clause_3",
+      "target": "article_363",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_363_clause_3",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_364",
+      "target": "chapter_XXII",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_364_clause_1",
+      "target": "article_364",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_364_clause_1",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_364_clause_2",
+      "target": "article_364",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_364_clause_3",
+      "target": "article_364",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_364_clause_4",
+      "target": "article_364",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_364_clause_5",
+      "target": "article_364",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_364_clause_6",
+      "target": "article_364",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_364_clause_6",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_364_clause_7",
+      "target": "article_364",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_365",
+      "target": "chapter_XXII",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_365_clause_1",
+      "target": "article_365",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_365_clause_2",
+      "target": "article_365",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_365_clause_3",
+      "target": "article_365",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_365_clause_4",
+      "target": "article_365",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_365_clause_5",
+      "target": "article_365",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_365_clause_6",
+      "target": "article_365",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_365_clause_7",
+      "target": "article_365",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_366",
+      "target": "chapter_XXII",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_366_clause_1",
+      "target": "article_366",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_366_clause_1",
+      "target": "element_office",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_366_clause_2",
+      "target": "article_366",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_366_clause_3",
+      "target": "article_366",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_366_clause_4",
+      "target": "article_366",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    }
+  ]
+}

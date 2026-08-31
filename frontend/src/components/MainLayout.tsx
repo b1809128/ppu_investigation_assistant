@@ -13,7 +13,9 @@ import {
   Menu,
   X,
   Server,
-  FileText
+  FileText,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 
 interface MainLayoutProps {
@@ -33,6 +35,15 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   const [time, setTime] = useState<string>('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lanIp, setLanIp] = useState('192.168.1.88'); // Standard mock LAN IP for offline net
+  const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(() => {
+    return localStorage.getItem('sidebar-collapsed') === 'true';
+  });
+
+  const toggleSidebar = () => {
+    const newVal = !sidebarCollapsed;
+    setSidebarCollapsed(newVal);
+    localStorage.setItem('sidebar-collapsed', String(newVal));
+  };
 
   useEffect(() => {
     const updateTime = () => {
@@ -106,20 +117,20 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
           <div className="hidden lg:flex items-center gap-4">
             {/* LAN IP display */}
             <div className="flex items-center gap-1.5 text-xs text-[#334155] font-mono bg-[#F8FAFC] border border-[#E2E8F0] px-3 py-1.5 rounded-full shadow-sm">
-              <Server size={12} className="text-[#126DA6]" />
+              <Server size={12} className="text-[#1c75bb]" />
               <span>IP LAN: {lanIp}</span>
             </div>
             
             {/* Clock */}
             <div className="flex items-center gap-2 text-xs text-[#334155] font-mono bg-[#F8FAFC] border border-[#E2E8F0] px-3 py-1.5 rounded-full shadow-sm">
-              <Clock size={12} className="text-[#126DA6]" />
+              <Clock size={12} className="text-[#1c75bb]" />
               <span>{time}</span>
             </div>
           </div>
 
           {user && (
             <div className="flex items-center gap-3 pl-4 border-l border-slate-200">
-              <div className="w-9 h-9 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] flex items-center justify-center text-[#126DA6] shadow-sm">
+              <div className="w-9 h-9 rounded-full bg-[#ebf4fa] border border-[#BFDBFE] flex items-center justify-center text-[#1c75bb] shadow-sm">
                 <UserIcon size={18} />
               </div>
               <div className="text-left hidden md:block">
@@ -147,12 +158,18 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       {/* Sidebars and Main content */}
       <div className="flex-1 flex relative">
         
-        {/* Desktop Sidebar - White Minimalist style */}
-        <aside className="w-64 bg-white border-r border-[#E2E8F0] flex flex-col justify-between py-6 sticky top-[64px] h-[calc(100vh-64px)] shrink-0 hidden md:flex no-print">
-          <div className="px-3 space-y-1">
-            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-3.5 mb-4 font-sans">
-              HỒ SƠ NGHIỆP VỤ
-            </div>
+        {/* Desktop Sidebar - White Collapsible style */}
+        <aside className={`bg-white border-r border-[#E2E8F0] flex flex-col justify-between py-6 sticky top-[64px] h-[calc(100vh-64px)] shrink-0 hidden md:flex no-print transition-all duration-300 ease-in-out relative ${
+          sidebarCollapsed ? 'w-16' : 'w-64'
+        }`}>
+          <div className={`${sidebarCollapsed ? 'px-1.5' : 'px-3'} space-y-1`}>
+            {!sidebarCollapsed ? (
+              <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-3.5 mb-4 font-sans truncate">
+                HỒ SƠ NGHIỆP VỤ
+              </div>
+            ) : (
+              <div className="h-[26px]" /> // Spacer to balance height
+            )}
             
             {allowedMenuItems.map((item) => {
               const Icon = item.icon;
@@ -162,24 +179,37 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                   key={item.id}
                   type="button"
                   onClick={() => setCurrentTab(item.id)}
-                  className={`w-full flex items-center gap-3.5 px-3.5 py-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-150 cursor-pointer ${
+                  title={sidebarCollapsed ? item.label : undefined}
+                  className={`w-full flex items-center transition-all duration-150 cursor-pointer ${
+                    sidebarCollapsed ? 'justify-center p-3 rounded-lg' : 'gap-3.5 px-3.5 py-3 rounded-lg border-l-4'
+                  } ${
                     isActive 
-                      ? 'bg-[#EFF6FF] text-[#1D4ED8] border-l-4 border-l-[#126DA6] font-bold shadow-sm' 
-                      : 'text-[#475569] hover:text-[#126DA6] hover:bg-[#F8FAFC] border-l-4 border-transparent'
+                      ? 'bg-[#ebf4fa] text-[#155d95] font-bold shadow-sm' + (sidebarCollapsed ? '' : ' border-l-[#1c75bb]') 
+                      : 'text-[#475569] hover:text-[#1c75bb] hover:bg-[#F8FAFC]' + (sidebarCollapsed ? '' : ' border-l-transparent')
                   }`}
                 >
-                  <Icon size={16} className={isActive ? 'text-[#1D4ED8]' : 'text-[#64748B]'} />
-                  <span>{item.label}</span>
+                  <Icon size={16} className={isActive ? 'text-[#155d95]' : 'text-[#64748B]'} />
+                  {!sidebarCollapsed && <span className="truncate">{item.label}</span>}
                 </button>
               );
             })}
           </div>
 
           <div className="px-4">
-            <div className="text-[9px] text-slate-400 text-center uppercase tracking-widest mb-3 border-t border-slate-100 pt-3 font-semibold font-mono">
-              Hệ thống an ninh cục bộ
+            <div className="text-[9px] text-slate-400 text-center uppercase tracking-widest mb-3 border-t border-slate-100 pt-3 font-semibold font-mono truncate">
+              {sidebarCollapsed ? "AN" : "Hệ thống an ninh cục bộ"}
             </div>
           </div>
+
+          {/* Toggle Collapsible Button */}
+          <button
+            type="button"
+            onClick={toggleSidebar}
+            className="absolute top-1/2 -right-3 transform -translate-y-1/2 w-6 h-6 rounded-full bg-white border border-[#E2E8F0] shadow-md flex items-center justify-center hover:bg-slate-50 hover:border-slate-300 text-slate-500 hover:text-[#1c75bb] transition-all cursor-pointer z-50 no-print"
+            title={sidebarCollapsed ? "Mở rộng thanh điều hướng" : "Thu gọn thanh điều hướng"}
+          >
+            {sidebarCollapsed ? <ChevronRight size={12} /> : <ChevronLeft size={12} />}
+          </button>
         </aside>
 
         {/* Mobile Sidebar Drawer */}
@@ -219,11 +249,11 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                         }}
                         className={`w-full flex items-center gap-3.5 px-3.5 py-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-150 cursor-pointer ${
                           isActive 
-                            ? 'bg-[#EFF6FF] text-[#1D4ED8] border-l-4 border-l-[#126DA6] font-bold shadow-sm' 
-                            : 'text-[#475569] hover:text-[#126DA6] hover:bg-[#F8FAFC]'
+                            ? 'bg-[#ebf4fa] text-[#155d95] border-l-4 border-l-[#1c75bb] font-bold shadow-sm' 
+                            : 'text-[#475569] hover:text-[#1c75bb] hover:bg-[#F8FAFC]'
                         }`}
                       >
-                        <Icon size={16} className={isActive ? 'text-[#1D4ED8]' : 'text-[#64748B]'} />
+                        <Icon size={16} className={isActive ? 'text-[#155d95]' : 'text-[#64748B]'} />
                         <span>{item.label}</span>
                       </button>
                     );

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useCasesStore } from '../store/cases';
+import { formatDateToDDMMYYYY } from '../utils/date';
+
 import type { CaseFile } from '../store/cases';
 import { useAuthStore } from '../store/auth';
 import { CaseFileDetailView } from '../components/CaseFileDetailView';
@@ -147,7 +149,7 @@ export const Cases: React.FC<CasesProps> = ({ onSelectEvaluate }) => {
           <div className="flex items-center justify-between no-print">
             <div>
               <h2 className="text-base font-bold tracking-wider text-slate-800 flex items-center gap-2">
-                <FolderLock className="text-[#126DA6]" />
+                <FolderLock className="text-[#1c75bb]" />
                 DANH SÁCH QUẢN LÝ HỒ SƠ VỤ ÁN
               </h2>
               <p className="text-xs text-slate-500 mt-1">
@@ -160,7 +162,7 @@ export const Cases: React.FC<CasesProps> = ({ onSelectEvaluate }) => {
               <button
                 type="button"
                 onClick={() => handleOpenCaseModal()}
-                className="flex items-center gap-2 bg-[#126DA6] hover:bg-[#1D4ED8] border border-[#126DA6] text-white text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-lg shadow-sm transition-all active:scale-95 duration-100 cursor-pointer"
+                className="flex items-center gap-2 bg-[#1c75bb] hover:bg-[#155d95] border border-[#1c75bb] text-white text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-lg shadow-sm transition-all active:scale-95 duration-100 cursor-pointer"
               >
                 <FolderPlus size={16} />
                 <span>Thụ lý vụ án mới</span>
@@ -171,14 +173,14 @@ export const Cases: React.FC<CasesProps> = ({ onSelectEvaluate }) => {
           {/* Cases Grid */}
           {isLoading ? (
             <div className="flex items-center justify-center py-20">
-              <svg className="animate-spin h-8 w-8 text-[#126DA6]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin h-8 w-8 text-[#1c75bb]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
             </div>
           ) : cases.length === 0 ? (
             <div className="bg-white border border-[#E2E8F0] rounded-lg p-12 text-center text-slate-500 shadow-sm">
-              <FolderLock size={48} className="mx-auto mb-4 opacity-25 text-[#126DA6]" />
+              <FolderLock size={48} className="mx-auto mb-4 opacity-25 text-[#1c75bb]" />
               <p className="text-sm font-semibold">Chưa có hồ sơ vụ án nào được thụ lý trong tài khoản của bạn</p>
             </div>
           ) : (
@@ -189,11 +191,11 @@ export const Cases: React.FC<CasesProps> = ({ onSelectEvaluate }) => {
                   onClick={() => handleOpenCaseDetail(c.id)}
                   className="bg-white border border-[#E2E8F0] hover:border-slate-300 rounded-lg p-5 hover:shadow-sm transition-all duration-200 cursor-pointer flex flex-col justify-between group relative overflow-hidden"
                 >
-                  <div className="absolute top-0 left-0 w-1.5 h-full bg-slate-200 group-hover:bg-[#126DA6] transition-colors duration-200" />
+                  <div className="absolute top-0 left-0 w-1.5 h-full bg-slate-200 group-hover:bg-[#1c75bb] transition-colors duration-200" />
                   
                   <div>
                     <div className="flex items-start justify-between mb-3 pl-2">
-                      <span className="text-[10px] font-bold text-[#126DA6] font-mono uppercase bg-[#EFF6FF] border border-[#BFDBFE] px-2 py-0.5 rounded-lg shadow-sm">
+                      <span className="text-[10px] font-bold text-[#1c75bb] font-mono uppercase bg-[#ebf4fa] border border-[#BFDBFE] px-2 py-0.5 rounded-lg shadow-sm">
                         {c.case_code || c.case_number}
                       </span>
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-lg border uppercase tracking-wider ${
@@ -201,13 +203,13 @@ export const Cases: React.FC<CasesProps> = ({ onSelectEvaluate }) => {
                           ? 'bg-[#ECFDF5] border-[#A7F3D0] text-[#065F46]' 
                           : c.status === 'SUSPENDED'
                           ? 'bg-[#FFFBEB] border-[#FDE68A] text-[#B45309]'
-                          : 'bg-[#EFF6FF] border-[#BFDBFE] text-[#126DA6]'
+                          : 'bg-[#ebf4fa] border-[#BFDBFE] text-[#1c75bb]'
                       }`}>
                         {c.status === 'CLOSED' ? 'Đã đóng' : c.status === 'SUSPENDED' ? 'Tạm đình chỉ' : 'Đang điều tra'}
                       </span>
                     </div>
 
-                    <h3 className="text-sm font-bold text-slate-800 pl-2 group-hover:text-[#126DA6] line-clamp-1 mb-2">
+                    <h3 className="text-sm font-bold text-slate-800 pl-2 group-hover:text-[#1c75bb] line-clamp-1 mb-2">
                       {c.case_name || c.title}
                     </h3>
                     
@@ -220,7 +222,7 @@ export const Cases: React.FC<CasesProps> = ({ onSelectEvaluate }) => {
                     <div className="flex items-center gap-4 font-semibold text-slate-700">
                       <span className="flex items-center gap-1">
                         <Calendar size={12} className="text-slate-500" />
-                        {c.incident_date ? new Date(c.incident_date).toLocaleDateString('vi-VN') : 'Chưa rõ'}
+                        {formatDateToDDMMYYYY(c.incident_date)}
                       </span>
                       <span className="flex items-center gap-1">
                         <Coins size={12} className="text-slate-500" />
@@ -233,7 +235,7 @@ export const Cases: React.FC<CasesProps> = ({ onSelectEvaluate }) => {
                         <button
                           type="button"
                           onClick={() => handleOpenCaseModal(c)}
-                          className="p-1.5 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:bg-[#F1F5F9] hover:text-[#126DA6] hover:border-[#CBD5E1] text-slate-500 transition-colors duration-150 cursor-pointer shadow-sm"
+                          className="p-1.5 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:bg-[#F1F5F9] hover:text-[#1c75bb] hover:border-[#CBD5E1] text-slate-500 transition-colors duration-150 cursor-pointer shadow-sm"
                           title="Sửa hồ sơ"
                         >
                           <Edit3 size={12} />
@@ -251,7 +253,7 @@ export const Cases: React.FC<CasesProps> = ({ onSelectEvaluate }) => {
                         </button>
                       )}
                       
-                      <ChevronRight size={14} className="text-slate-400 group-hover:text-[#126DA6] transition-colors duration-150" />
+                      <ChevronRight size={14} className="text-slate-400 group-hover:text-[#1c75bb] transition-colors duration-150" />
                     </div>
                   </div>
                 </div>
@@ -283,7 +285,7 @@ export const Cases: React.FC<CasesProps> = ({ onSelectEvaluate }) => {
             </button>
 
             <h3 className="text-sm font-bold text-slate-800 mb-6 uppercase tracking-wider flex items-center gap-2 border-b border-[#E2E8F0] pb-3">
-              <FolderPlus size={18} className="text-[#126DA6]" />
+              <FolderPlus size={18} className="text-[#1c75bb]" />
               {editingCase ? 'Cập nhật thông tin chi tiết hồ sơ vụ án' : 'Thụ lý hồ sơ vụ án hình sự mới'}
             </h3>
 
@@ -300,7 +302,7 @@ export const Cases: React.FC<CasesProps> = ({ onSelectEvaluate }) => {
                     placeholder="Ví dụ: QĐ-01/2026/VPCQ"
                     value={caseCode}
                     onChange={(e) => setCaseCode(e.target.value)}
-                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg p-2.5 text-slate-800 font-mono"
+                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#1c75bb] focus:ring-1 focus:ring-[#1c75bb] focus:outline-none rounded-lg p-2.5 text-slate-800 font-mono"
                   />
                 </div>
                 <div>
@@ -314,7 +316,7 @@ export const Cases: React.FC<CasesProps> = ({ onSelectEvaluate }) => {
                     placeholder="Ví dụ: Vụ trộm cắp tài sản tại tiệm vàng Kim Phát"
                     value={caseName}
                     onChange={(e) => setCaseName(e.target.value)}
-                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg p-2.5 text-slate-800"
+                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#1c75bb] focus:ring-1 focus:ring-[#1c75bb] focus:outline-none rounded-lg p-2.5 text-slate-800"
                   />
                 </div>
               </div>
@@ -330,7 +332,7 @@ export const Cases: React.FC<CasesProps> = ({ onSelectEvaluate }) => {
                     required
                     value={incidentDate}
                     onChange={(e) => setIncidentDate(e.target.value)}
-                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg p-2 text-slate-800 font-mono"
+                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#1c75bb] focus:ring-1 focus:ring-[#1c75bb] focus:outline-none rounded-lg p-2 text-slate-800 font-mono"
                   />
                 </div>
                 <div>
@@ -344,7 +346,7 @@ export const Cases: React.FC<CasesProps> = ({ onSelectEvaluate }) => {
                     placeholder="Ví dụ: Quận Hoàn Kiếm, Hà Nội"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg p-2.5 text-slate-800"
+                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#1c75bb] focus:ring-1 focus:ring-[#1c75bb] focus:outline-none rounded-lg p-2.5 text-slate-800"
                   />
                 </div>
                 <div>
@@ -357,7 +359,7 @@ export const Cases: React.FC<CasesProps> = ({ onSelectEvaluate }) => {
                     placeholder="Ví dụ: 120000000"
                     value={damageValue}
                     onChange={(e) => setDamageValue(e.target.value)}
-                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg p-2.5 text-slate-800 font-mono"
+                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#1c75bb] focus:ring-1 focus:ring-[#1c75bb] focus:outline-none rounded-lg p-2.5 text-slate-800 font-mono"
                   />
                 </div>
               </div>
@@ -371,7 +373,7 @@ export const Cases: React.FC<CasesProps> = ({ onSelectEvaluate }) => {
                     id="status_input"
                     value={caseStatus}
                     onChange={(e) => setCaseStatus(e.target.value as any)}
-                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg p-2.5 text-slate-800"
+                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#1c75bb] focus:ring-1 focus:ring-[#1c75bb] focus:outline-none rounded-lg p-2.5 text-slate-800"
                   >
                     <option value="INVESTIGATING">Đang tiến hành thụ lý điều tra</option>
                     <option value="SUSPENDED">Tạm đình chỉ vụ việc / chờ xác minh</option>
@@ -391,7 +393,7 @@ export const Cases: React.FC<CasesProps> = ({ onSelectEvaluate }) => {
                   placeholder="Nhập chi tiết hành vi phạm tội của đối tượng, thủ đoạn gây án, tài sản bị tác động..."
                   value={summaryActs}
                   onChange={(e) => setSummaryActs(e.target.value)}
-                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg p-2.5 text-slate-800 resize-none leading-relaxed font-sans"
+                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] focus:border-[#1c75bb] focus:ring-1 focus:ring-[#1c75bb] focus:outline-none rounded-lg p-2.5 text-slate-800 resize-none leading-relaxed font-sans"
                 />
               </div>
 
@@ -405,7 +407,7 @@ export const Cases: React.FC<CasesProps> = ({ onSelectEvaluate }) => {
                 </button>
                 <button
                   type="submit"
-                  className="bg-[#126DA6] hover:bg-[#1D4ED8] border border-[#126DA6] text-white px-5 py-2.5 rounded-lg cursor-pointer font-bold text-xs uppercase tracking-wider shadow-sm"
+                  className="bg-[#1c75bb] hover:bg-[#155d95] border border-[#1c75bb] text-white px-5 py-2.5 rounded-lg cursor-pointer font-bold text-xs uppercase tracking-wider shadow-sm"
                 >
                   {editingCase ? 'Lưu cập nhật' : 'Thành lập hồ sơ'}
                 </button>

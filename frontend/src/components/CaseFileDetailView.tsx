@@ -19,6 +19,8 @@ import {
 } from 'lucide-react';
 import api from '../services/api';
 import { showToast } from '../services/api';
+import { formatDateToDDMMYYYY, parseDDMMYYYYToYYYYMMDD, formatDateToDateTimeString } from '../utils/date';
+
 
 interface CaseFileDetailViewProps {
   caseId: number;
@@ -283,7 +285,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
     if (s) {
       setEditingSuspect(s);
       setSuspectName(s.full_name);
-      setSuspectDob(s.dob || '');
+      setSuspectDob(s.dob ? formatDateToDDMMYYYY(s.dob) : '');
       setSuspectCccd(s.identity_card || '');
       
       // Parse involvement from address/conviction field if structured (e.g. "[Chủ mưu] Tiền án...")
@@ -315,14 +317,14 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
     e.preventDefault();
     if (!suspectName.trim()) return;
 
-    // Birthday validation (YYYY-MM-DD)
+    // Birthday validation (DD/MM/YYYY)
     if (suspectDob) {
-      const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+      const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
       if (!dateRegex.test(suspectDob)) {
-        showToast('Ngày sinh phải có định dạng YYYY-MM-DD (Ví dụ: 1995-08-12).', 'error');
+        showToast('Ngày sinh phải có định dạng DD/MM/YYYY (Ví dụ: 12/08/1995).', 'error');
         return;
       }
-      const parsedDate = Date.parse(suspectDob);
+      const parsedDate = Date.parse(parseDDMMYYYYToYYYYMMDD(suspectDob));
       if (isNaN(parsedDate)) {
         showToast('Ngày sinh không hợp lệ.', 'error');
         return;
@@ -345,7 +347,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
 
     const payload = {
       full_name: suspectName,
-      dob: suspectDob || null,
+      dob: suspectDob ? parseDDMMYYYYToYYYYMMDD(suspectDob) : null,
       identity_card: suspectCccd || null,
       prior_convictions: finalAddress || null,
       role_in_case: suspectRole,
@@ -609,7 +611,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
               <div>
                 <span className="text-[9px] text-slate-550 block uppercase font-bold">Thời gian xảy ra</span>
                 <span className="text-slate-800 font-mono font-semibold">
-                  {currentCase.incident_date ? new Date(currentCase.incident_date).toLocaleString('vi-VN') : 'Không rõ'}
+                  {formatDateToDDMMYYYY(currentCase.incident_date)}
                 </span>
               </div>
             </div>
@@ -651,7 +653,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
           onClick={() => setActiveTab('info')}
           className={`pb-3 text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer border-b-2 ${
             activeTab === 'info'
-              ? 'border-[#126DA6] text-[#126DA6]'
+              ? 'border-[#1c75bb] text-[#1c75bb]'
               : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
         >
@@ -662,7 +664,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
           onClick={() => setActiveTab('documents')}
           className={`pb-3 text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer border-b-2 flex items-center gap-2 ${
             activeTab === 'documents'
-              ? 'border-[#126DA6] text-[#126DA6]'
+              ? 'border-[#1c75bb] text-[#1c75bb]'
               : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
         >
@@ -676,7 +678,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
           onClick={() => setActiveTab('timeline')}
           className={`pb-3 text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer border-b-2 ${
             activeTab === 'timeline'
-              ? 'border-[#126DA6] text-[#126DA6]'
+              ? 'border-[#1c75bb] text-[#1c75bb]'
               : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
         >
@@ -703,7 +705,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
                 onClick={() => handleOpenSuspectModal()}
                 className="flex items-center gap-1.5 bg-white border border-slate-250 text-slate-750 text-xs font-bold px-3 py-2 rounded-lg cursor-pointer shadow-sm hover:bg-slate-50"
               >
-                <UserPlus size={14} className="text-[#126DA6]" />
+                <UserPlus size={14} className="text-[#1c75bb]" />
                 <span>Thêm đối tượng</span>
               </button>
             )}
@@ -758,7 +760,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
                           <td className="p-4 font-bold text-slate-900">
                             <MaskedText text={s.full_name} type="name" />
                           </td>
-                          <td className="p-4 font-mono text-slate-500 font-semibold">{s.dob || 'Chưa rõ'}</td>
+                          <td className="p-4 font-mono text-slate-500 font-semibold">{formatDateToDDMMYYYY(s.dob)}</td>
                           <td className="p-4">
                             <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
                               ageAtIncident.includes('14') || ageAtIncident.includes('15')
@@ -802,7 +804,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
                                 <button
                                   type="button"
                                   onClick={() => handleOpenSuspectModal(s)}
-                                  className="p-1 rounded hover:bg-slate-100 hover:text-[#126DA6] text-slate-450 transition-colors duration-100 cursor-pointer border border-transparent hover:border-slate-200"
+                                  className="p-1 rounded hover:bg-slate-100 hover:text-[#1c75bb] text-slate-450 transition-colors duration-100 cursor-pointer border border-transparent hover:border-slate-200"
                                   title="Sửa đối tượng"
                                 >
                                   <Edit3 size={12} />
@@ -912,7 +914,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
                     setDocType('Quyết định khởi tố vụ án hình sự');
                     setShowDocModal(true);
                   }}
-                  className="flex items-center gap-1.5 bg-[#126DA6] hover:bg-[#1D4ED8] text-white text-xs font-bold px-3 py-2 rounded-lg cursor-pointer shadow-sm transition-colors"
+                  className="flex items-center gap-1.5 bg-[#1c75bb] hover:bg-[#155d95] text-white text-xs font-bold px-3 py-2 rounded-lg cursor-pointer shadow-sm transition-colors"
                 >
                   <Plus size={14} />
                   <span>Ban hành văn bản</span>
@@ -944,7 +946,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
                               <button
                                 type="button"
                                 onClick={() => setPreviewDoc(doc)}
-                                className="font-bold text-[#2563EB] hover:text-[#1D4ED8] hover:underline flex items-center gap-2 cursor-pointer bg-transparent border-none p-0 text-left"
+                                className="font-bold text-[#2563EB] hover:text-[#155d95] hover:underline flex items-center gap-2 cursor-pointer bg-transparent border-none p-0 text-left"
                                 title="Xem trước bản scan / PDF"
                               >
                                 <FileText size={14} className="text-[#2563EB]" />
@@ -958,12 +960,12 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
                             )}
                           </td>
                           <td className="p-4">
-                            <span className="px-2 py-0.5 bg-[#EFF6FF] border border-[#BFDBFE] text-[#1D4ED8] rounded-md font-semibold text-[10px]">
+                            <span className="px-2 py-0.5 bg-[#ebf4fa] border border-[#BFDBFE] text-[#155d95] rounded-md font-semibold text-[10px]">
                               {doc.document_type}
                             </span>
                           </td>
                           <td className="p-4 font-mono text-slate-500 font-semibold">
-                            {new Date(doc.created_at).toLocaleString('vi-VN')}
+                            {formatDateToDateTimeString(doc.created_at)}
                           </td>
                           {!isLeadershipOrAdmin && (
                             <td className="p-4 text-right no-print">
@@ -1007,7 +1009,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
                   setLogDetails('');
                   setShowLogModal(true);
                 }}
-                className="flex items-center gap-1.5 bg-[#126DA6] hover:bg-[#1D4ED8] text-white text-xs font-bold px-3 py-2 rounded-lg cursor-pointer shadow-sm transition-colors"
+                className="flex items-center gap-1.5 bg-[#1c75bb] hover:bg-[#155d95] text-white text-xs font-bold px-3 py-2 rounded-lg cursor-pointer shadow-sm transition-colors"
               >
                 <Plus size={14} />
                 <span>Ghi nhận tiến trình</span>
@@ -1022,19 +1024,19 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowLogModal(true)}
-                  className="mt-3 text-xs text-[#126DA6] hover:underline cursor-pointer font-bold"
+                  className="mt-3 text-xs text-[#1c75bb] hover:underline cursor-pointer font-bold"
                 >
                   Bắt đầu ghi nhận tiến trình ngay
                 </button>
               )}
             </div>
           ) : (
-            <div className="relative border-l-2 border-[#126DA6]/35 ml-4 pl-6 space-y-6 font-sans">
+            <div className="relative border-l-2 border-[#1c75bb]/35 ml-4 pl-6 space-y-6 font-sans">
               {investigationLogs.map((log) => (
                 <div key={log.id} className="relative">
                   {/* Timeline point */}
-                  <span className="absolute -left-[31px] top-1 flex items-center justify-center w-4 h-4 rounded-full bg-white border-2 border-[#126DA6] shadow-sm">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#126DA6]"></span>
+                  <span className="absolute -left-[31px] top-1 flex items-center justify-center w-4 h-4 rounded-full bg-white border-2 border-[#1c75bb] shadow-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#1c75bb]"></span>
                   </span>
                   
                   <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm space-y-2 hover:shadow-md transition-shadow duration-150 relative group">
@@ -1042,7 +1044,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
                       <h4 className="text-xs font-bold text-slate-800">{log.title}</h4>
                       <div className="flex items-center gap-2">
                         <span className="text-[9px] font-mono text-slate-500 font-bold">
-                          {new Date(log.log_date).toLocaleString('vi-VN')}
+                          {formatDateToDateTimeString(log.log_date)}
                         </span>
                         {!isLeadershipOrAdmin && (
                           <button
@@ -1105,18 +1107,18 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="modal_suspect_dob" className="block text-[10px] font-bold text-slate-600 uppercase mb-1.5">
-                    Ngày sinh (YYYY-MM-DD) *
+                    Ngày sinh (DD/MM/YYYY) *
                   </label>
                   <input
                     id="modal_suspect_dob"
                     type="text"
                     required
-                    placeholder="Ví dụ: 1995-08-12"
+                    placeholder="Ví dụ: 12/08/1995"
                     value={suspectDob}
                     onChange={(e) => setSuspectDob(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-250 focus:border-[#A82424] focus:ring-1 focus:ring-[#A82424] focus:outline-none rounded-lg p-2.5 text-slate-800 font-mono"
                   />
-                  <span className="text-[10px] text-slate-500 block mt-1 font-normal">Định dạng 4 số năm - 2 số tháng - 2 số ngày</span>
+                  <span className="text-[10px] text-slate-500 block mt-1 font-normal">Định dạng 2 số ngày / 2 số tháng / 4 số năm</span>
                 </div>
 
                 <div>
@@ -1198,7 +1200,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="bg-[#126DA6] hover:bg-[#1D4ED8] border border-[#126DA6] text-white px-5 py-2.5 rounded-lg cursor-pointer font-bold text-xs uppercase tracking-wider shadow-sm transition-all duration-150"
+                  className="bg-[#1c75bb] hover:bg-[#155d95] border border-[#1c75bb] text-white px-5 py-2.5 rounded-lg cursor-pointer font-bold text-xs uppercase tracking-wider shadow-sm transition-all duration-150"
                 >
                   {editingSuspect ? 'Cập nhật đối tượng' : 'Thêm đối tượng'}
                 </button>
@@ -1220,7 +1222,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
             </button>
  
             <h3 className="text-sm font-bold text-slate-800 mb-6 uppercase tracking-wider flex items-center gap-2 border-b border-slate-200 pb-3">
-              <FileText size={18} className="text-[#126DA6]" />
+              <FileText size={18} className="text-[#1c75bb]" />
               Ban hành văn bản tố tụng mới
             </h3>
  
@@ -1236,7 +1238,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
                   placeholder="Ví dụ: Quyết định số 102/QĐ-CQĐT"
                   value={docName}
                   onChange={(e) => setDocName(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-250 focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg p-2.5 text-slate-800"
+                  className="w-full bg-slate-50 border border-slate-250 focus:border-[#1c75bb] focus:ring-1 focus:ring-[#1c75bb] focus:outline-none rounded-lg p-2.5 text-slate-800"
                 />
               </div>
  
@@ -1248,7 +1250,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
                   id="modal_doc_type"
                   value={docType}
                   onChange={(e) => setDocType(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-250 focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg p-2.5 text-slate-800"
+                  className="w-full bg-slate-50 border border-slate-250 focus:border-[#1c75bb] focus:ring-1 focus:ring-[#1c75bb] focus:outline-none rounded-lg p-2.5 text-slate-800"
                 >
                   <option value="Quyết định khởi tố vụ án hình sự">Quyết định khởi tố vụ án hình sự</option>
                   <option value="Quyết định khởi tố bị can">Quyết định khởi tố bị can</option>
@@ -1282,7 +1284,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="bg-[#126DA6] hover:bg-[#1D4ED8] border border-[#126DA6] text-white px-5 py-2.5 rounded-lg cursor-pointer font-bold text-xs uppercase tracking-wider shadow-sm transition-all duration-150"
+                  className="bg-[#1c75bb] hover:bg-[#155d95] border border-[#1c75bb] text-white px-5 py-2.5 rounded-lg cursor-pointer font-bold text-xs uppercase tracking-wider shadow-sm transition-all duration-150"
                 >
                   Ban hành văn bản
                 </button>
@@ -1305,7 +1307,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
             </button>
 
             <h3 className="text-sm font-bold text-slate-800 mb-6 uppercase tracking-wider flex items-center gap-2 border-b border-slate-200 pb-3 font-sans">
-              <Calendar size={18} className="text-[#126DA6]" />
+              <Calendar size={18} className="text-[#1c75bb]" />
               Ghi nhận tiến trình điều tra mới
             </h3>
 
@@ -1321,7 +1323,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
                   placeholder="Ví dụ: Lấy lời khai đối tượng Nguyễn Văn A lần thứ nhất"
                   value={logTitle}
                   onChange={(e) => setLogTitle(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-250 focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg p-2.5 text-slate-800"
+                  className="w-full bg-slate-50 border border-slate-250 focus:border-[#1c75bb] focus:ring-1 focus:ring-[#1c75bb] focus:outline-none rounded-lg p-2.5 text-slate-800"
                 />
               </div>
 
@@ -1335,7 +1337,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
                   placeholder="Mô tả cụ thể hoạt động xác minh, các chứng cứ thu thập được hoặc tóm tắt lời khai..."
                   value={logDetails}
                   onChange={(e) => setLogDetails(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-250 focus:border-[#126DA6] focus:ring-1 focus:ring-[#126DA6] focus:outline-none rounded-lg p-2.5 text-slate-800 resize-none leading-relaxed"
+                  className="w-full bg-slate-50 border border-slate-250 focus:border-[#1c75bb] focus:ring-1 focus:ring-[#1c75bb] focus:outline-none rounded-lg p-2.5 text-slate-800 resize-none leading-relaxed"
                 />
               </div>
 
@@ -1349,7 +1351,7 @@ export const CaseFileDetailView: React.FC<CaseFileDetailViewProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="bg-[#126DA6] hover:bg-[#1D4ED8] border border-[#126DA6] text-white px-5 py-2.5 rounded-lg cursor-pointer font-bold text-xs uppercase tracking-wider shadow-sm transition-all duration-150"
+                  className="bg-[#1c75bb] hover:bg-[#155d95] border border-[#1c75bb] text-white px-5 py-2.5 rounded-lg cursor-pointer font-bold text-xs uppercase tracking-wider shadow-sm transition-all duration-150"
                 >
                   Ghi nhận sự kiện
                 </button>

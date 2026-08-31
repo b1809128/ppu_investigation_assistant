@@ -69,3 +69,20 @@ class InvestigationLog(Base):
 
     case_file = relationship("CaseFile", back_populates="investigation_logs")
     investigator = relationship("User", foreign_keys=[investigator_id])
+
+class CaseAnalysis(Base):
+    """
+    Model representing deep learning and procedural analysis results for a case file.
+    Mapped to 'case_analyses' table.
+    """
+    __tablename__ = "case_analyses"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    case_id = Column(Integer, ForeignKey("case_files.id", ondelete="CASCADE"), nullable=False)
+    summary_acts = Column(Text, nullable=False)
+    extracted_entities = Column(Text, nullable=True)  # JSON-serialized string
+    suggested_charge = Column(Text, nullable=True)    # JSON-serialized string
+    procedural_warnings = Column(Text, nullable=True) # JSON-serialized string
+    created_at = Column(DateTime, server_default=func.now(), nullable=False)
+
+    case_file = relationship("CaseFile")

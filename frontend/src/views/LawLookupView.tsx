@@ -190,7 +190,7 @@ export const LawLookupView: React.FC = () => {
       <div className="w-[30%] shrink-0 h-full flex flex-col bg-white border border-[#E2E8F0] rounded-lg overflow-hidden shadow-sm">
         <div className="p-4 border-b border-[#E2E8F0] bg-[#F8FAFC]">
           <div className="flex items-center gap-2 mb-3">
-            <BookOpen className="text-[#126DA6]" size={18} />
+            <BookOpen className="text-[#1c75bb]" size={18} />
             <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wide">Danh mục Chương luật</h3>
           </div>
 
@@ -201,7 +201,7 @@ export const LawLookupView: React.FC = () => {
               onClick={() => setLawType('penal')}
               className={`flex-1 text-center py-1.5 text-[11px] font-bold rounded-md transition-all cursor-pointer ${
                 lawType === 'penal'
-                  ? 'bg-white text-[#126DA6] shadow-sm'
+                  ? 'bg-white text-[#1c75bb] shadow-sm'
                   : 'text-slate-600 hover:text-slate-800'
               }`}
             >
@@ -212,7 +212,7 @@ export const LawLookupView: React.FC = () => {
               onClick={() => setLawType('procedure')}
               className={`flex-1 text-center py-1.5 text-[11px] font-bold rounded-md transition-all cursor-pointer ${
                 lawType === 'procedure'
-                  ? 'bg-white text-[#126DA6] shadow-sm'
+                  ? 'bg-white text-[#1c75bb] shadow-sm'
                   : 'text-slate-600 hover:text-slate-800'
               }`}
             >
@@ -228,7 +228,7 @@ export const LawLookupView: React.FC = () => {
               placeholder="Bộ lọc nhanh..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-white border border-[#CBD5E1] focus:border-[#126DA6] focus:ring-2 focus:ring-blue-100 focus:outline-none rounded-lg py-2 pl-9 pr-4 text-xs text-[#1E293B] transition-all font-semibold"
+              className="w-full bg-white border border-[#CBD5E1] focus:border-[#1c75bb] focus:ring-2 focus:ring-blue-100 focus:outline-none rounded-lg py-2 pl-9 pr-4 text-xs text-[#1E293B] transition-all font-semibold"
             />
             <Search size={14} className="absolute left-3 top-2.5 text-slate-400" />
           </div>
@@ -238,7 +238,7 @@ export const LawLookupView: React.FC = () => {
         <div className="flex-1 overflow-y-auto p-3 space-y-2 select-none bg-[#F4F7FB]/40">
           {isLoading ? (
             <div className="flex items-center justify-center py-10">
-              <svg className="animate-spin h-5 w-5 text-[#126DA6]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin h-5 w-5 text-[#1c75bb]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
@@ -263,7 +263,7 @@ export const LawLookupView: React.FC = () => {
                       {isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                     </span>
                     <div className="flex-1 min-w-0">
-                      <span className="text-[10px] font-bold text-[#126DA6] block uppercase tracking-wider">
+                      <span className="text-[10px] font-bold text-[#1c75bb] block uppercase tracking-wider">
                         Chương {chapterKey}
                       </span>
                       <span className="text-[11px] text-[#1E293B] font-semibold block truncate mt-0.5">
@@ -284,8 +284,8 @@ export const LawLookupView: React.FC = () => {
                             onClick={() => setSelectedArticle(art)}
                             className={`w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-left transition-all duration-150 cursor-pointer text-xs font-semibold ${
                               isSelected 
-                                ? 'bg-[#EFF6FF] text-[#1D4ED8] border border-[#BFDBFE] shadow-sm' 
-                                : 'text-slate-650 hover:text-[#126DA6] hover:bg-white border border-transparent'
+                                ? 'bg-[#ebf4fa] text-[#155d95] border border-[#BFDBFE] shadow-sm' 
+                                : 'text-slate-650 hover:text-[#1c75bb] hover:bg-white border border-transparent'
                             }`}
                           >
                             <Hash size={12} className="shrink-0 text-slate-400" />
@@ -312,7 +312,7 @@ export const LawLookupView: React.FC = () => {
         <div className="p-5 border-b border-[#E2E8F0] bg-[#F4F7FB] space-y-4">
           <div className="flex justify-between items-center">
             <h3 className="text-xs font-bold text-[#0F172A] uppercase tracking-wider flex items-center gap-1.5">
-              <Scale size={14} className="text-[#126DA6]" />
+              <Scale size={14} className="text-[#1c75bb]" />
               Tìm kiếm nâng cao
             </h3>
             {currentCase && (
@@ -330,7 +330,7 @@ export const LawLookupView: React.FC = () => {
               placeholder="Tìm kiếm nhanh toàn văn bộ luật hình sự (Ví dụ: 'buôn lậu', 'ma túy', 'đánh bạc', 'Điều 173')..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-white border border-[#CBD5E1] focus:border-[#126DA6] focus:ring-2 focus:ring-blue-100 focus:outline-none rounded-lg py-3 pl-11 pr-4 text-sm text-[#1E293B] placeholder-slate-400 shadow-sm transition-all font-semibold"
+              className="w-full bg-white border border-[#CBD5E1] focus:border-[#1c75bb] focus:ring-2 focus:ring-blue-100 focus:outline-none rounded-lg py-3 pl-11 pr-4 text-sm text-[#1E293B] placeholder-slate-400 shadow-sm transition-all font-semibold"
             />
             <Search size={18} className="absolute left-4 top-3 text-slate-400" />
           </div>
@@ -344,7 +344,7 @@ export const LawLookupView: React.FC = () => {
               {/* Header Title */}
               <div className="flex justify-between items-start gap-4">
                 <div>
-                  <span className="text-[10px] font-bold text-[#126DA6] uppercase tracking-wider bg-[#EFF6FF] border border-[#BFDBFE] px-2 py-0.5 rounded-lg font-mono shadow-sm">
+                  <span className="text-[10px] font-bold text-[#1c75bb] uppercase tracking-wider bg-[#ebf4fa] border border-[#BFDBFE] px-2 py-0.5 rounded-lg font-mono shadow-sm">
                     {lawType === 'procedure' ? 'Bộ luật Tố tụng Hình sự 2015' : 'Bộ luật Hình sự Việt Nam 2015'}
                   </span>
                   <h2 className="text-[18px] font-bold text-[#0F172A] mt-2 flex items-center gap-2 font-sans">
@@ -363,7 +363,7 @@ export const LawLookupView: React.FC = () => {
                     className="flex items-center gap-1.5 bg-white border border-[#CBD5E1] text-[#334155] hover:bg-[#F1F5F9] text-xs px-3 py-2 rounded-lg cursor-pointer shadow-sm transition-colors font-bold"
                     title="Ghim làm căn cứ pháp lý cho vụ án hiện tại"
                   >
-                    <Pin size={12} className="text-[#126DA6]" />
+                    <Pin size={12} className="text-[#1c75bb]" />
                     <span>Ghim án</span>
                   </button>
  
@@ -386,7 +386,7 @@ export const LawLookupView: React.FC = () => {
                     <span className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Chủ thể thực hiện</span>
                     <div className="flex flex-wrap gap-1.5">
                       {selectedArticle.chu_the_thuc_hien?.map((actor, i) => (
-                        <span key={i} className="px-2 py-0.5 bg-[#EFF6FF] border border-[#BFDBFE] text-[#1D4ED8] rounded-md font-semibold">
+                        <span key={i} className="px-2 py-0.5 bg-[#ebf4fa] border border-[#BFDBFE] text-[#155d95] rounded-md font-semibold">
                           {actor}
                         </span>
                       )) || <span className="text-slate-400 italic">Không có thông tin</span>}
@@ -436,7 +436,7 @@ export const LawLookupView: React.FC = () => {
                               ? 'bg-[#FEF2F2] border-[#FECACA] text-[#EF4444]'
                               : clause.badgeType === 'warning'
                               ? 'bg-[#FFFBEB] border-[#FDE68A] text-[#D97706]'
-                              : 'bg-[#EFF6FF] border-[#BFDBFE] text-[#126DA6]'
+                              : 'bg-[#ebf4fa] border-[#BFDBFE] text-[#1c75bb]'
                           }`}>
                             {clause.badge}
                           </span>
@@ -460,9 +460,9 @@ export const LawLookupView: React.FC = () => {
                   {selectedArticle.keywords.map((kw, i) => (
                     <span 
                       key={i}
-                      className="px-2.5 py-1 rounded-lg bg-[#EFF6FF] text-xs text-[#1D4ED8] border border-[#BFDBFE] font-mono font-bold flex items-center gap-1 shadow-sm"
+                      className="px-2.5 py-1 rounded-lg bg-[#ebf4fa] text-xs text-[#155d95] border border-[#BFDBFE] font-mono font-bold flex items-center gap-1 shadow-sm"
                     >
-                      <Sparkles size={10} className="text-[#126DA6]" />
+                      <Sparkles size={10} className="text-[#1c75bb]" />
                       {highlightText(kw, searchTerm)}
                     </span>
                   ))}

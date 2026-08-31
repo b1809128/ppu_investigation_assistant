@@ -33,7 +33,7 @@ Sau khi đăng nhập thành công, giao diện sẽ xuất hiện thanh điều
 - **Cập nhật thông tin vụ án:** Tại trang chi tiết, nhấp **"Cập nhật thông tin"** để chỉnh sửa hành vi hoặc giá trị thiệt hại tài sản (Hệ thống tự động định dạng VNĐ khi gõ).
 - **Thêm/sửa đối tượng liên quan:**
   - Nhấp **"Thêm bị can / đối tượng"**.
-  - Nhập họ tên, ngày sinh (định dạng `YYYY-MM-DD` bắt buộc), số CCCD (đúng 9 hoặc 12 số) và vai trò (`Bị can`, `Bị hại`, `Nhân chứng`).
+  - Nhập họ tên, ngày sinh (định dạng `DD/MM/YYYY` bắt buộc), số CCCD (đúng 9 hoặc 12 số) và vai trò (`Bị can`, `Bị hại`, `Nhân chứng`).
   - Nếu là Bị can, chọn vị thế đồng phạm (`Chủ mưu`, `Thực hành`, `Giúp sức`, `Xúi giục`).
 
 ### 2.3. Tra cứu Bộ luật Hình sự (Laws Lookup)
@@ -60,6 +60,10 @@ Sau khi đăng nhập thành công, giao diện sẽ xuất hiện thanh điều
 ### 2.6. Nhật ký kiểm toán & Phân quyền (Audit Logs / User Admin)
 - **Nhật ký kiểm toán (Lãnh đạo / Admin):** Truy cập xem mọi hoạt động truy cập thông tin nhạy cảm trên hệ thống (Thời gian, Tên cán bộ thao tác, Hành động thực hiện, Mã hồ sơ vụ án).
 - **Quản lý tài khoản (Admin):** Đăng ký tài khoản cho cán bộ điều tra mới và phân quyền RBAC tương ứng.
+
+### 2.7. Tối ưu hóa Không gian làm việc (Collapsible Sidebar) & Định dạng ngày
+- **Thu gọn/Mở rộng Sidebar:** Nhấp nút mũi tên tròn ở biên phải của thanh Sidebar để thu gọn thành dạng biểu tượng (Icon-only), mở rộng tối đa vùng làm việc trung tâm cho các tác vụ như đối chiếu luật hay soạn thảo văn bản. Di chuột vào biểu tượng để xem tooltip tên tab nghiệp vụ.
+- **Đồng bộ hóa ngày tháng `dd/mm/yyyy`:** Toàn bộ hệ thống ngày tháng năm hiển thị (ngày xảy ra, ngày sinh bị can, ngày tạo tài khoản, nhật ký kiểm toán) đều được hiển thị theo quy chuẩn tiếng Việt `dd/mm/yyyy` thay vì `yyyy-mm-dd`.
 
 ---
 
