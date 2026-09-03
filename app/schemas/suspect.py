@@ -1,6 +1,20 @@
-from pydantic import BaseModel, Field, AliasChoices, computed_field
+from pydantic import BaseModel, Field, AliasChoices, computed_field, ConfigDict, field_serializer
 from datetime import datetime
 from typing import Optional
+
+def mask_identity_card_value(val: Optional[str]) -> Optional[str]:
+    """
+    Mask CCCD / CMND number to format 035***891.
+    Preserves first 3 and last 3 characters, masking middle characters with ***.
+    """
+    if not val:
+        return val
+    s = str(val).strip()
+    if len(s) >= 6:
+        return f"{s[:3]}***{s[-3:]}"
+    elif len(s) > 2:
+        return f"{s[0]}***{s[-1]}"
+    return s
 
 class SuspectBase(BaseModel):
     full_name: str = Field(..., max_length=100)
@@ -30,6 +44,10 @@ class SuspectOut(BaseModel):
     created_at: datetime
     updated_at: datetime
 
+    @field_serializer("identity_card")
+    def serialize_identity_card(self, v: Optional[str], _info) -> Optional[str]:
+        return mask_identity_card_value(v)
+
     @computed_field
     @property
     def case_file_id(self) -> int:
@@ -48,6 +66,7 @@ class SuspectOut(BaseModel):
         """Backwards compatibility for address."""
         return self.prior_convictions
 
-    class Config:
-        from_attributes = True
-        populate_by_name = True
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True
+    )

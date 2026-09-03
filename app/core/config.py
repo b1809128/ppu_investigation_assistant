@@ -6,8 +6,8 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "Investigation & Criminal Law Assistant"
     API_V1_STR: str = "/api"
     
-    # MySQL Database Configuration
-    # Defaults to local XAMPP MySQL database with user 'root' and empty password
+    # Database Configuration (MySQL or SQLite)
+    DB_TYPE: str = Field(default="sqlite", validation_alias="DB_TYPE")  # "sqlite" or "mysql"
     DB_USER: str = Field(default="root", validation_alias="DB_USER")
     DB_PASSWORD: str = Field(default="", validation_alias="DB_PASSWORD")
     DB_HOST: str = Field(default="127.0.0.1", validation_alias="DB_HOST")
@@ -16,13 +16,15 @@ class Settings(BaseSettings):
     
     @property
     def DATABASE_URL(self) -> str:
-        # Using PyMySQL dialect
-        return f"mysql+pymysql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}?charset=utf8mb4"
+        if self.DB_TYPE.lower() == "mysql":
+            return f"mysql+pymysql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}?charset=utf8mb4"
+        return f"sqlite:///./ppu_assistant.db"
 
     @property
     def ASYNC_DATABASE_URL(self) -> str:
-        # Using aiomysql dialect for async connection
-        return f"mysql+aiomysql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}?charset=utf8mb4"
+        if self.DB_TYPE.lower() == "mysql":
+            return f"mysql+aiomysql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}?charset=utf8mb4"
+        return f"sqlite+aiosqlite:///./ppu_assistant.db"
 
     # JWT Authentication Configuration
     JWT_SECRET_KEY: str = Field(

@@ -18,6 +18,7 @@ from app.models.audit import AuditLog
 
 from app.services.legal import LegalService
 from app.services.legal_data import LegalDataService
+from app.data.seed_sample_case import seed_real_investigation_case
 
 from app.api.auth import router as auth_router
 from app.api.cases import router as cases_router
@@ -36,14 +37,14 @@ async def lifespan(app: FastAPI):
     # 1. Run migrations and create tables if they do not exist
     try:
         from app.db.migrate_db import run_migrations
-        logger.info("Khởi chạy tiến trình di cư và đồng bộ cơ sở dữ liệu MySQL...")
+        logger.info("Khởi chạy tiến trình di cư và đồng bộ cơ sở dữ liệu...")
         run_migrations()
         logger.info("Cơ sở dữ liệu đã sẵn sàng.")
     except Exception as e:
         logger.critical(f"Không thể khởi tạo cơ sở dữ liệu: {str(e)}")
         raise e
 
-    # 2. Seed initial users if they do not exist
+    # 2. Seed initial users & realistic sample case if they do not exist
     db = SessionLocal()
     try:
         # Seed Admin
@@ -75,8 +76,12 @@ async def lifespan(app: FastAPI):
             db.commit()
             
         logger.info("Cấp tài khoản mặc định hoàn tất.")
+
+        # Seed realistic real-world case file
+        seed_real_investigation_case(db)
+
     except Exception as e:
-        logger.error(f"Lỗi khi nạp dữ liệu người dùng ban đầu: {str(e)}")
+        logger.error(f"Lỗi khi nạp dữ liệu ban đầu: {str(e)}")
         db.rollback()
     finally:
         db.close()
@@ -140,49 +145,14 @@ if os.path.exists(frontend_dist_path):
     assets_path = os.path.join(frontend_dist_path, "assets")
     if os.path.exists(assets_path):
         app.mount("/assets", StaticFiles(directory=assets_path), name="assets")
-    
-    @app.get("/{fallback_path:path}")
-    async def spa_fallback(request: Request, fallback_path: str):
-        # Allow API and Docs to fall through by returning 404 if they are requested but don't match routes
-        if (fallback_path.startswith("api") or 
-            fallback_path.startswith("docs") or 
-            fallback_path.startswith("redoc") or 
-            fallback_path.startswith("openapi.json")):
-            return UTF8JSONResponse(status_code=404, content={"message": "API endpoint not found"})
-        
-        # If the path is empty (root /) and Accept header does NOT contain text/html (e.g. from tests or JSON client),
-        # return the JSON heartbeat.
-        accept_header = request.headers.get("accept", "")
-        if fallback_path == "" and "text/html" not in accept_header:
-            return {
-                "status": "success",
-                "data": {
-                    "project": settings.PROJECT_NAME,
-                    "status": "Running",
-                    "mode": "LAN Offline / Air-gapped"
-                },
-                "message": "Hệ thống trợ lý điều tra hoạt động bình thường",
-                "code": "OK"
-            }
-        
-        index_file = os.path.join(frontend_dist_path, "index.html")
-        if os.path.exists(index_file):
-            return FileResponse(index_file)
-        return UTF8JSONResponse(status_code=404, content={"message": "Frontend index not found"})
-else:
-    @app.get("/")
-    def root_endpoint():
-        """
-        Root heartbeat check.
-        """
-        return {
-            "status": "success",
-            "data": {
-                "project": settings.PROJECT_NAME,
-                "status": "Running",
-                "mode": "LAN Offline / Air-gapped"
-            },
-            "message": "Hệ thống trợ lý điều tra hoạt động bình thường",
-            "code": "OK"
-        }
 
+    # Catch-all route to serve React SPA index.html for unknown frontend routes
+    @app.get("/{full_path:path}")
+    async def serve_spa(request: Request, full_path: str):
+        # Ignore API endpoints
+        if full_path.startswith("api/") or full_path.startswith("docs") or full_path.startswith("redoc"):
+            return None
+        file_path = os.path.join(frontend_dist_path, full_path)
+        if os.path.exists(file_path) and os.path.isfile(file_path):
+            return FileResponse(file_path)
+        return FileResponse(os.path.join(frontend_dist_path, "index.html"))

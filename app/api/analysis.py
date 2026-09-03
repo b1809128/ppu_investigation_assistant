@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Request, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 import json
 
 from app.db.session import get_db
@@ -29,7 +29,11 @@ async def analyze_case_file(
     3. Giám sát thời hạn tố tụng (Quy trình Điều 118/119).
     Lưu kết quả phân tích vào cơ sở dữ liệu và tự động ghi nhật ký kiểm toán.
     """
-    case = db.query(CaseFile).filter(CaseFile.id == payload.case_id).first()
+    case = db.query(CaseFile).options(
+        joinedload(CaseFile.documents),
+        joinedload(CaseFile.suspects)
+    ).filter(CaseFile.id == payload.case_id).first()
+    
     if not case:
         raise HTTPException(status_code=404, detail="Không tìm thấy hồ sơ vụ án.")
 

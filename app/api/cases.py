@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, status, Request, UploadFile, File, Form
 from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 import os
 import shutil
 
-from app.db.session import get_db
+from app.db.session import get_db, get_async_db
 from app.core.security import get_current_user, allow_leadership
 from app.schemas.case import CaseFileCreate, CaseFileUpdate, CaseFileOut, CaseDocumentCreate, CaseDocumentOut, InvestigationLogCreate, InvestigationLogOut
 from app.schemas.suspect import SuspectCreate, SuspectUpdate, SuspectOut
@@ -18,9 +19,9 @@ router = APIRouter(prefix="/cases", tags=["Case Management"])
 
 @router.get("", response_model=List[CaseFileOut])
 @audit_log(action="LIST_CASES", resource_type="CASE_FILE")
-def read_cases(
+async def read_cases(
     request: Request,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_async_db),
     current_user: User = Depends(get_current_user)
 ):
     """
@@ -28,14 +29,14 @@ def read_cases(
     Automatically audited via decorator.
     """
     client_ip = request.client.host if request.client else None
-    return CaseService.list_cases(db, user=current_user, ip_address=client_ip)
+    return await CaseService.list_cases_async(db, user=current_user, ip_address=client_ip)
 
 @router.post("", response_model=CaseFileOut, status_code=status.HTTP_201_CREATED)
 @audit_log(action="CREATE_CASE", resource_type="CASE_FILE")
-def create_case(
+async def create_case(
     request: Request,
     case_in: CaseFileCreate,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_async_db),
     current_user: User = Depends(get_current_user)
 ):
     """
@@ -43,14 +44,14 @@ def create_case(
     Automatically audited via decorator.
     """
     client_ip = request.client.host if request.client else None
-    return CaseService.create_case(db, case_in, user=current_user, ip_address=client_ip)
+    return await CaseService.create_case_async(db, case_in, user=current_user, ip_address=client_ip)
 
 @router.get("/{case_id}", response_model=CaseFileOut)
 @audit_log(action="READ_CASE", resource_type="CASE_FILE")
-def read_case_by_id(
+async def read_case_by_id(
     case_id: int,
     request: Request,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_async_db),
     current_user: User = Depends(get_current_user)
 ):
     """
@@ -58,7 +59,7 @@ def read_case_by_id(
     Automatically audited via decorator.
     """
     client_ip = request.client.host if request.client else None
-    return CaseService.get_case(db, case_id=case_id, user=current_user, ip_address=client_ip)
+    return await CaseService.get_case_async(db, case_id=case_id, user=current_user, ip_address=client_ip)
 
 @router.put("/{case_id}", response_model=CaseFileOut)
 @audit_log(action="UPDATE_CASE", resource_type="CASE_FILE")
@@ -221,11 +222,9 @@ def upload_document_to_case(
     from datetime import datetime
     client_ip = request.client.host if request.client else None
     
-    # Define upload path
     uploads_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "uploads")
     os.makedirs(uploads_dir, exist_ok=True)
     
-    # Save file with a safe, unique filename
     safe_filename = f"case_{case_id}_{int(datetime.now().timestamp())}_{file.filename}"
     safe_filename = safe_filename.replace(" ", "_")
     file_path = os.path.join(uploads_dir, safe_filename)

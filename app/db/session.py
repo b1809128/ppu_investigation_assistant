@@ -4,31 +4,41 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, Asyn
 from typing import Generator, AsyncGenerator
 from app.core.config import settings
 
-# Create Sync SQLAlchemy engine (supporting connection pool)
-# pool_size specifies the number of connections to keep in the pool.
-# max_overflow specifies how many connections can be opened beyond pool_size.
-# pool_pre_ping checks connections for liveness before executing queries.
-# pool_recycle recycles connections every hour to prevent MySQL stale connection errors.
+# Configure engine kwargs based on DB dialect (SQLite vs MySQL)
+is_sqlite = settings.DATABASE_URL.startswith("sqlite")
+
+sync_engine_kwargs = {"echo": False}
+async_engine_kwargs = {"echo": False}
+
+if is_sqlite:
+    sync_engine_kwargs["connect_args"] = {"check_same_thread": False}
+else:
+    sync_engine_kwargs.update({
+        "pool_size": 10,
+        "max_overflow": 20,
+        "pool_pre_ping": True,
+        "pool_recycle": 3600
+    })
+    async_engine_kwargs.update({
+        "pool_size": 10,
+        "max_overflow": 20,
+        "pool_pre_ping": True,
+        "pool_recycle": 3600
+    })
+
+# Create Sync SQLAlchemy engine
 engine = create_engine(
     settings.DATABASE_URL,
-    pool_size=10,
-    max_overflow=20,
-    pool_pre_ping=True,
-    pool_recycle=3600,
-    echo=False
+    **sync_engine_kwargs
 )
 
 # Local sync database session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Create Async SQLAlchemy engine (supporting connection pool)
+# Create Async SQLAlchemy engine
 async_engine = create_async_engine(
     settings.ASYNC_DATABASE_URL,
-    pool_size=10,
-    max_overflow=20,
-    pool_pre_ping=True,
-    pool_recycle=3600,
-    echo=False
+    **async_engine_kwargs
 )
 
 # Local async database session factory

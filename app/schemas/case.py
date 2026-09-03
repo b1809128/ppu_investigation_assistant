@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Field, AliasChoices, computed_field
+from pydantic import BaseModel, Field, AliasChoices, computed_field, ConfigDict
 from datetime import datetime
 from typing import Optional, List
+from app.schemas.suspect import SuspectOut
 
 class CaseFileBase(BaseModel):
     case_code: str = Field(..., validation_alias=AliasChoices("case_code", "case_number"), max_length=50)
@@ -33,8 +34,7 @@ class InvestigationLogOut(BaseModel):
     investigator_id: int
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class CaseFileOut(BaseModel):
     id: int
@@ -49,6 +49,7 @@ class CaseFileOut(BaseModel):
     lead_investigator_id: int
     created_at: datetime
     updated_at: datetime
+    suspects: Optional[List[SuspectOut]] = []
     investigation_logs: Optional[List[InvestigationLogOut]] = []
 
     @computed_field
@@ -75,9 +76,10 @@ class CaseFileOut(BaseModel):
         """Backwards compatibility for created_by_id."""
         return self.lead_investigator_id
 
-    class Config:
-        from_attributes = True
-        populate_by_name = True
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True
+    )
 
 class CaseDocumentCreate(BaseModel):
     name: str = Field(..., max_length=255)
@@ -92,8 +94,7 @@ class CaseDocumentOut(BaseModel):
     file_path: Optional[str] = None
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class InvestigationLogCreate(BaseModel):
     title: str = Field(..., max_length=255)

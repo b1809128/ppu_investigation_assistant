@@ -1,28 +1,24 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
+from sqlalchemy.orm import selectinload
 from app.models.case import CaseFile, CaseDocument, InvestigationLog
 from app.models.suspect import Suspect
-from app.schemas.case import CaseFileCreate, CaseFileUpdate, CaseDocumentCreate, InvestigationLogCreate
+from app.schemas.case import CaseFileCreate, CaseFileUpdate, CaseFileOut, CaseDocumentCreate, InvestigationLogCreate
 from app.schemas.suspect import SuspectCreate, SuspectUpdate
 from app.core.exceptions import AppException
-from typing import List, Optional, Any
+from typing import List, Optional, Any, Union
 
 class CaseService:
+    # Synchronous Case CRUD
     @staticmethod
     def list_cases(db: Session, user: Any, ip_address: Optional[str] = None) -> List[CaseFile]:
-        """
-        List investigation cases. 
-        If the user is an INVESTIGATOR, filter cases where they are the lead investigator.
-        Leadership and Admin can view all cases.
-        """
         if user.role == "INVESTIGATOR":
             return db.query(CaseFile).filter(CaseFile.lead_investigator_id == user.id).all()
         return db.query(CaseFile).all()
 
     @staticmethod
     def get_case(db: Session, case_id: int, user: Any, ip_address: Optional[str] = None) -> CaseFile:
-        """
-        Retrieve a single case.
-        """
         db_case = db.query(CaseFile).filter(CaseFile.id == case_id).first()
         if not db_case:
             raise AppException(message="Hồ sơ vụ án không tồn tại", code="NOT_FOUND", status_code=404)
@@ -30,10 +26,6 @@ class CaseService:
 
     @staticmethod
     def create_case(db: Session, case_in: CaseFileCreate, user: Any, ip_address: Optional[str] = None) -> CaseFile:
-        """
-        Create a new case file.
-        """
-        # Check if case code exists
         existing = db.query(CaseFile).filter(CaseFile.case_code == case_in.case_code).first()
         if existing:
             raise AppException(message=f"Số quyết định thụ lý/hồ sơ '{case_in.case_code}' đã tồn tại", code="BAD_REQUEST")
@@ -56,14 +48,10 @@ class CaseService:
 
     @staticmethod
     def update_case(db: Session, case_id: int, case_in: CaseFileUpdate, user: Any, ip_address: Optional[str] = None) -> CaseFile:
-        """
-        Update case details.
-        """
         db_case = db.query(CaseFile).filter(CaseFile.id == case_id).first()
         if not db_case:
             raise AppException(message="Hồ sơ vụ án không tồn tại", code="NOT_FOUND", status_code=404)
 
-        # RBAC Check: INVESTIGATOR can only update their own case files.
         if user.role == "INVESTIGATOR" and db_case.lead_investigator_id != user.id:
             raise AppException(message="Bạn không có quyền cập nhật hồ sơ vụ án của điều tra viên khác", code="FORBIDDEN", status_code=403)
 
@@ -88,9 +76,6 @@ class CaseService:
 
     @staticmethod
     def delete_case(db: Session, case_id: int, user: Any, ip_address: Optional[str] = None) -> CaseFile:
-        """
-        Delete a case. Only ADMIN & LEADERSHIP allowed.
-        """
         db_case = db.query(CaseFile).filter(CaseFile.id == case_id).first()
         if not db_case:
             raise AppException(message="Hồ sơ vụ án không tồn tại", code="NOT_FOUND", status_code=404)
@@ -99,20 +84,72 @@ class CaseService:
         db.commit()
         return db_case
 
-    # Suspect Management Functions
+    # Asynchronous Case CRUD (SQLAlchemy 2.0 AsyncSession)
+    @staticmethod
+    async def list_cases_async(db: AsyncSession, user: Any, ip_address: Optional[str] = None) -> List[CaseFileOut]:
+        stmt = select(CaseFile).options(
+            selectinload(CaseFile.suspects), 
+            selectinload(CaseFile.investigation_logs),
+            selectinload(CaseFile.documents)
+        )
+        if user.role == "INVESTIGATOR":
+            stmt = stmt.where(CaseFile.lead_investigator_id == user.id)
+        res = await db.execute(stmt)
+        cases = res.scalars().all()
+        return [CaseFileOut.model_validate(c) for c in cases]
 
     @staticmethod
+    async def get_case_async(db: AsyncSession, case_id: int, user: Any, ip_address: Optional[str] = None) -> CaseFileOut:
+        stmt = select(CaseFile).options(
+            selectinload(CaseFile.suspects), 
+            selectinload(CaseFile.investigation_logs),
+            selectinload(CaseFile.documents)
+        ).where(CaseFile.id == case_id)
+        res = await db.execute(stmt)
+        db_case = res.scalar_one_or_none()
+        if not db_case:
+            raise AppException(message="Hồ sơ vụ án không tồn tại", code="NOT_FOUND", status_code=404)
+        return CaseFileOut.model_validate(db_case)
+
+    @staticmethod
+    async def create_case_async(db: AsyncSession, case_in: CaseFileCreate, user: Any, ip_address: Optional[str] = None) -> CaseFileOut:
+        stmt = select(CaseFile).where(CaseFile.case_code == case_in.case_code)
+        res = await db.execute(stmt)
+        if res.scalar_one_or_none():
+            raise AppException(message=f"Số quyết định thụ lý/hồ sơ '{case_in.case_code}' đã tồn tại", code="BAD_REQUEST")
+
+        db_case = CaseFile(
+            case_code=case_in.case_code,
+            case_name=case_in.case_name,
+            incident_date=case_in.incident_date,
+            location=case_in.location,
+            summary_acts=case_in.summary_acts,
+            damage_value=case_in.damage_value,
+            status=case_in.status,
+            investigation_stage=case_in.investigation_stage,
+            lead_investigator_id=user.id
+        )
+        db.add(db_case)
+        await db.commit()
+
+        stmt_created = select(CaseFile).options(
+            selectinload(CaseFile.suspects),
+            selectinload(CaseFile.investigation_logs),
+            selectinload(CaseFile.documents)
+        ).where(CaseFile.id == db_case.id)
+        res_created = await db.execute(stmt_created)
+        fresh_case = res_created.scalar_one()
+        return CaseFileOut.model_validate(fresh_case)
+
+    # Synchronous Suspect CRUD
+    @staticmethod
     def list_suspects(db: Session, case_id: int, user: Any, ip_address: Optional[str] = None) -> List[Suspect]:
-        # First check if the case exists
         CaseService.get_case(db, case_id, user, ip_address)
         return db.query(Suspect).filter(Suspect.case_id == case_id).all()
 
     @staticmethod
     def add_suspect(db: Session, case_id: int, suspect_in: SuspectCreate, user: Any, ip_address: Optional[str] = None) -> Suspect:
-        # Check case existence
         db_case = CaseService.get_case(db, case_id, user, ip_address)
-
-        # RBAC Check: INVESTIGATOR can only add suspects to their own case files.
         if user.role == "INVESTIGATOR" and db_case.lead_investigator_id != user.id:
             raise AppException(message="Bạn không có quyền sửa đổi hồ sơ vụ án của điều tra viên khác", code="FORBIDDEN", status_code=403)
 
@@ -131,10 +168,7 @@ class CaseService:
 
     @staticmethod
     def update_suspect(db: Session, case_id: int, suspect_id: int, suspect_in: SuspectUpdate, user: Any, ip_address: Optional[str] = None) -> Suspect:
-        # Check case existence
         db_case = CaseService.get_case(db, case_id, user, ip_address)
-
-        # RBAC Check
         if user.role == "INVESTIGATOR" and db_case.lead_investigator_id != user.id:
             raise AppException(message="Bạn không có quyền sửa đổi hồ sơ vụ án của điều tra viên khác", code="FORBIDDEN", status_code=403)
 
@@ -159,10 +193,7 @@ class CaseService:
 
     @staticmethod
     def remove_suspect(db: Session, case_id: int, suspect_id: int, user: Any, ip_address: Optional[str] = None) -> Suspect:
-        # Check case existence
         db_case = CaseService.get_case(db, case_id, user, ip_address)
-
-        # RBAC Check
         if user.role == "INVESTIGATOR" and db_case.lead_investigator_id != user.id:
             raise AppException(message="Bạn không có quyền sửa đổi hồ sơ vụ án của điều tra viên khác", code="FORBIDDEN", status_code=403)
 
@@ -174,18 +205,15 @@ class CaseService:
         db.commit()
         return db_suspect
 
+    # Synchronous Document & Timeline CRUD
     @staticmethod
     def list_documents(db: Session, case_id: int, user: Any, ip_address: Optional[str] = None) -> List[CaseDocument]:
-        # Check case existence
         CaseService.get_case(db, case_id, user, ip_address)
         return db.query(CaseDocument).filter(CaseDocument.case_id == case_id).all()
 
     @staticmethod
     def add_document(db: Session, case_id: int, doc_in: CaseDocumentCreate, user: Any, ip_address: Optional[str] = None) -> CaseDocument:
-        # Check case existence
         db_case = CaseService.get_case(db, case_id, user, ip_address)
-
-        # RBAC Check: INVESTIGATOR can only add documents to their own case files.
         if user.role == "INVESTIGATOR" and db_case.lead_investigator_id != user.id:
             raise AppException(message="Bạn không có quyền sửa đổi hồ sơ vụ án của điều tra viên khác", code="FORBIDDEN", status_code=403)
 
@@ -202,10 +230,7 @@ class CaseService:
 
     @staticmethod
     def remove_document(db: Session, case_id: int, document_id: int, user: Any, ip_address: Optional[str] = None) -> CaseDocument:
-        # Check case existence
         db_case = CaseService.get_case(db, case_id, user, ip_address)
-
-        # RBAC Check
         if user.role == "INVESTIGATOR" and db_case.lead_investigator_id != user.id:
             raise AppException(message="Bạn không có quyền sửa đổi hồ sơ vụ án của điều tra viên khác", code="FORBIDDEN", status_code=403)
 
@@ -219,16 +244,12 @@ class CaseService:
 
     @staticmethod
     def list_logs(db: Session, case_id: int, user: Any, ip_address: Optional[str] = None) -> List[InvestigationLog]:
-        # Check case existence
         CaseService.get_case(db, case_id, user, ip_address)
         return db.query(InvestigationLog).filter(InvestigationLog.case_id == case_id).order_by(InvestigationLog.log_date.desc()).all()
 
     @staticmethod
     def add_log(db: Session, case_id: int, log_in: InvestigationLogCreate, user: Any, ip_address: Optional[str] = None) -> InvestigationLog:
-        # Check case existence
         db_case = CaseService.get_case(db, case_id, user, ip_address)
-
-        # RBAC Check: INVESTIGATOR can only add logs to their own case files.
         if user.role == "INVESTIGATOR" and db_case.lead_investigator_id != user.id:
             raise AppException(message="Bạn không có quyền sửa đổi hồ sơ vụ án của điều tra viên khác", code="FORBIDDEN", status_code=403)
 
@@ -245,10 +266,7 @@ class CaseService:
 
     @staticmethod
     def remove_log(db: Session, case_id: int, log_id: int, user: Any, ip_address: Optional[str] = None) -> InvestigationLog:
-        # Check case existence
         db_case = CaseService.get_case(db, case_id, user, ip_address)
-
-        # RBAC Check
         if user.role == "INVESTIGATOR" and db_case.lead_investigator_id != user.id:
             raise AppException(message="Bạn không có quyền sửa đổi hồ sơ vụ án của điều tra viên khác", code="FORBIDDEN", status_code=403)
 
