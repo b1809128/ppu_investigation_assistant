@@ -74,7 +74,21 @@ async def lifespan(app: FastAPI):
             )
             db.add(dtv_user)
             db.commit()
-            
+
+        # Seed Leadership (leader)
+        leader_user = db.query(User).filter(User.badge_id == "leader").first()
+        if not leader_user:
+            logger.info("Tạo tài khoản Lãnh đạo mặc định (leader)...")
+            leader_user = User(
+                badge_id="leader",
+                password_hash=get_password_hash("leader"),
+                full_name="Lãnh đạo Cơ quan Điều tra",
+                role="LEADERSHIP",
+                is_active=True
+            )
+            db.add(leader_user)
+            db.commit()
+
         logger.info("Cấp tài khoản mặc định hoàn tất.")
 
         # Seed realistic real-world case file

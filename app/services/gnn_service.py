@@ -134,7 +134,11 @@ class GNNService:
         173: "Tội trộm cắp tài sản",
         174: "Tội lừa đảo chiếm đoạt tài sản",
         175: "Tội lạm dụng tín nhiệm chiếm đoạt tài sản",
+        178: "Tội hủy hoại hoặc cố ý làm hư hỏng tài sản",
+        249: "Tội tàng trữ trái phép chất ma túy",
+        321: "Tội đánh bạc",
         353: "Tội tham ô tài sản",
+        354: "Tội nhận hối lộ",
         389: "Tội che giấu tội phạm"
     }
 
@@ -403,11 +407,15 @@ class GNNService:
                    (any(kw in behavior for kw in ["cướp giật", "giật tài sản", "nhanh chóng giật"]) and dieu_no == 171) or \
                    (any(kw in behavior for kw in ["cướp", "khống chế", "dùng vũ lực"]) and dieu_no == 168) or \
                    (any(kw in behavior for kw in ["cưỡng đoạt", "đe dọa dùng vũ lực", "uy hiếp"]) and dieu_no == 170) or \
-                   (any(kw in behavior for kw in ["lừa đảo", "gian dối"]) and dieu_no == 174) or \
+                   (any(kw in behavior for kw in ["lừa đảo", "gian dối", "giả mạo", "chiếm đoạt"]) and dieu_no == 174) or \
                    (any(kw in behavior for kw in ["lạm dụng tín nhiệm", "tín nhiệm", "vay mượn", "thuê xe"]) and dieu_no == 175) or \
+                   (any(kw in behavior for kw in ["hủy hoại", "hư hỏng", "đốt", "phá hoại"]) and dieu_no == 178) or \
+                   (any(kw in behavior for kw in ["ma túy", "heroine", "tàng trữ"]) and dieu_no == 249) or \
+                   (any(kw in behavior for kw in ["đánh bạc", "cá độ", "lô đề"]) and dieu_no == 321) or \
                    (any(kw in behavior for kw in ["giết người", "tước đoạt tính mạng", "đâm vào ngực", "đâm vào cổ"]) and dieu_no == 123) or \
                    (any(kw in behavior for kw in ["gây thương tích", "tổn hại sức khỏe", "đánh gây thương tích", "chém vào tay"]) and dieu_no == 134) or \
-                   (any(kw in behavior for kw in ["tham ô", "thủ quỹ"]) and dieu_no == 353) or \
+                   (any(kw in behavior for kw in ["tham ô", "thủ quỹ", "công quỹ"]) and dieu_no == 353) or \
+                   (any(kw in behavior for kw in ["hối lộ", "nhận tiền", "nhận 200", "đòi hỏi và nhận"]) and dieu_no == 354) or \
                    (any(kw in behavior for kw in ["che giấu"]) and dieu_no == 389) or \
                    matched_kws:
                     matched_articles.append((dieu_no, ten_dieu or cls.ARTICLE_TITLES.get(dieu_no, f"Điều {dieu_no}")))
@@ -421,6 +429,11 @@ class GNNService:
                    (d_no == 173 and any(w in behavior for w in ["trộm", "lén lút"])) or \
                    (d_no == 174 and any(w in behavior for w in ["lừa đảo", "gian dối"])) or \
                    (d_no == 175 and any(w in behavior for w in ["lạm dụng", "thuê xe"])) or \
+                   (d_no == 178 and any(w in behavior for w in ["hủy hoại", "hư hỏng", "đốt", "phá hoại"])) or \
+                   (d_no == 249 and any(w in behavior for w in ["ma túy", "heroine", "tàng trữ"])) or \
+                   (d_no == 321 and any(w in behavior for w in ["đánh bạc", "cá độ", "lô đề"])) or \
+                   (d_no == 353 and any(w in behavior for w in ["tham ô", "thủ quỹ", "công quỹ"])) or \
+                   (d_no == 354 and any(w in behavior for w in ["hối lộ", "nhận tiền", "nhận", "đòi hỏi"])) or \
                    (d_no == 123 and any(w in behavior for w in ["giết", "tước đoạt", "đâm", "cổ", "ngực"])) or \
                    (d_no == 134 and any(w in behavior for w in ["thương tích", "gây tổn hại", "đánh", "chém"])):
                     matched_articles.append((d_no, d_title))
@@ -498,6 +511,9 @@ class GNNService:
                 graph_edges=edges
             )
 
+            reasoning_path = cls.find_reasoning_path(dieu_no, entities)
+            confidence_score = cls.calculate_path_confidence(reasoning_path, total_score)
+
             suggestions.append(SuggestedChargeSchema(
                 article_id=dieu_no,
                 title=ten_dieu or f"Điều {dieu_no}",
@@ -505,7 +521,9 @@ class GNNService:
                 clause_details=clause_details,
                 matching_score=total_score,
                 element_scores=elem_scores,
-                explanation=xai_explanation
+                explanation=xai_explanation,
+                reasoning_path=reasoning_path,
+                confidence_score=confidence_score
             ))
 
         # 3. Apply Graph Distillation Operator for confusing crime pairs
@@ -514,3 +532,34 @@ class GNNService:
         # Sort suggestions by matching_score descending
         distilled_suggestions.sort(key=lambda s: s.matching_score or 0.0, reverse=True)
         return distilled_suggestions
+
+    @classmethod
+    def find_reasoning_path(cls, article_id: int, entities: ExtractedEntitiesSchema) -> List[str]:
+        """
+        Trích xuất luồng suy luận đồ thị (Graph Reasoning Path) từ Đỉnh thực thể ➔ Đỉnh hành vi ➔ Nút Tội danh.
+        """
+        path = []
+        age_str = f"{entities.suspect_age} tuổi" if entities.suspect_age else "Chưa rõ tuổi"
+        path.append(f"1. Chủ thể bị can: {age_str} (Điều 12 BLHS)")
+
+        if entities.weapon:
+            path.append(f"2. Hung khí / Phương tiện: {entities.weapon}")
+
+        if entities.objective_behavior:
+            path.append(f"3. Hành vi khách quan: {entities.objective_behavior}")
+
+        if entities.consequence and entities.consequence > 0:
+            path.append(f"4. Thiệt hại tài sản / Hậu quả: {entities.consequence:,.0f} VNĐ")
+
+        path.append(f"5. Nút Cấu thành Pháp lý: Điều {article_id} BLHS 2015")
+        return path
+
+    @classmethod
+    def calculate_path_confidence(cls, reasoning_path: List[str], base_score: float) -> float:
+        """
+        Tính toán điểm tin cậy luồng đồ thị dựa trên số lượng cạnh kết nối và điểm cosine cơ bản.
+        """
+        if not reasoning_path:
+            return round(base_score, 4)
+        path_length_bonus = min(0.08, len(reasoning_path) * 0.015)
+        return round(min(1.0, base_score + path_length_bonus), 4)

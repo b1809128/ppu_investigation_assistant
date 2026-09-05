@@ -65,9 +65,8 @@ def main():
     # Track created chapter nodes to avoid duplicates
     created_chapters = set()
     
-    # Process only common crimes to make a clean, focused model graph for properties & office crimes
-    # Focus on articles 168 to 180 (Property crimes) and 353 to 366 (Office crimes)
-    target_articles = list(range(168, 181)) + list(range(353, 367))
+    # Process common crimes: property crimes (168-180), office crimes (353-366), and life/health crimes (123, 134)
+    target_articles = [123, 134] + list(range(168, 181)) + list(range(353, 367))
 
     for art in articles:
         art_num = art["dieu"]
@@ -200,6 +199,54 @@ def main():
                     "relation": "CONSTITUTES",
                     "properties": {}
                 })
+
+            # Check for vital target / life threat elements
+            if any(w in cl_content_lower for w in ["tính mạng", "tử vong", "giết", "vùng yếu hại", "ngực", "cổ"]):
+                element_id = "element_vital_target"
+                if not any(n["id"] == element_id for n in nodes):
+                    nodes.append({
+                        "id": element_id,
+                        "label": "CrimeElement",
+                        "properties": {"name": "Tấn công xâm phạm tính mạng / Vùng yếu hại", "type": "Mặt khách quan"}
+                    })
+                edges.append({
+                    "source": cl_id,
+                    "target": element_id,
+                    "relation": "CONSTITUTES",
+                    "properties": {}
+                })
+
+            # Check for snatching elements
+            if any(w in cl_content_lower for w in ["giật", "cướp giật", "tẩu thoát", "nhanh chóng"]):
+                element_id = "element_snatch"
+                if not any(n["id"] == element_id for n in nodes):
+                    nodes.append({
+                        "id": element_id,
+                        "label": "CrimeElement",
+                        "properties": {"name": "Nhanh chóng công khai chiếm đoạt tài sản tẩu thoát", "type": "Mặt khách quan"}
+                    })
+                edges.append({
+                    "source": cl_id,
+                    "target": element_id,
+                    "relation": "CONSTITUTES",
+                    "properties": {}
+                })
+
+    # Add Conflict Edges between competing crime pairs
+    competing_pairs = [
+        ("article_168", "article_171", "Xung đột bản chất vũ lực (Điều 168) vs Nhanh chóng công khai (Điều 171)"),
+        ("article_123", "article_134", "Xung đột ý thức tước đoạt tính mạng (Điều 123) vs Cố ý gây thương tích (Điều 134)"),
+        ("article_173", "article_174", "Xung đột thủ đoạn lén lút (Điều 173) vs Thủ đoạn gian dối (Điều 174)")
+    ]
+
+    for source_art, target_art, desc in competing_pairs:
+        if any(n["id"] == source_art for n in nodes) and any(n["id"] == target_art for n in nodes):
+            edges.append({
+                "source": source_art,
+                "target": target_art,
+                "relation": "CONFLICTS_WITH",
+                "properties": {"description": desc}
+            })
 
     # Wrap as graph
     graph_data = {

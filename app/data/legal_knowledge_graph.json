@@ -1,6 +1,128 @@
 {
   "nodes": [
     {
+      "id": "chapter_XIV",
+      "label": "Chapter",
+      "properties": {
+        "name": "CÁC TỘI XÂM PHẠM TÍNH MẠNG,",
+        "code": "XIV"
+      }
+    },
+    {
+      "id": "article_123",
+      "label": "Article",
+      "properties": {
+        "name": "Tội giết người",
+        "article_number": 123,
+        "title": "Tội giết người"
+      }
+    },
+    {
+      "id": "article_123_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào giết người thuộc một trong các trường hợp sau đây, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "element_vital_target",
+      "label": "CrimeElement",
+      "properties": {
+        "name": "Tấn công xâm phạm tính mạng / Vùng yếu hại",
+        "type": "Mặt khách quan"
+      }
+    },
+    {
+      "id": "article_123_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội không thuộc các trường hợp quy định tại khoản I Điều này, thì bị phạt tù từ Ø"
+      }
+    },
+    {
+      "id": "article_123_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Người chuẩn bị phạm tội này, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_123_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Người phạm tội còn có thể bị cắm hành nghề hoặc làm công việc nhất định từ"
+      }
+    },
+    {
+      "id": "article_134",
+      "label": "Article",
+      "properties": {
+        "name": "Tội cố ý gây thương tích hoặc gây tốn hại cho sức khoẻ",
+        "article_number": 134,
+        "title": "Tội cố ý gây thương tích hoặc gây tốn hại cho sức khoẻ"
+      }
+    },
+    {
+      "id": "article_134_clause_1",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 1,
+        "content": "Người nào cố ý gây thương tích hoặc gây tổn hại cho sức khỏe của người khác mà tỷ lệ tổn thương cơ thê từ"
+      }
+    },
+    {
+      "id": "article_134_clause_2",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 2,
+        "content": "Phạm tội gây thương tích hoặc gây tên hại cho sức khỏe của người khác mà tỷ lệ tổn thương cơ thể từ"
+      }
+    },
+    {
+      "id": "article_134_clause_3",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 3,
+        "content": "Phạm tội gây thương tích hoặc gây tổn hại cho sức khỏe của người khác mà tỷ lệ tổn thương cơ thể từ"
+      }
+    },
+    {
+      "id": "article_134_clause_4",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 4,
+        "content": "Phạm tội gây thương tích hoặc gây tổn hại cho sức khỏe của người khác mà tỷ lệ tổn thương cơ thể từ"
+      }
+    },
+    {
+      "id": "article_134_clause_5",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 5,
+        "content": "Phạm tội gây thương tích hoặc gây tôn hại cho sức khỏe của người khác mà tỷ lệ tổn thương cơ thể"
+      }
+    },
+    {
+      "id": "article_134_clause_6",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 6,
+        "content": "Phạm tội thuộc một trong các trường hợp sau, thì bị phạt tù từ"
+      }
+    },
+    {
+      "id": "article_134_clause_7",
+      "label": "Clause",
+      "properties": {
+        "clause_number": 7,
+        "content": "Người chuẩn bị phạm tội này, thì bị phạt cải tạo không giam giữ đến"
+      }
+    },
+    {
       "id": "chapter_XVI",
       "label": "Chapter",
       "properties": {
@@ -194,6 +316,14 @@
       "properties": {
         "clause_number": 1,
         "content": "Người nào cướp giật tài sản của người khác, thì bị phạt tủ từ"
+      }
+    },
+    {
+      "id": "element_snatch",
+      "label": "CrimeElement",
+      "properties": {
+        "name": "Nhanh chóng công khai chiếm đoạt tài sản tẩu thoát",
+        "type": "Mặt khách quan"
       }
     },
     {
@@ -1278,6 +1408,90 @@
   ],
   "edges": [
     {
+      "source": "article_123",
+      "target": "chapter_XIV",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_123_clause_1",
+      "target": "article_123",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_123_clause_1",
+      "target": "element_vital_target",
+      "relation": "CONSTITUTES",
+      "properties": {}
+    },
+    {
+      "source": "article_123_clause_2",
+      "target": "article_123",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_123_clause_3",
+      "target": "article_123",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_123_clause_4",
+      "target": "article_123",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_134",
+      "target": "chapter_XIV",
+      "relation": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "article_134_clause_1",
+      "target": "article_134",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_134_clause_2",
+      "target": "article_134",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_134_clause_3",
+      "target": "article_134",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_134_clause_4",
+      "target": "article_134",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_134_clause_5",
+      "target": "article_134",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_134_clause_6",
+      "target": "article_134",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_134_clause_7",
+      "target": "article_134",
+      "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
       "source": "article_168",
       "target": "chapter_XVI",
       "relation": "BELONGS_TO",
@@ -1419,6 +1633,12 @@
       "source": "article_171_clause_1",
       "target": "article_171",
       "relation": "HAS_CLAUSE",
+      "properties": {}
+    },
+    {
+      "source": "article_171_clause_1",
+      "target": "element_snatch",
+      "relation": "CONSTITUTES",
       "properties": {}
     },
     {
@@ -2356,6 +2576,30 @@
       "target": "article_366",
       "relation": "HAS_CLAUSE",
       "properties": {}
+    },
+    {
+      "source": "article_168",
+      "target": "article_171",
+      "relation": "CONFLICTS_WITH",
+      "properties": {
+        "description": "Xung đột bản chất vũ lực (Điều 168) vs Nhanh chóng công khai (Điều 171)"
+      }
+    },
+    {
+      "source": "article_123",
+      "target": "article_134",
+      "relation": "CONFLICTS_WITH",
+      "properties": {
+        "description": "Xung đột ý thức tước đoạt tính mạng (Điều 123) vs Cố ý gây thương tích (Điều 134)"
+      }
+    },
+    {
+      "source": "article_173",
+      "target": "article_174",
+      "relation": "CONFLICTS_WITH",
+      "properties": {
+        "description": "Xung đột thủ đoạn lén lút (Điều 173) vs Thủ đoạn gian dối (Điều 174)"
+      }
     }
   ]
 }

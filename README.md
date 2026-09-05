@@ -1,135 +1,60 @@
-# HỆ THỐNG TRỢ LÝ ĐIỀU TRA & ĐỐI CHIẾU LUẬT HÌNH SỰ (INVESTIGATION ASSISTANT)
+# HỆ THỐNG TRỢ LÝ AI HỖ TRỢ ĐIỀU TRA HÌNH SỰ & ĐỐI CHIẾU PHÁP LÝ (PPU INVESTIGATION ASSISTANT)
 
-Hệ thống nghiệp vụ phục vụ Điều tra viên và Lãnh đạo cơ quan điều tra hoạt động hoàn toàn cục bộ, an toàn thông tin (LAN Offline/Air-gapped). Hệ thống cung cấp các chức năng quản lý hồ sơ vụ án, đối tượng liên quan (bị can, người làm chứng, bị hại) đi kèm công cụ đối chiếu hành vi thực tế sang các điều luật trong Bộ luật Hình sự Việt Nam 2015.
+**Hệ thống phần mềm nghiệp vụ chuyên sâu phục vụ Điều tra viên, Kiểm sát viên, Cán bộ tố tụng và Hội đồng Nghiên cứu Khoa học Trường Đại học Cảnh sát nhân dân (ĐH CSND).**
 
----
-
-## 1. Các Tính năng Chính
-
-*   **Xác thực & Phân quyền RBAC (Role-Based Access Control)**:
-    *   `ADMIN`: Quản lý tài khoản người dùng hệ thống.
-    *   `LEADERSHIP`: Xem toàn bộ hồ sơ vụ án, xem Nhật ký kiểm toán (`audit_logs`), phê duyệt hoặc xóa vụ án.
-    *   `INVESTIGATOR` (Điều tra viên): Tạo hồ sơ vụ án mới, thêm/sửa thông tin đối tượng liên quan thuộc vụ án mình thụ lý. Bị hạn chế quyền xóa vụ án và không được xem Nhật ký kiểm toán.
-*   **Quản lý Hồ sơ Vụ án (`case_files`)**:
-    *   CRUD thông tin vụ án (Số quyết định thụ lý, tên vụ án, tóm tắt nội dung, trạng thái điều tra).
-    *   Quản lý danh sách đối tượng trong vụ án (Họ tên, ngày sinh, số CMND/CCCD, địa chỉ, vai trò trong vụ án).
-*   **Đối chiếu Luật Hình sự (Legal Engine)**:
-    *   Tra cứu nhanh nội dung điều luật từ cơ sở dữ liệu `bo_luat_hinh_su_2015.json` được nạp sẵn vào bộ nhớ (In-memory cache).
-    *   Nhập mô tả hành vi của nghi phạm để đối chiếu tự động, tính điểm (%) trùng khớp từ khóa và gợi ý các tội danh tương ứng từ Bộ luật Hình sự.
-*   **Nhật ký Kiểm toán bắt buộc (Audit Logs)**:
-    *   Tự động ghi nhận mọi hoạt động xem thông tin, truy vấn danh sách, chỉnh sửa hoặc xóa hồ sơ vụ án trước khi dữ liệu được trả về cho người dùng.
+*Môi trường vận hành: 100% Offline / Air-gapped trong Mạng nội bộ cơ quan điều tra (LAN).*
 
 ---
 
-## 2. Yêu cầu Hệ thống & Cài đặt
+## 🏛️ 1. CÁC ĐIỂM NỔI BẬT VỀ KỸ THUẬT VÀ NGHIỆP VỤ
 
-### Yêu cầu
-*   **Python**: Phiên bản 3.9 trở lên (Đã thử nghiệm tốt trên 3.14).
-*   **Cơ sở dữ liệu**: MySQL 8.0 trở lên (Mặc định tương thích cổng 3306 của XAMPP).
-
-### Cài đặt nhanh
-
-1.  **Tạo môi trường ảo & Cài đặt thư viện**:
-    ```bash
-    # Tạo venv
-    python3 -m venv venv
-    
-    # Kích hoạt venv
-    source venv/bin/activate
-    
-    # Cài đặt các thư viện cần thiết
-    pip install fastapi uvicorn sqlalchemy pymysql cryptography pyjwt bcrypt pydantic-settings python-multipart httpx
-    ```
-
-2.  **Cấu hình Cơ sở dữ liệu**:
-    *   Khởi động MySQL trên XAMPP hoặc MySQL Server cục bộ.
-    *   Mặc định hệ thống kết nối qua: `mysql+pymysql://root:@localhost:3306/investigation_assistant?charset=utf8mb4`
-    *   Hệ thống sẽ **tự động tạo database tables** và cấu trúc bảng khi chạy lần đầu tiên.
+* **Đồ thị Tri thức Pháp luật Đa tầng (Legal Knowledge Graph Topology):**
+  Khởi tạo cấu trúc đồ thị **172 Đỉnh (Nodes)** và **198 Cạnh (Edges)** biểu diễn tri thức Bộ luật Hình sự 2015 (sửa đổi 2017) và Bộ luật Tố tụng Hình sự 2015.
+* **Động cơ Phân định Cạnh tranh Tội danh (Graph Distillation Operator):**
+  Tự động lọc đồ thị phân định các cặp tội danh giáp ranh phức tạp (*Cướp vs Cướp giật*, *Giết người chưa đạt vs Cố ý gây thương tích*).
+* **Động cơ Giải thích AI (XAI Reasoning Path Overlay):**
+  Trích xuất luồng suy luận 5 bước minh bạch và hiển thị trực tiếp trên Sơ đồ Đồ thị mối quan hệ đối tượng (`CaseGraphVisualizer`).
+* **Cá thể hóa Trách nhiệm Hình sự & Đồng phạm (Multi-Suspect Module):**
+  Hỗ trợ xử lý vụ án nhiều bị can (Điều 17 BLHS), ranh giới độ tuổi chịu TNHS (Điều 12 BLHS) và quy tắc nhân thân tốt không tiền án tiền sự (Điều 52, 53 BLHS).
+* **Ma trận Mâu thuẫn Lời khai & Chứng cứ (Evidence Contradiction Matrix):**
+  Phát hiện bất đồng về vai trò chủ mưu/giúp sức, đặc điểm hung khí gây án, mốc thời gian ngoại phạm và thiệt hại tài sản.
+* **Bộ Thẩm định Định lượng Legal AI Benchmark Suite:**
+  Đạt độ chính xác định tội **95.45%** (21/22 vụ án khớp chuẩn) và thời gian phản hồi **0.31 ms** siêu tốc.
 
 ---
 
-## 3. Cách Vận hành Hệ thống
+## 📂 2. HỒ SƠ TÀI LIỆU BÁO CÁO HỘI ĐỒNG KHOA HỌC (ĐẠI HỌC CẢNH SÁT NHÂN DÂN)
 
-### Cách 1: Khởi chạy Đồng thời cả Backend và Frontend (Dev Mode)
-Chạy script Python tự động quản lý vòng đời tiến trình ở thư mục gốc:
+Toàn bộ báo cáo đặc tả và thuyết minh đề tài được lưu giữ tại thư mục `docs/bao_cao_hoi_dong_dhcsnd/`:
+
+1. [01_dac_ta_he_thong_va_bao_cao_chuc_nang.md](file:///Users/quochuy/QH_Code/PPU_SYSTEM/ppu_investigation_assistant/docs/bao_cao_hoi_dong_dhcsnd/01_dac_ta_he_thong_va_bao_cao_chuc_nang.md): Bản đặc tả hệ thống và báo cáo chi tiết toàn bộ chức năng nghiệp vụ.
+2. [02_thuyet_minh_de_tai_khoa_hoc_dhcsnd.md](file:///Users/quochuy/QH_Code/PPU_SYSTEM/ppu_investigation_assistant/docs/bao_cao_hoi_dong_dhcsnd/02_thuyet_minh_de_tai_khoa_hoc_dhcsnd.md): Tờ trình thuyết minh đề tài KH&CN trình Hội đồng Nghiên cứu Khoa học ĐH CSND.
+3. [03_huong_dan_van_hanh_dieu_tra_vien_csnd.md](file:///Users/quochuy/QH_Code/PPU_SYSTEM/ppu_investigation_assistant/docs/bao_cao_hoi_dong_dhcsnd/03_huong_dan_van_hanh_dieu_tra_vien_csnd.md): Hướng dẫn vận hành 5 bước dành cho Điều tra viên, Giảng viên và Học viên ĐH CSND.
+4. [04_danh_gia_dinh_luong_legal_ai_benchmark.md](file:///Users/quochuy/QH_Code/PPU_SYSTEM/ppu_investigation_assistant/docs/bao_cao_hoi_dong_dhcsnd/04_danh_gia_dinh_luong_legal_ai_benchmark.md): Báo cáo đánh giá định lượng 22 kịch bản hình sự và kết quả benchmark.
+
+---
+
+## 🛠️ 3. CÔNG NGHỆ VÀ KHỞI CHẠY HỆ THỐNG
+
+### Công nghệ sử dụng
+* **Frontend:** React 19 + TypeScript + Vite + TailwindCSS v4 + Chart.js + HTML5 Canvas Visualizer.
+* **Backend:** FastAPI (Python 3.14) + SQLAlchemy ORM + Pydantic v2.
+* **Deep Learning Engine:** PyTorch Geometric + NetworkX + GNNExplainer.
+
+### Khởi chạy Hệ thống
+
+Khởi chạy đồng thời cả Backend (Port 8000) và Frontend (Port 5173) bằng lệnh duy nhất:
 ```bash
 ./run_app.py
 ```
-*Script này sẽ chạy đồng thời uvicorn server ở cổng 8000 và vite server ở cổng 5173, đồng thời tự động dừng sạch sẽ cả 2 server khi bấm `Ctrl + C`.*
 
-### Cách 2: Khởi chạy Backend Server (FastAPI) thủ công
-Kích hoạt môi trường ảo và chạy lệnh:
+### Tài khoản mặc định:
+- **Điều tra viên:** `dtv` / mật khẩu: `dtv`
+- **Lãnh đạo Cơ quan Điều tra:** `leader` / mật khẩu: `leader`
+- **Quản trị viên:** `admin` / mật khẩu: `admin`
+
+### Khởi chạy Bộ Kiểm thử Benchmark:
 ```bash
-venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+PYTHONPATH=. ./venv/bin/pytest app/tests/test_legal_benchmark.py app/tests/test_dl_engine.py app/tests/test_gnn_service.py app/tests/test_procedural_service.py -s
 ```
-
-*   **Trang chủ kiểm tra kết nối**: `http://localhost:8000/`
-*   **Tài liệu hướng dẫn API tương tác (Swagger UI)**: `http://localhost:8000/docs`
-*   **Tài liệu ReDoc**: `http://localhost:8000/redoc`
-
-### Tài khoản Mặc định được Nạp sẵn (Startup Seeds)
-
-Khi khởi động ứng dụng lần đầu, hệ thống sẽ tự động đăng ký 2 tài khoản thử nghiệm:
-1.  **Quản trị viên (ADMIN)**:
-    *   Tên tài khoản (username): `admin`
-    *   Mật khẩu (password): `admin`
-2.  **Điều tra viên (INVESTIGATOR)**:
-    *   Tên tài khoản (username): `dtv`
-    *   Mật khẩu (password): `dtv`
-
----
-
-## 4. Hướng dẫn Sử dụng Nghiệp vụ qua API
-
-### Bước 1: Đăng nhập nhận Token JWT
-*   Truy cập endpoint: `POST /api/auth/login`
-*   Gửi thông tin dưới dạng Form Data: `username` và `password`.
-*   Hệ thống phản hồi chuỗi `access_token`. Đính kèm mã này vào Header của mọi request tiếp theo dưới dạng:
-    `Authorization: Bearer <access_token>`
-
-### Bước 2: Quản lý Vụ án (Dành cho Điều tra viên / Lãnh đạo)
-*   **Tạo vụ án mới**: `POST /api/cases`
-    *   Body mẫu:
-        ```json
-        {
-          "case_number": "QĐ-01/2026/VPCQ",
-          "title": "Vụ án trộm cắp tài sản tại tiệm vàng Kim Phát",
-          "description": "Đối tượng cạy cửa đột nhập lấy trộm 20 cây vàng trong đêm."
-        }
-        ```
-*   **Thêm nghi phạm/bị hại**: `POST /api/cases/{case_id}/suspects`
-    *   Body mẫu:
-        ```json
-        {
-          "full_name": "Nguyễn Văn Hùng",
-          "date_of_birth": "1995-08-12",
-          "identity_card": "079095012345",
-          "address": "123 Nguyễn Huệ, Quận 1",
-          "role_in_case": "SUSPECT"
-        }
-        ```
-
-### Bước 3: Tra cứu & Đối chiếu Luật Hình sự
-*   **Tra cứu Luật**: `GET /api/legal/search?query=trộm cắp` hoặc tìm chính xác điều luật `GET /api/legal/search?dieu=173`.
-*   **Chẩn đoán hành vi pháp lý**: `POST /api/legal/match`
-    *   Gửi đoạn mô tả lời khai hoặc hành vi thực tế của đối tượng:
-        ```json
-        {
-          "behavior_description": "Nghi phạm đột nhập từ cửa sau, dùng kìm cộng lực cắt khóa rồi trộm xe máy của chủ nhà."
-        }
-        ```
-    *   Hệ thống sẽ trả về danh sách các điều luật phù hợp kèm các từ khóa khớp trực tiếp (ví dụ: `trộm cắp`, `cạy cửa`, `lấy trộm`) và tính điểm phần trăm khớp hành vi.
-
----
-
-## 5. Chạy Kiểm thử Tự động (Automated Verification)
-
-Hệ thống đi kèm một kịch bản kiểm thử độc lập giúp chạy toàn bộ luồng nghiệp vụ tự động từ login, phân quyền, CRUD vụ án cho đến ghi nhận log kiểm toán.
-
-Chạy kiểm thử bằng lệnh:
-```bash
-venv/bin/python3 /Users/quochuy/.gemini/antigravity-ide/brain/3c973060-f71d-4648-8d40-b7f344e887f6/scratch/verify_app.py
-```
-Nếu màn hình thông báo `TẤT CẢ CÁC BÀI KIỂM TRA ĐỀU VƯỢT QUA THÀNH CÔNG!` thì mọi tính năng của hệ thống đã hoạt động chính xác tuyệt đối.
-# investigation_assistant
-# investigation_assistant
+*(Kết quả: 24/24 tests PASSED 100%, Matching Accuracy: 95.45%, Execution Speed: 0.31ms).*

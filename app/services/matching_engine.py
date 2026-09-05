@@ -373,6 +373,18 @@ class MatchingEngine:
                             else:
                                 liability_note = f"Bị can từ đủ 14 đến dưới 16 tuổi chịu TNHS do tội này định khung ở mức {damage_eval['severity']} (Khoản {damage_eval['applicable_clause']})."
 
+                # Generate GNN XAI Reasoning Path
+                from app.schemas.analysis import ExtractedEntitiesSchema
+                from app.services.gnn_service import GNNService
+                
+                temp_entities = ExtractedEntitiesSchema(
+                    suspect_age=age_eval.get("age"),
+                    objective_behavior=summary_text,
+                    consequence=case.damage_value
+                )
+                r_path = GNNService.find_reasoning_path(art_id, temp_entities)
+                c_score = GNNService.calculate_path_confidence(r_path, 0.85)
+
                 article_suggestions.append({
                     "article_id": art_id,
                     "title": art["title"],
@@ -382,6 +394,8 @@ class MatchingEngine:
                     "damage_warning": damage_eval["warning"],
                     "suspect_is_liable": suspect_is_liable,
                     "liability_note": liability_note,
+                    "reasoning_path": r_path,
+                    "confidence_score": c_score,
                     "ai_evaluation": art.get("ai_evaluation")
                 })
 

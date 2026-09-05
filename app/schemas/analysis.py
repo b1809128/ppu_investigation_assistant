@@ -22,6 +22,8 @@ class SuggestedChargeSchema(BaseModel):
     element_scores: Optional[Dict[str, float]] = Field(None, description="Individual constituent element scores (KT, KQ, CT, CQ)")
     explanation: Optional[Dict[str, Any]] = Field(None, description="GNNExplainer key evidence nodes/edges XAI output")
     distillation_result: Optional[str] = Field(None, description="Graph Distillation Operator classification result")
+    reasoning_path: Optional[List[str]] = Field(None, description="Explicit 5-step GNN XAI reasoning path trace")
+    confidence_score: Optional[float] = Field(None, description="Overall GNN confidence score [0, 1]")
 
     model_config = ConfigDict(from_attributes=True, populate_by_name=True)
 

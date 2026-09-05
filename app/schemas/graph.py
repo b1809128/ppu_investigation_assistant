@@ -15,6 +15,9 @@ class EdgeSchema(BaseModel):
 class CaseGraphSchema(BaseModel):
     nodes: List[NodeSchema] = Field(default_factory=list, description="List of nodes/entities in the case graph")
     edges: List[EdgeSchema] = Field(default_factory=list, description="List of directed edges/relationships in the case graph")
+    reasoning_path: List[str] = Field(default_factory=list, description="Sequence of nodes/edges representing the AI legal reasoning path")
+    confidence_score: Optional[float] = Field(default=None, description="GNN topological confidence score S(f, Ck)")
+    distillation_explanation: Optional[str] = Field(default=None, description="Graph Distillation explanation text")
 
     class Config:
         from_attributes = True
